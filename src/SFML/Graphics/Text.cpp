@@ -403,7 +403,7 @@ void Text::updateGeometryBounding()
         return;
 
     //correct margins
-    if(m_boundMargin >= m_boundBox.width || m_boundMargin >= m_boundBox.height)
+    if(m_boundMargin >= m_boundBox.width/2 || m_boundMargin >= m_boundBox.height/2)
     	m_boundMargin = 0;
 
     //Bounding Data
