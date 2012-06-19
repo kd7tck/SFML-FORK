@@ -318,7 +318,7 @@ void Image::fadeOutImage(float percent){
 		Uint8* head = &m_pixels[3];
 		Uint8* tail = &m_pixels[(m_size.y * m_size.x)-1];
 		while(head != tail){
-			Uint8 val = *head + (percent * *head);
+			int val = *head + (percent * *head);
 			if(val <= 255)
 				*head = val;
 			else
@@ -336,7 +336,7 @@ void Image::fadeInImage(float percent){
 		Uint8* head = &m_pixels[3];
 		Uint8* tail = &m_pixels[(m_size.y * m_size.x)-1];
 		while(head != tail){
-			Uint8 val = *head - (percent * *head);
+			int val = *head - (percent * *head);
 			if(val >= 0)
 				*head = val;
 			else
