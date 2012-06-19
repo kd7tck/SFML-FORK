@@ -310,4 +310,32 @@ void Image::flipVertically()
     }
 }
 
+
+
+/////////////////////////////////////////////////////////////
+void Image::fadeOutImage(float percent){
+	if (!m_pixels.empty()){
+		unsigned int x,y;
+		for(y=0;y<m_size.y;y++){
+			for(x=0;x<m_size.x;x++){
+				m_pixels[((x + y * m_size.x) * 4) + 3] += percent * m_pixels[((x + y * m_size.x) * 4) + 3];
+			}
+		}
+	}
+}
+
+
+
+/////////////////////////////////////////////////////////////
+void Image::fadeInImage(float percent){
+	if (!m_pixels.empty()){
+		unsigned int x,y;
+		for(y=0;y<m_size.y;y++){
+			for(x=0;x<m_size.x;x++){
+				m_pixels[((x + y * m_size.x) * 4) + 3] -= percent * m_pixels[((x + y * m_size.x) * 4) + 3];
+			}
+		}
+	}
+}
+
 } // namespace sf
