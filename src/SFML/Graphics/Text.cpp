@@ -441,7 +441,7 @@ void Text::updateGeometryBounding()
         positionGlobal = getTransform().transformPoint(position);
 
         //correct out of bounds
-        if(curChar != L'\n' && positionGlobal.x >= boundWidth + boundLeft - m_boundMargin){//check width
+        if(curChar != L'\n' && positionGlobal.x >= (boundWidth + boundLeft) - (m_boundMargin + hspace)){//check width
         	position.x -= static_cast<float>(m_font->getKerning(prevChar, curChar, m_characterSize));
         	curChar = L'\n';
         	position.x += static_cast<float>(m_font->getKerning(prevChar, curChar, m_characterSize));
