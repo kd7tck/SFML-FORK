@@ -100,6 +100,25 @@ public :
     ////////////////////////////////////////////////////////////
     void setString(const String& string);
 
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Set bounding box margin, or border size
+    ///
+    /// The margin is a integer value representing the number
+    /// of pixels away from the bounding box characters must
+    /// be drawn.
+    ///
+    ////////////////////////////////////////////////////////////
+    void setBoundingMargin(const int margin);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Set bounding on/off
+    ///
+    /// If true-on then all draws will be of bounded text.
+    ///
+    ////////////////////////////////////////////////////////////
+    void setBounding(const bool bounding);
+
     ////////////////////////////////////////////////////////////
     /// \brief Set the text's font
     ///
@@ -177,6 +196,18 @@ public :
     const String& getString() const;
 
     ////////////////////////////////////////////////////////////
+    /// \brief Get the global bounding box of the entity
+    ///
+    /// The returned rectangle is in global coordinates, which means
+    /// that it does not ignore the transformations (translation, rotation,
+    /// scale, ...) that are applied to the entity.
+    ///
+    /// \return Local bounding box of the entity
+    ///
+    ////////////////////////////////////////////////////////////
+    void setBoundingBox(const FloatRect rect);
+
+    ////////////////////////////////////////////////////////////
     /// \brief Get the text's font
     ///
     /// The returned reference is const, which means that you
@@ -198,6 +229,15 @@ public :
     ///
     ////////////////////////////////////////////////////////////
     unsigned int getCharacterSize() const;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief get number of characters printed from last string
+    ///
+    /// \return number of characters drawn with updateBoundedGeom
+    ///
+    ///
+    ////////////////////////////////////////////////////////////
+    unsigned int getNumberBoundedCharacters() const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Get the text's style
@@ -235,6 +275,18 @@ public :
     ///
     ////////////////////////////////////////////////////////////
     Vector2f findCharacterPos(std::size_t index) const;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Get the global bounding box of the entity
+    ///
+    /// The returned rectangle is in global coordinates, which means
+    /// that it does not ignore the transformations (translation, rotation,
+    /// scale, ...) that are applied to the entity.
+    ///
+    /// \return Local bounding box of the entity
+    ///
+    ////////////////////////////////////////////////////////////
+    FloatRect getBoundingBox() const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Get the local bounding rectangle of the entity
@@ -282,6 +334,13 @@ private :
     void updateGeometry();
 
     ////////////////////////////////////////////////////////////
+    /// \brief Update the text's geometry, within confines of
+    /// bounding box.
+    ///
+    ////////////////////////////////////////////////////////////
+    void updateGeometryBounding();
+
+    ////////////////////////////////////////////////////////////
     // Member data
     ////////////////////////////////////////////////////////////
     String        m_string;        ///< String to display
@@ -291,6 +350,10 @@ private :
     Color         m_color;         ///< Text color
     VertexArray   m_vertices;      ///< Vertex array containing the text's geometry
     FloatRect     m_bounds;        ///< Bounding rectangle of the text (in local coordinates)
+    FloatRect     m_boundBox;      ///< Bounding box of the text (in global coordinates)
+    unsigned int m_boundMargin;   ///< Margin size around bounding box
+    unsigned int m_numBoundChars;  ///< The number of chars currently printed by update geometry
+    bool         m_isBounded;      ///< True if currently in bounded mode
 };
 
 } // namespace sf
