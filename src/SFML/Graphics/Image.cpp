@@ -313,34 +313,15 @@ void Image::flipVertically()
 
 
 /////////////////////////////////////////////////////////////
-void Image::fadeOutImage(float percent){
+void Image::fadeImage(unsigned int alpha){
+	if(alpha > 255)//set base level
+		alpha = 255;
+
 	if (!m_pixels.empty()){
 		Uint8* head = &m_pixels[3];
-		Uint8* tail = &m_pixels[(m_size.y * m_size.x)-1];
+		Uint8* tail = &m_pixels[(m_size.y * m_size.x * 4)-1];
 		while(head != tail){
-			int val = *head + (percent * *head);
-			if(val <= 255)
-				*head = val;
-			else
-				*head = 255;
-			head+=4;
-		}
-	}
-}
-
-
-
-/////////////////////////////////////////////////////////////
-void Image::fadeInImage(float percent){
-	if (!m_pixels.empty()){
-		Uint8* head = &m_pixels[3];
-		Uint8* tail = &m_pixels[(m_size.y * m_size.x)-1];
-		while(head != tail){
-			int val = *head - (percent * *head);
-			if(val >= 0)
-				*head = val;
-			else
-				*head = 0;
+			*head = alpha;
 			head+=4;
 		}
 	}

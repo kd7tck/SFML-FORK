@@ -253,18 +253,11 @@ public :
     void flipVertically();
 
     ////////////////////////////////////////////////////////////
-    /// \brief Fade out every pixel by a percent.
+    /// \brief Fade every pixel by a alpha.
     /// Alpha int is placed into pixels alpha value.
     ///
     ////////////////////////////////////////////////////////////
-    void fadeOutImage(float percent);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Fade in every pixel by a percent.
-    /// Alpha int is placed into pixels alpha value.
-    ///
-    ////////////////////////////////////////////////////////////
-    void fadeInImage(float percent);
+    void fadeImage(unsigned int alpha);
 
 private :
 
