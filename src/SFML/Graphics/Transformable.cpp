@@ -179,7 +179,7 @@ void Transformable::centerVerticaly(int screenHeight, int objectHeight){
 	float Yscale=1;
 	while(objectHeight*Yscale > screenHeight){//adjust Y scale
 		Yscale*=0.9;
-		this->setScale(1.f,Yscale);
+		this->setScale(this->getScale().x,Yscale);
 	}
 
 	this->setPosition(this->getPosition().x,((screenHeight - (objectHeight*Yscale))/2.f));
@@ -191,7 +191,7 @@ void Transformable::centerHorizontaly(int screenWidth, int objectWidth){
 	float Xscale=1;
 	while(objectWidth*Xscale > screenWidth){//adjust Y scale
 		Xscale*=0.9;
-		this->setScale(Xscale,1.f);
+		this->setScale(Xscale,this->getScale().y);
 	}
 
 	this->setPosition(((screenWidth - (objectWidth*Xscale))/2.f), this->getPosition().y);
