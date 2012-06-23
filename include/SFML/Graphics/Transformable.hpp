@@ -292,6 +292,32 @@ public :
     void scale(const Vector2f& factor);
 
     ////////////////////////////////////////////////////////////
+    /// \brief center object on Y axis
+    ///
+    /// This function positions an object so it is halfway between
+    /// 0 and screenHeight
+    ///
+    /// \param screenHeight
+    /// \param objectHeight
+    ///
+    ///
+    ////////////////////////////////////////////////////////////
+    void centerVerticaly(int screenHeight, int objectHeight);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief center object on X axis
+    ///
+    /// This function positions an object so it is halfway between
+    /// 0 and screenWidth
+    ///
+    /// \param screenWidth
+    /// \param objectWidth
+    ///
+    ///
+    ////////////////////////////////////////////////////////////
+    void centerHorizontaly(int screenWidth, int objectWidth);
+
+    ////////////////////////////////////////////////////////////
     /// \brief get the combined transform of the object
     ///
     /// \return Transform combining the position/rotation/scale/origin of the object

@@ -175,6 +175,30 @@ void Transformable::scale(const Vector2f& factor)
 
 
 ////////////////////////////////////////////////////////////
+void Transformable::centerVerticaly(int screenHeight, int objectHeight){
+	float Yscale=1;
+	while(objectHeight*Yscale > screenHeight){//adjust Y scale
+		Yscale*=0.9;
+		this->setScale(1.f,Yscale);
+	}
+
+	this->setPosition(this->getPosition().x,((screenHeight - (objectHeight*Yscale))/2.f));
+}
+
+
+////////////////////////////////////////////////////////////
+void Transformable::centerHorizontaly(int screenWidth, int objectWidth){
+	float Xscale=1;
+	while(objectWidth*Xscale > screenWidth){//adjust Y scale
+		Xscale*=0.9;
+		this->setScale(Xscale,1.f);
+	}
+
+	this->setPosition(((screenWidth - (objectWidth*Xscale))/2.f), this->getPosition().y);
+}
+
+
+////////////////////////////////////////////////////////////
 const Transform& Transformable::getTransform() const
 {
     // Recompute the combined transform if needed
