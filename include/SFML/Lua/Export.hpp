@@ -22,19 +22,27 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef SFML_LUA_HPP
-#define SFML_LUA_HPP
+#ifndef SFML_LUA_EXPORT_HPP
+#define SFML_LUA_EXPORT_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <SFML/Config.hpp>
 
-#include <SFML/Lua/Luaw.hpp>
-
-
-#endif // SFML_LUA_HPP
 
 ////////////////////////////////////////////////////////////
-/// \defgroup lua Lua module
-/// 
+// Define portable import / export macros
 ////////////////////////////////////////////////////////////
+#if defined(SFML_LUA_EXPORTS)
+
+    #define SFML_LUA_API SFML_API_EXPORT
+
+#else
+
+    #define SFML_LUA_API SFML_API_IMPORT
+
+#endif
+
+
+#endif // SFML_LUA_EXPORT_HPP

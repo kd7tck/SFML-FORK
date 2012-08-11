@@ -26,13 +26,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Lua.hpp>
-
-
-extern "C" {
-#include "lua.h"
-#include "lauxlib.h"
-#include "lualib.h"
-}
+#include "lua.hpp"
 
 
 namespace sf
@@ -40,7 +34,7 @@ namespace sf
 
 
 ////////////////////////////////////////////////////////////
-int Luac::runScript(char* file)
+int Luaw::runScript(char* file)
 {
     return 0;
 }
