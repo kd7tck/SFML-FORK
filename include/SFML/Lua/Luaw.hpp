@@ -32,6 +32,9 @@
 #include <iostream>
 #include <stack>
 
+#ifndef lua_h
+typedef struct lua_State lua_State;
+#endif
 
 namespace sf
 {
@@ -49,13 +52,13 @@ public :
     /// \brief constructor
     ///
     ////////////////////////////////////////////////////////////
-    Luaw() {}
+    Luaw();
 
     ////////////////////////////////////////////////////////////
     /// \brief destructor
     ///
     ////////////////////////////////////////////////////////////
-    ~Luaw() {}
+    ~Luaw();
 
     ////////////////////////////////////////////////////////////
     /// \brief Load a lua script and run it
@@ -70,6 +73,8 @@ public :
 
 protected :
     std::stack<std::string> buffer;
+    /* the Lua interpreter */
+    lua_State* L;
 };
 
 } // namespace sf
