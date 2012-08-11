@@ -46,9 +46,16 @@ Luaw::~Luaw()
 
 
 ////////////////////////////////////////////////////////////
-int Luaw::runScript(char* file)
+int Luaw::runScript(const char* file)
 {
-    return 0;
+    return luaL_dofile(L, file);
+}
+
+
+///////////////////////////////////////////////////////////
+void Luaw::registerLuaCFunction(lua_State *ll, const char *name, lua_CFunction f)
+{
+    lua_register(ll, name, f);
 }
 
 

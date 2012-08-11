@@ -34,6 +34,7 @@
 
 #ifndef lua_h
 typedef struct lua_State lua_State;
+typedef int (*lua_CFunction) (lua_State *L);
 #endif
 
 namespace sf
@@ -63,16 +64,41 @@ public :
     ////////////////////////////////////////////////////////////
     /// \brief Load a lua script and run it
     ///
-    /// This function allows the program to load and run any lua script
+    /// This function allows the program to load and run any lua script.
     /// A zero is returned if successfull, non zero on error.
     ///
     /// \param file The file to load, full path is needed.
     ///
     ////////////////////////////////////////////////////////////
-    int runScript(char* file);
+    int runScript(const char* file);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief registers a lua C function to a lua global called name
+    ///
+    /// This function allows the lua script to call C functions.
+    ///
+    /// \param L the state stack
+    /// \param name global lua name
+    /// \param f C function pointer
+    ///
+    /// Example:
+    /// \code
+    ///
+    ///     static int foo (lua_State *L) {
+    ///     {
+    ///         return 0;
+    ///     }
+    ///     registerLuaCFunction(L, "foo", foo);
+    ///
+    /// \endcode
+    ///
+    ////////////////////////////////////////////////////////////
+    void registerLuaCFunction(lua_State *ll, const char *name, lua_CFunction f);
 
 protected :
+
     std::stack<std::string> buffer;
+
     /* the Lua interpreter */
     lua_State* L;
 };
@@ -100,6 +126,6 @@ protected :
 ///
 /// \endcode
 ///
-/// \see sf::RenderTarget
+/// \see sf::Luaw
 ///
 ////////////////////////////////////////////////////////////
