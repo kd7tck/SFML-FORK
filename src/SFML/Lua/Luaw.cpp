@@ -27,9 +27,15 @@
 ////////////////////////////////////////////////////////////
 #include "lua.hpp"
 #include <SFML/Lua.hpp>
+#include <cstdlib>
+#include <cstring>
+#include <string>
+#include <iostream>
+
 
 namespace sf
 {
+
 
 ////////////////////////////////////////////////////////////
 Luaw::Luaw()
@@ -37,6 +43,7 @@ Luaw::Luaw()
     L = luaL_newstate();
     luaL_openlibs(L);
 }
+
 
 ////////////////////////////////////////////////////////////
 Luaw::~Luaw()
@@ -46,16 +53,61 @@ Luaw::~Luaw()
 
 
 ////////////////////////////////////////////////////////////
-int Luaw::runScript(const char* file)
+int Luaw::runLuaScript(const char* file)
 {
     return luaL_dofile(L, file);
 }
 
 
 ///////////////////////////////////////////////////////////
-void Luaw::registerLuaCFunction(lua_State *ll, const char *name, lua_CFunction f)
+void Luaw::registerLuaCFunction(const char *name, lua_CFunction f)
 {
-    lua_register(ll, name, f);
+    lua_register(L, name, f);
+}
+
+
+///////////////////////////////////////////////////////////
+int Luaw::getLuaStackSize()
+{
+    return lua_gettop(L);
+}
+
+
+///////////////////////////////////////////////////////////
+bool Luaw::isLuaStackIndexANumber(int index)
+{
+    return lua_isnumber(L, index);
+}
+
+
+///////////////////////////////////////////////////////////
+bool Luaw::isLuaStackIndexAString(int index)
+{
+    return lua_isstring(L, index);
+}
+
+
+///////////////////////////////////////////////////////////
+double Luaw::returnLuaStackIndexAsNumber(int index)
+{
+    if(this->isLuaStackIndexANumber(index)){
+        return lua_tonumber(L, index);
+    }
+    else
+        return 0;
+}
+
+
+///////////////////////////////////////////////////////////
+std::string Luaw::returnLuaStackIndexAsString(int index)
+{
+    if(this->isLuaStackIndexAString(index)){
+        const char* d = lua_tolstring(L, index, NULL);
+        std::string out(d);
+        return out;
+    }
+    else
+        return "";
 }
 
 

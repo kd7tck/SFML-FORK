@@ -30,6 +30,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Lua/Export.hpp>
 #include <iostream>
+#include <string>
 #include <stack>
 
 #ifndef lua_h
@@ -65,19 +66,18 @@ public :
     /// \brief Load a lua script and run it
     ///
     /// This function allows the program to load and run any lua script.
-    /// A zero is returned if successfull, non zero on error.
     ///
     /// \param file The file to load, full path is needed.
     ///
+    /// \return A zero is returned if successfull, non zero on error.
     ////////////////////////////////////////////////////////////
-    int runScript(const char* file);
+    int runLuaScript(const char* file);
 
     ////////////////////////////////////////////////////////////
     /// \brief registers a lua C function to a lua global called name
     ///
     /// This function allows the lua script to call C functions.
     ///
-    /// \param L the state stack
     /// \param name global lua name
     /// \param f C function pointer
     ///
@@ -88,12 +88,57 @@ public :
     ///     {
     ///         return 0;
     ///     }
-    ///     registerLuaCFunction(L, "foo", foo);
+    ///     registerLuaCFunction("foo", foo);
     ///
     /// \endcode
     ///
     ////////////////////////////////////////////////////////////
-    void registerLuaCFunction(lua_State *ll, const char *name, lua_CFunction f);
+    void registerLuaCFunction(const char *name, lua_CFunction f);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief return number of elements in lua stack
+    ///
+    /// This function returns int number of elements in lua stack.
+    ///
+    /// \return number of stack elements
+    ////////////////////////////////////////////////////////////
+    int getLuaStackSize();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief check if index of stack is number
+    ///
+    /// \param index position in stack
+    ///
+    /// \return true if index of stack is a number
+    ////////////////////////////////////////////////////////////
+    bool isLuaStackIndexANumber(int index);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief check if index of stack is string
+    ///
+    /// \param index position in stack
+    ///
+    /// \return true if index of stack is a string
+    ////////////////////////////////////////////////////////////
+    bool isLuaStackIndexAString(int index);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief return index in stack as double
+    ///
+    /// \param index position in stack
+    ///
+    /// \return 0 if not number, otherwise the double is returned
+    ////////////////////////////////////////////////////////////
+    double returnLuaStackIndexAsNumber(int index);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief return index in stack as string
+    ///
+    /// \param index position in stack
+    ///
+    /// \return string of index, otherwise empty string
+    ////////////////////////////////////////////////////////////
+    std::string returnLuaStackIndexAsString(int index);
 
 protected :
 
