@@ -251,6 +251,20 @@ public :
     ////////////////////////////////////////////////////////////
     int luaError();
 
+    ////////////////////////////////////////////////////////////
+    /// \brief generate a lua global value
+    ///
+    /// Example:
+    /// \code
+    /// pushStringOntoLuaStack("HELLO_WORLD");//can be any value type, bool, number ...
+    /// luaSetGlobal("FOO");//creates global named FOO with value HELLO_WORLD
+    /// 
+    /// \endcode
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void luaSetGlobal(const char *name);
+
 protected :
 
     std::stack<std::string> buffer;

@@ -80,6 +80,13 @@ int Luaw::luaError()
 }
 
 
+//////////////////////////////////////////////////////////
+void Luaw::luaSetGlobal(const char *name)
+{
+    lua_setglobal(L, name);
+}
+
+
 
 
 
