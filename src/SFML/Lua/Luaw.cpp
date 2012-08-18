@@ -74,6 +74,20 @@ int Luaw::getLuaStackSize()
 
 
 ///////////////////////////////////////////////////////////
+int Luaw::luaError()
+{
+    return lua_error(L);
+}
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////
 bool Luaw::isLuaStackIndexABoolean(int index)
 {
     return lua_isboolean(L, index);
@@ -99,6 +113,23 @@ bool Luaw::isLuaStackIndexACPointer(int index)
 {
     return lua_isuserdata(L, index);
 }
+
+
+//////////////////////////////////////////////////////////
+bool Luaw::isLuaStackIndexNil(int index)
+{
+    return lua_isnil(L, index);
+}
+
+
+
+
+
+
+
+
+
+
 
 
 ///////////////////////////////////////////////////////////
@@ -139,6 +170,13 @@ void * Luaw::returnLuaStackIndexAsCPointer(int index)
 }
 
 
+
+
+
+
+
+
+
 ///////////////////////////////////////////////////////////
 void Luaw::pushBooleanOntoLuaStack(bool b)
 {
@@ -167,11 +205,18 @@ void Luaw::pushCPointerOntoLuaStack(void *p)
 }
 
 
-///////////////////////////////////////////////////////////
-int Luaw::luaError()
+//////////////////////////////////////////////////////////
+void Luaw::pushNillOntoLuaStack()
 {
-    return lua_error(L);
+    lua_pushnil(L);
 }
+
+
+
+
+
+
+
 
 
 
