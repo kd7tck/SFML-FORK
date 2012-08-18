@@ -3,8 +3,10 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib@LIB_SUFFIX@
 includedir=${prefix}/include
 
-Name: SFML-all
-Description: The Simple and Fast Multimedia Library, all modules.
+Name: SFML-lua
+Description: The Simple and Fast Multimedia Library, lua module.
 URL: http://www.sfml-dev.org
 Version: @VERSION_MAJOR@.@VERSION_MINOR@.@VERSION_PATCH@
-Requires: sfml-system, sfml-window, sfml-graphics, sfml-lua, sfml-audio, sfml-network
+Requires: 
+Libs: -L${libdir} -lsfml-lua -lpthread -ldl
+Cflags: -I${includedir}
