@@ -128,7 +128,7 @@ void * Luaw::returnLuaStackIndexAsCPointer(int index)
 ///////////////////////////////////////////////////////////
 void Luaw::pushStringOntoLuaStack(std::string s)
 {
-    lua_pushliteral(L, s.c_str());
+    lua_pushstring(L, s.c_str());
 }
 
 
