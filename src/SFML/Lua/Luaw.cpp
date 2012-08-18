@@ -111,5 +111,17 @@ std::string Luaw::returnLuaStackIndexAsString(int index)
 }
 
 
+///////////////////////////////////////////////////////////
+void Luaw::pushStringOntoLuaStack(std::string s){
+	lua_pushlstring(L, s.c_str(), s.size());
+}
+
+
+///////////////////////////////////////////////////////////
+void Luaw::pushNumberOntoLuaStack(double n){
+	lua_pushnumber(L, n);
+}
+
+
 
 } // namespace sf

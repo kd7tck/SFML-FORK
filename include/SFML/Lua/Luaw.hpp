@@ -140,6 +140,24 @@ public :
     ////////////////////////////////////////////////////////////
     std::string returnLuaStackIndexAsString(int index);
 
+    ////////////////////////////////////////////////////////////
+    /// \brief pushes string literal onto lua stack
+    ///
+    /// \param s string literal
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void pushStringOntoLuaStack(std::string s);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief pushes number onto lua stack
+    ///
+    /// \param n double number
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void pushNumberOntoLuaStack(double n);
+
 protected :
 
     std::stack<std::string> buffer;
