@@ -85,9 +85,21 @@ public :
     /// \code
     ///
     ///     static int foo (lua_State *L) {
-    ///     {
-    ///         return 0;
+    ///       int n = getLuaStackSize();    /* number of arguments */
+    ///       lua_Number sum = 0;
+    ///       int i;
+    ///       for (i = 1; i <= n; i++) {
+    ///         if (!isLuaStackIndexANumber(i)) {
+    ///           pushStringOntoLuaStack("incorrect argument");
+    ///           luaError();
+    ///         }
+    ///         sum += returnLuaStackIndexAsNumber(i);
+    ///       }
+    ///       pushNumberOntoLuaStack(sum/n);        /* first result */
+    ///       pushNumberOntoLuaStack(sum);         /* second result */
+    ///       return 2;                   /* number of results */
     ///     }
+    ///
     ///     registerLuaCFunction("foo", foo);
     ///
     /// \endcode
@@ -123,6 +135,15 @@ public :
     bool isLuaStackIndexAString(int index);
 
     ////////////////////////////////////////////////////////////
+    /// \brief check if index of stack is C pointer
+    ///
+    /// \param index position in stack
+    ///
+    /// \return true if index of stack is a void pointer
+    ////////////////////////////////////////////////////////////
+    bool isLuaStackIndexACPointer(int index);
+
+    ////////////////////////////////////////////////////////////
     /// \brief return index in stack as double
     ///
     /// \param index position in stack
@@ -141,6 +162,15 @@ public :
     std::string returnLuaStackIndexAsString(int index);
 
     ////////////////////////////////////////////////////////////
+    /// \brief return C pointer
+    ///
+    /// \param index position in stack
+    ///
+    /// \return void C pointer, NULL on error
+    ////////////////////////////////////////////////////////////
+    void * returnLuaStackIndexAsCPointer(int index);
+
+    ////////////////////////////////////////////////////////////
     /// \brief pushes string literal onto lua stack
     ///
     /// \param s string literal
@@ -157,6 +187,24 @@ public :
     /// \return void
     ////////////////////////////////////////////////////////////
     void pushNumberOntoLuaStack(double n);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief pushes c Pointer of void type onto lua stack
+    ///
+    /// \param p void type pointer
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void pushCPointerOntoLuaStack(void *p);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief generate a lua error
+    ///
+    /// \param
+    ///
+    /// \return int that is never returned
+    ////////////////////////////////////////////////////////////
+    int luaError();
 
 protected :
 

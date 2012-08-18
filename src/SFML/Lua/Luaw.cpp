@@ -88,6 +88,13 @@ bool Luaw::isLuaStackIndexAString(int index)
 
 
 ///////////////////////////////////////////////////////////
+bool Luaw::isLuaStackIndexACPointer(int index)
+{
+    return lua_isuserdata(L, index);
+}
+
+
+///////////////////////////////////////////////////////////
 double Luaw::returnLuaStackIndexAsNumber(int index)
 {
     if(this->isLuaStackIndexANumber(index)){
@@ -112,15 +119,41 @@ std::string Luaw::returnLuaStackIndexAsString(int index)
 
 
 ///////////////////////////////////////////////////////////
-void Luaw::pushStringOntoLuaStack(std::string s){
-	lua_pushlstring(L, s.c_str(), s.size());
+void * Luaw::returnLuaStackIndexAsCPointer(int index)
+{
+    return lua_touserdata(L, index);
 }
 
 
 ///////////////////////////////////////////////////////////
-void Luaw::pushNumberOntoLuaStack(double n){
-	lua_pushnumber(L, n);
+void Luaw::pushStringOntoLuaStack(std::string s)
+{
+    lua_pushliteral(L, s.c_str());
 }
+
+
+///////////////////////////////////////////////////////////
+void Luaw::pushNumberOntoLuaStack(double n)
+{
+    lua_pushnumber(L, n);
+}
+
+
+///////////////////////////////////////////////////////////
+void Luaw::pushCPointerOntoLuaStack(void *p)
+{
+    lua_pushlightuserdata(L, p);
+}
+
+
+///////////////////////////////////////////////////////////
+int Luaw::luaError()
+{
+    return lua_error(L);
+}
+
+
+
 
 
 
