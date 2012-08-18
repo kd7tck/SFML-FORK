@@ -117,6 +117,15 @@ public :
     int getLuaStackSize();
 
     ////////////////////////////////////////////////////////////
+    /// \brief check if index of stack is bool
+    ///
+    /// \param index position in stack
+    ///
+    /// \return true if index of stack is a boolean type
+    ////////////////////////////////////////////////////////////
+    bool isLuaStackIndexABoolean(int index);
+
+    ////////////////////////////////////////////////////////////
     /// \brief check if index of stack is number
     ///
     /// \param index position in stack
@@ -144,6 +153,15 @@ public :
     bool isLuaStackIndexACPointer(int index);
 
     ////////////////////////////////////////////////////////////
+    /// \brief return index in stack as bool
+    ///
+    /// \param index position in stack
+    ///
+    /// \return 0 if not bool, otherwise the bool is returned
+    ////////////////////////////////////////////////////////////
+    bool returnLuaStackIndexAsBoolean(int index);
+
+    ////////////////////////////////////////////////////////////
     /// \brief return index in stack as double
     ///
     /// \param index position in stack
@@ -169,6 +187,15 @@ public :
     /// \return void C pointer, NULL on error
     ////////////////////////////////////////////////////////////
     void * returnLuaStackIndexAsCPointer(int index);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief pushes bool onto lua stack
+    ///
+    /// \param b bool
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void pushBooleanOntoLuaStack(bool b);
 
     ////////////////////////////////////////////////////////////
     /// \brief pushes string literal onto lua stack

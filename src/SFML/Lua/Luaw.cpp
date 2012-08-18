@@ -74,6 +74,13 @@ int Luaw::getLuaStackSize()
 
 
 ///////////////////////////////////////////////////////////
+bool Luaw::isLuaStackIndexABoolean(int index)
+{
+    return lua_isboolean(L, index);
+}
+
+
+///////////////////////////////////////////////////////////
 bool Luaw::isLuaStackIndexANumber(int index)
 {
     return lua_isnumber(L, index);
@@ -91,6 +98,13 @@ bool Luaw::isLuaStackIndexAString(int index)
 bool Luaw::isLuaStackIndexACPointer(int index)
 {
     return lua_isuserdata(L, index);
+}
+
+
+///////////////////////////////////////////////////////////
+bool Luaw::returnLuaStackIndexAsBoolean(int index)
+{
+    return lua_toboolean(L, index);
 }
 
 
@@ -122,6 +136,13 @@ std::string Luaw::returnLuaStackIndexAsString(int index)
 void * Luaw::returnLuaStackIndexAsCPointer(int index)
 {
     return lua_touserdata(L, index);
+}
+
+
+///////////////////////////////////////////////////////////
+void Luaw::pushBooleanOntoLuaStack(bool b)
+{
+    lua_pushboolean(L, b);
 }
 
 
