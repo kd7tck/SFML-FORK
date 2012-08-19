@@ -280,10 +280,10 @@ protected :
 
 
 ////////////////////////////////////////////////////////////
-/// \class sf::Lua
+/// \class sf::Luaw
 /// \ingroup lua
 ///
-/// sf::Lua is a very simple class that allows the wrapping of
+/// sf::Luaw is a very simple class that allows the wrapping of
 /// the Lua runtime directly into an application.
 ///
 /// Example:
