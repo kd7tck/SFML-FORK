@@ -433,7 +433,8 @@ void Text::updateGeometryBounding()
 
     // Create one quad for each character
     Uint32 prevChar = 0;
-    while (positionGlobal.y < boundHeight + boundTop - m_boundMargin && charCounter < m_string.getSize())
+    position.y += m_boundMargin;
+    while (positionGlobal.y < boundHeight + boundTop + m_boundMargin && charCounter < m_string.getSize())
     {
         Uint32 curChar = m_string[charCounter];
 
@@ -444,7 +445,7 @@ void Text::updateGeometryBounding()
         positionGlobal = getTransform().transformPoint(position);
 
         //correct out of bounds
-        if(curChar != L'\n' && positionGlobal.x >= (boundWidth + boundLeft) - (m_boundMargin + hspace)){//check width
+        if(curChar != L'\n' && positionGlobal.x >= boundWidth + boundLeft + m_boundMargin + hspace){//check width
         	position.x -= static_cast<float>(m_font->getKerning(prevChar, curChar, m_characterSize));
         	curChar = L'\n';
         	position.x += static_cast<float>(m_font->getKerning(prevChar, curChar, m_characterSize));
@@ -452,18 +453,18 @@ void Text::updateGeometryBounding()
         else if(curChar == L'\n'){//check height
         	position.y += vspace;
         	positionGlobal = getTransform().transformPoint(position);
-        	if(positionGlobal.y >= boundHeight + boundTop - m_boundMargin){
+        	if(positionGlobal.y >= boundHeight + boundTop + m_boundMargin){
         		break;
         	}
         	else{
         		position.y -= vspace;
-                charCounter++;
-                m_numBoundChars++;
+                	charCounter++;
+                	m_numBoundChars++;
         	}
         }
         else{
-            charCounter++;
-            m_numBoundChars++;
+		charCounter++;
+		m_numBoundChars++;
         }
 
         prevChar = curChar;
@@ -485,7 +486,7 @@ void Text::updateGeometryBounding()
         {
             case L' ' :  position.x += hspace;        continue;
             case L'\t' : position.x += hspace * 4;    continue;
-            case L'\n' : position.y += vspace; position.x = 0; continue;
+            case L'\n' : position.y += vspace; position.x = m_boundBox.left+m_boundMargin; continue;
             case L'\v' : position.y += vspace * 4;    continue;
         }
 
