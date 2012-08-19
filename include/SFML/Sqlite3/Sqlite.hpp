@@ -33,6 +33,8 @@
 #include <iostream>
 #include <string>
 
+typedef int (*callback)(void*, int, char**, char**);
+
 namespace sf
 {
 
@@ -70,6 +72,29 @@ public :
     /// \return true if successful
     ////////////////////////////////////////////////////////////
     bool sqlQuery(std::string query);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief query the database, with a callback
+    ///
+    /// \param string query in sql, this is for any type of query
+    ///
+    /// Example:
+    /// \code
+    /// static int call(void *NotUsed, int argc, char **argv, char **azColName){
+    /// int i;
+    /// for(i=0; i<argc; i++){
+    /// printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    /// }
+    /// printf("\n");
+    /// return 0;
+    /// }
+    ///
+    /// sqlQuery("SELECT * FROM t_assets WHERE TYPE_ID=1;", call);
+    /// \endcode
+    ///
+    /// \return true if successful
+    ////////////////////////////////////////////////////////////
+    bool sqlQuery(std::string, callback);
     
 
 protected :
