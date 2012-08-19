@@ -62,6 +62,7 @@ protected :
     sqlite3 *db;
     char *zErrMsg;
     std::string dbName;
+    int rc;
     
 };
 

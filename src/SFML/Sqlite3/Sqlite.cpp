@@ -30,6 +30,7 @@
 #include <cstring>
 #include <string>
 #include <iostream>
+#include <stdio.h>
 
 
 namespace sf
@@ -39,13 +40,18 @@ namespace sf
 Sqlite::Sqlite(std::string Name)
 {
     dbName = Name;
+    rc = sqlite3_open(dbName.c_str(), &db);
+    if( rc ){
+        fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+    }
 }
 
 
 
 Sqlite::~Sqlite()
 {
-    ;
+    sqlite3_close(db);
 }
 
 
