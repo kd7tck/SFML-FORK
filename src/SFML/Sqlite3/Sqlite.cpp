@@ -36,9 +36,9 @@ namespace sf
 {
 
 
-Sqlite::Sqlite()
+Sqlite::Sqlite(std::string Name)
 {
-    ;
+    dbName = Name;
 }
 
 

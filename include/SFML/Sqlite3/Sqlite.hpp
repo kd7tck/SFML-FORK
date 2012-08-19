@@ -48,7 +48,7 @@ public :
     /// \brief constructor
     ///
     ////////////////////////////////////////////////////////////
-    Sqlite();
+    Sqlite(std::string Name);
 
     ////////////////////////////////////////////////////////////
     /// \brief destructor
@@ -59,7 +59,9 @@ public :
     
 
 protected :
-
+    sqlite3 *db;
+    char *zErrMsg;
+    std::string dbName;
     
 };
 
@@ -82,6 +84,6 @@ protected :
 ///
 /// \endcode
 ///
-/// \see sf::Luaw
+/// \see sf::Sqlite
 ///
 ////////////////////////////////////////////////////////////

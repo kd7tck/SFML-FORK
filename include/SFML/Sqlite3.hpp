@@ -29,7 +29,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 
-#include <SFML/Sqlite3/sqlite.hpp>
+#include <SFML/Sqlite3/Sqlite.hpp>
 
 
 #endif // SFML_SQLITE3_HPP
