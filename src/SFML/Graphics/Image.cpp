@@ -313,15 +313,16 @@ void Image::flipVertically()
 
 
 /////////////////////////////////////////////////////////////
-void Image::fadeImage(unsigned int alpha){
-	if(alpha > 255)//set base level
-		alpha = 255;
+void Image::setAlpha(unsigned int alpha){
+	unsigned int a = 255;
+	if(alpha <= 255)//set base level
+		a = alpha;
 
 	if (!m_pixels.empty()){
 		Uint8* head = &m_pixels[3];
 		Uint8* tail = &m_pixels[(m_size.y * m_size.x * 4)-1];
 		while(head != tail){
-			*head = alpha;
+			*head = a;
 			head+=4;
 		}
 	}

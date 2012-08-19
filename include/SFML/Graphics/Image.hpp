@@ -253,11 +253,11 @@ public :
     void flipVertically();
 
     ////////////////////////////////////////////////////////////
-    /// \brief Fade every pixel by a alpha.
+    /// \brief Set every pixel by a global alpha.
     /// Alpha int is placed into pixels alpha value.
     ///
     ////////////////////////////////////////////////////////////
-    void fadeImage(unsigned int alpha);
+    void setAlpha(unsigned int alpha);
 
 private :
 
