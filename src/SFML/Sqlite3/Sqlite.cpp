@@ -69,7 +69,7 @@ bool Sqlite::sqlQuery(std::string query)
 
 
 
-bool Sqlite::sqlQuery(std::string query, callback call)
+bool Sqlite::sqlQuery(std::string query, sq3_callback call)
 {
     rc = sqlite3_exec(db, query.c_str(), call, 0, &zErrMsg);
     if( rc!=SQLITE_OK ){

@@ -33,7 +33,7 @@
 #include <iostream>
 #include <string>
 
-typedef int (*callback)(void*, int, char**, char**);
+typedef int (*sq3_callback)(void*, int, char**, char**);
 
 namespace sf
 {
@@ -80,10 +80,10 @@ public :
     ///
     /// Example:
     /// \code
-    /// static int call(void *NotUsed, int argc, char **argv, char **azColName){
+    /// static int call(void *NotUsed, int argc, char **argv, char **Col){
     /// int i;
     /// for(i=0; i<argc; i++){
-    /// printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    /// printf("%s | %s\n", Col[i], argv[i] ? argv[i] : "NULL");
     /// }
     /// printf("\n");
     /// return 0;
@@ -94,7 +94,7 @@ public :
     ///
     /// \return true if successful
     ////////////////////////////////////////////////////////////
-    bool sqlQuery(std::string, callback);
+    bool sqlQuery(std::string, sq3_callback);
     
 
 protected :
