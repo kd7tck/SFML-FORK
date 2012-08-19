@@ -5,7 +5,7 @@ set(SRCROOT ${PROJECT_SOURCE_DIR}/src/SFML/Lua)
 FILE(GLOB SRC *.c)
 FILE(GLOB SRCPP *.cpp)
 
-# define the sfml-graphics target
+# define the sfml-lua target
 sfml_add_library(sfml-lua
                  SOURCES ${SRCPP} ${SRC}
                  DEPENDS sfml-window sfml-system

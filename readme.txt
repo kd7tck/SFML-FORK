@@ -1,8 +1,7 @@
 SFML - Simple and Fast Multimedia Library - FORK VERSION
 ========================================================
 
-SFML is a simple, fast, cross-platform and object-oriented multimedia API. It provides access to windowing, graphics,
-audio, network and lua scripting engine.
+SFML is a simple, fast, cross-platform and object-oriented multimedia API. It provides access to windowing, graphics, audio, network, sqlite3 and lua scripting engine.
 It is written in C++, and has bindings for various languages such as C, .Net, Ruby, Python.
 
 Authors
