@@ -56,6 +56,20 @@ public :
     ////////////////////////////////////////////////////////////
     ~Sqlite();
 
+    ////////////////////////////////////////////////////////////
+    /// \brief query the database
+    ///
+    /// \param string query in sql, this is for insert and creation only
+    ///
+    /// Example:
+    /// \code
+    /// sqlQuery("CREATE TABLE t_type...");
+    /// sqlQuery("INSERT INTO t_type('PARENT_ID','TITLE') VALUES (0,'VEHICLES');");
+    /// \endcode
+    ///
+    /// \return true if successful
+    ////////////////////////////////////////////////////////////
+    bool sqlQuery(std::string query);
     
 
 protected :

@@ -56,6 +56,18 @@ Sqlite::~Sqlite()
 
 
 
+bool Sqlite::sqlQuery(std::string query)
+{
+    rc = sqlite3_exec(db, query.c_str(), NULL, 0, &zErrMsg);
+    if( rc!=SQLITE_OK ){
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return false;
+    }
+    return true;
+}
+
+
 
 
 } // namespace sf
