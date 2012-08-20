@@ -32,11 +32,24 @@
 #include <iostream>
 #include <stdio.h>
 
+static std::string TMP__STORAGE;
+
+static int SQ_cback(void *NotUsed, int argc, char **argv, char **azColName){
+    int i;
+    for(i=0; i<argc; i++){
+        char buffer [100] = {'\0'};
+        sprintf(buffer, "%s\n%s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+        std::string s(buffer);
+        TMP__STORAGE.append(s);
+    }
+    printf("\n");
+    return 0;
+}
 
 namespace sf
 {
 
-
+//////////////////////////////////////////////////
 Sqlite::Sqlite(std::string Name)
 {
     dbName = Name;
@@ -48,14 +61,14 @@ Sqlite::Sqlite(std::string Name)
 }
 
 
-
+/////////////////////////////////////////////////
 Sqlite::~Sqlite()
 {
     sqlite3_close(db);
 }
 
 
-
+/////////////////////////////////////////////////
 bool Sqlite::sqlQuery(std::string query)
 {
     rc = sqlite3_exec(db, query.c_str(), NULL, 0, &zErrMsg);
@@ -68,7 +81,21 @@ bool Sqlite::sqlQuery(std::string query)
 }
 
 
+/////////////////////////////////////////////////
+bool Sqlite::sqlQuery_ref(std::string query, std::string& str_ref)
+{
+    rc = sqlite3_exec(db, query.c_str(), SQ_cback, 0, &zErrMsg);
+    if( rc!=SQLITE_OK ){
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return false;
+    }
+    str_ref.append(TMP__STORAGE);
+    return true;
+}
 
+
+/////////////////////////////////////////////////
 bool Sqlite::sqlQuery(std::string query, sq3_callback call)
 {
     rc = sqlite3_exec(db, query.c_str(), call, 0, &zErrMsg);

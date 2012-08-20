@@ -50,7 +50,7 @@ public :
     /// \brief constructor
     ///
     ////////////////////////////////////////////////////////////
-    Sqlite(std::string Name);
+    Sqlite(std::string Database_Name);
 
     ////////////////////////////////////////////////////////////
     /// \brief destructor
@@ -71,12 +71,30 @@ public :
     ///
     /// \return true if successful
     ////////////////////////////////////////////////////////////
-    bool sqlQuery(std::string query);
+    bool sqlQuery(std::string);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief query the database
+    ///
+    /// \param string query in sql
+    /// \param string passed by reference, returns any query results
+    ///
+    /// Example:
+    /// \code
+    /// sqlQuery("CREATE TABLE t_type...");
+    /// sqlQuery("INSERT INTO t_type('PARENT_ID','TITLE') VALUES (0,'VEHICLES');");
+    /// sqlQuery_ref("SELECT * FROM t_assets WHERE TYPE_ID=1;", stringVariable);
+    /// \endcode
+    ///
+    /// \return true if successful
+    ////////////////////////////////////////////////////////////
+    bool sqlQuery_ref(std::string, std::string&);
 
     ////////////////////////////////////////////////////////////
     /// \brief query the database, with a callback
     ///
     /// \param string query in sql, this is for any type of query
+    /// \param sq3_callback, pointer to callback function
     ///
     /// Example:
     /// \code
@@ -95,14 +113,14 @@ public :
     /// \return true if successful
     ////////////////////////////////////////////////////////////
     bool sqlQuery(std::string, sq3_callback);
-    
+
 
 protected :
     sqlite3 *db;
     char *zErrMsg;
     std::string dbName;
     int rc;
-    
+
 };
 
 } // namespace sf
