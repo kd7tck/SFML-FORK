@@ -113,10 +113,10 @@ protected :
 
 ////////////////////////////////////////////////////////////
 /// \class sf::Xmlw
-/// \ingroup Xml
+/// \ingroup xml
 ///
 /// sf::Xmlw is a very simple class that allows the wrapping of
-/// the Xml runtime directly into an application.
+/// the xml runtime directly into an application.
 ///
 /// Example:
 /// \code

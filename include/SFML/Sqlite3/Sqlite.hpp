@@ -131,7 +131,7 @@ protected :
 
 ////////////////////////////////////////////////////////////
 /// \class sf::Sqlite
-/// \ingroup Sqlite3
+/// \ingroup sqlite3
 ///
 /// sf::Sqlite is a very simple class that allows the wrapping of
 /// the sqlite3 runtime directly into an application.
