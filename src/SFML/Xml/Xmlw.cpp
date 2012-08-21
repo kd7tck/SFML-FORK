@@ -46,13 +46,46 @@ Xmlw::Xmlw(std::string xmlstring)
         xmlstring.copy(xmldocstring, 511999, 0);
         xmldocstring[511999] = '\0';
     }
-    
+
+    xmldoc.parse<0>(xmldocstring);
+}
+
+Xmlw::Xmlw()
+{
+    std::string xmlstring("<?xml version=\"1.0\"?>\n");
+    xmlstring.copy(xmldocstring, xmlstring.size(), 0);
+    xmldocstring[xmlstring.size()] = '\0';
     xmldoc.parse<0>(xmldocstring);
 }
 
 Xmlw::~Xmlw()
 {
     xmldoc.clear();
+}
+
+
+sfml_xml_node Xmlw::getRootNode()
+{
+    return xmldoc.first_node();
+}
+
+
+void Xmlw::goToRootNode()
+{
+    node = xmldoc.first_node();
+}
+
+
+void Xmlw::goToFirstChild()
+{
+    node = node->first_node();
+}
+
+
+void Xmlw::goToNextSibling()
+{
+    if(node->parent())
+        node = node->next_sibling();
 }
 
 
