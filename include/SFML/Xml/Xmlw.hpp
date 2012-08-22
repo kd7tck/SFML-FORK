@@ -98,6 +98,22 @@ public :
     void goToNextSibling();
 
 
+    ////////////////////////////////////////////////////////////
+    /// \brief read current node position value
+    ///
+    /// \return std::string
+    ////////////////////////////////////////////////////////////
+    std::string getCurrentNodeValue();
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief read current node position value
+    ///
+    /// \return std::string
+    ////////////////////////////////////////////////////////////
+    std::string getCurrentNodeName();
+
+
 protected :
     rapidxml::xml_document<> xmldoc;
     char xmldocstring[512000];//buffer that holds xml string, holds a max of 0.5 megabytes

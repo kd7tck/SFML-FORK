@@ -28,6 +28,9 @@
 #include <SFML/Xml.hpp>
 #include <cstdlib>
 #include <cstring>
+#include <iomanip>
+#include <locale>
+#include <sstream>
 #include <string>
 #include <iostream>
 #include <stdio.h>
@@ -86,6 +89,22 @@ void Xmlw::goToNextSibling()
 {
     if(node->parent())
         node = node->next_sibling();
+}
+
+
+std::string Xmlw::getCurrentNodeValue()
+{
+    std::ostringstream Convert;
+    Convert << node->value();
+    return Convert.str();
+}
+
+
+std::string Xmlw::getCurrentNodeName()
+{
+    std::ostringstream Convert;
+    Convert << node->name();
+    return Convert.str();
 }
 
 
