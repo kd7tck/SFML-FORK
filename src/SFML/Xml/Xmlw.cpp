@@ -76,19 +76,32 @@ sfml_xml_node Xmlw::getRootNode()
 void Xmlw::goToRootNode()
 {
     node = xmldoc.first_node();
+    attr = node->first_attribute();
 }
 
 
 void Xmlw::goToFirstChild()
 {
-    node = node->first_node();
+    if(node->first_node() != NULL){
+        node = node->first_node();
+        attr = node->first_attribute();
+    }
 }
 
 
 void Xmlw::goToNextSibling()
 {
-    if(node->parent())
+    if(node->parent()){
         node = node->next_sibling();
+        attr = node->first_attribute();
+    }
+}
+
+
+void Xmlw::goToNextAttribute()
+{
+    if(attr->next_attribute())
+        attr = attr->next_attribute();
 }
 
 
@@ -104,6 +117,22 @@ std::string Xmlw::getCurrentNodeName()
 {
     std::ostringstream Convert;
     Convert << node->name();
+    return Convert.str();
+}
+
+
+std::string Xmlw::getCurrentAttributeValue()
+{
+    std::ostringstream Convert;
+    Convert << attr->value();
+    return Convert.str();
+}
+
+
+std::string Xmlw::getCurrentAttributeName()
+{
+    std::ostringstream Convert;
+    Convert << attr->name();
     return Convert.str();
 }
 

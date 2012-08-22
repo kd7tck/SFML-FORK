@@ -34,6 +34,7 @@
 #include <string>
 
 typedef rapidxml::xml_node<> * sfml_xml_node;
+typedef rapidxml::xml_attribute<> * sfml_xml_attribute;
 
 namespace sf
 {
@@ -83,7 +84,7 @@ public :
 
 
     ////////////////////////////////////////////////////////////
-    /// \brief transition to first child node, from current position
+    /// \brief transition to first child node, from current node position
     ///
     /// \return void
     ////////////////////////////////////////////////////////////
@@ -91,11 +92,18 @@ public :
 
 
     ////////////////////////////////////////////////////////////
-    /// \brief transition to next sibling, from current position
+    /// \brief transition to next sibling, from current node position
     ///
     /// \return void
     ////////////////////////////////////////////////////////////
     void goToNextSibling();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief transition to next attribute, based on current node position, node position is left unaltered
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void goToNextAttribute();
 
 
     ////////////////////////////////////////////////////////////
@@ -107,18 +115,34 @@ public :
 
 
     ////////////////////////////////////////////////////////////
-    /// \brief read current node position value
+    /// \brief read current node position name
     ///
     /// \return std::string
     ////////////////////////////////////////////////////////////
     std::string getCurrentNodeName();
 
 
+    ////////////////////////////////////////////////////////////
+    /// \brief read current attribute position value
+    ///
+    /// \return std::string
+    ////////////////////////////////////////////////////////////
+    std::string getCurrentAttributeValue();
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief read current attribute position name
+    ///
+    /// \return std::string
+    ////////////////////////////////////////////////////////////
+    std::string getCurrentAttributeName();
+
+
 protected :
     rapidxml::xml_document<> xmldoc;
     char xmldocstring[512000];//buffer that holds xml string, holds a max of 0.5 megabytes
     sfml_xml_node node;//current node state position
-
+    sfml_xml_attribute attr;//attribute pointer
 };
 
 } // namespace sf
