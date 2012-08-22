@@ -138,7 +138,14 @@ protected :
 ///
 /// Example:
 /// \code
-///
+/// std::string out("");
+/// db.sqlQuery("CREATE TABLE customer (First_Name char(50), Last_Name char(50), Address char(50), City char(50), Country char(25));");
+/// db.sqlQuery("INSERT INTO customer VALUES ('joshua', 'reisenauer', '11111', '22222', '33333');");
+/// db.sqlQuery_ref("SELECT * FROM customer;", out);
+/// std::ofstream myfile;
+/// myfile.open ("out.txt");
+/// myfile << out;
+/// myfile.close();
 ///
 /// \endcode
 ///
