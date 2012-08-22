@@ -168,6 +168,18 @@ protected :
 /// Example:
 /// \code
 ///
+/// sf::Xmlw xml_reader;
+/// std::string out("");
+/// xml_reader.loadXml("<?xml version=\"1.0\"?><note><to>Tove</to><from>Jani</from><heading>Reminder</heading><body>Don't forget me this weekend!</body></note>");
+/// out += xml_reader.getCurrentNodeName();
+/// out += xml_reader.getCurrentNodeValue();
+/// xml_reader.goToFirstChild();
+/// out += xml_reader.getCurrentNodeName();
+/// out += xml_reader.getCurrentNodeValue();
+/// std::ofstream myfile;
+/// myfile.open ("out.txt");
+/// myfile << out;
+/// myfile.close();
 ///
 /// \endcode
 ///
