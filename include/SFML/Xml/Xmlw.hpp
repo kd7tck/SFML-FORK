@@ -68,6 +68,13 @@ public :
 
 
     ////////////////////////////////////////////////////////////
+    /// \brief build new xml doc
+    /// \param string xml_document_string
+    ////////////////////////////////////////////////////////////
+    void loadXml(std::string xmlstring);
+
+
+    ////////////////////////////////////////////////////////////
     /// \brief get the root node pointer
     ///
     /// \return typedef rapidxml::xml_node<> * sfml_xml_node;
@@ -92,7 +99,7 @@ public :
 
 
     ////////////////////////////////////////////////////////////
-    /// \brief transition to next sibling, from current node position
+    /// \brief transition to next sibling node, from current node position
     ///
     /// \return void
     ////////////////////////////////////////////////////////////

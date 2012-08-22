@@ -51,6 +51,9 @@ Xmlw::Xmlw(std::string xmlstring)
     }
 
     xmldoc.parse<0>(xmldocstring);
+    node = xmldoc.first_node();
+    if(node)
+        attr = node->first_attribute();
 }
 
 Xmlw::Xmlw()
@@ -67,6 +70,24 @@ Xmlw::~Xmlw()
 }
 
 
+void Xmlw::loadXml(std::string xmlstring)
+{
+    if(xmlstring.size() < 512000){
+        xmlstring.copy(xmldocstring, xmlstring.size(), 0);
+        xmldocstring[xmlstring.size()] = '\0';
+    }
+    else{
+        xmlstring.copy(xmldocstring, 511999, 0);
+        xmldocstring[511999] = '\0';
+    }
+
+    xmldoc.parse<0>(xmldocstring);
+    node = xmldoc.first_node();
+    if(node)
+        attr = node->first_attribute();
+}
+
+
 sfml_xml_node Xmlw::getRootNode()
 {
     return xmldoc.first_node();
@@ -76,7 +97,8 @@ sfml_xml_node Xmlw::getRootNode()
 void Xmlw::goToRootNode()
 {
     node = xmldoc.first_node();
-    attr = node->first_attribute();
+    if(node)
+        attr = node->first_attribute();
 }
 
 
@@ -84,7 +106,8 @@ void Xmlw::goToFirstChild()
 {
     if(node->first_node() != NULL){
         node = node->first_node();
-        attr = node->first_attribute();
+        if(node)
+            attr = node->first_attribute();
     }
 }
 
@@ -93,7 +116,8 @@ void Xmlw::goToNextSibling()
 {
     if(node->parent()){
         node = node->next_sibling();
-        attr = node->first_attribute();
+        if(node)
+            attr = node->first_attribute();
     }
 }
 
