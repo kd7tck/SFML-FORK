@@ -161,4 +161,24 @@ std::string Xmlw::getCurrentAttributeName()
 }
 
 
+void Xmlw::createNewNodeForCurrentNode(std::string name, std::string value)
+{
+    sfml_xml_node n = xmldoc.allocate_node(rapidxml::node_element, name.c_str(), value.c_str());
+    node->append_node(n);
+}
+
+
+void Xmlw::createNewNodeForRootNode(std::string name, std::string value)
+{
+    sfml_xml_node n = xmldoc.allocate_node(rapidxml::node_element, name.c_str(), value.c_str());
+    xmldoc.append_node(n);
+}
+
+void Xmlw::createNewAttributeForCurrentNode(std::string name, std::string value)
+{
+    sfml_xml_attribute at = xmldoc.allocate_attribute(name.c_str(), value.c_str());
+    node->append_attribute(at);
+}
+
+
 } // namespace sf

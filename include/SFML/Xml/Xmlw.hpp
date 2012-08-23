@@ -69,9 +69,45 @@ public :
 
     ////////////////////////////////////////////////////////////
     /// \brief build new xml doc
+    ///
     /// \param string xml_document_string
+    ///
+    /// \return void
     ////////////////////////////////////////////////////////////
     void loadXml(std::string xmlstring);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief build new attribute and append it to the current node
+    ///
+    /// \param string name
+    ///
+    /// \param string value
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void createNewAttributeForCurrentNode(std::string name, std::string value);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief build new node and append it to the current node
+    ///
+    /// \param string name
+    ///
+    /// \param string value
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void createNewNodeForCurrentNode(std::string name, std::string value);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief build new node and append it to the root node
+    ///
+    /// \param string name
+    ///
+    /// \param string value
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void createNewNodeForRootNode(std::string name, std::string value);
 
 
     ////////////////////////////////////////////////////////////
