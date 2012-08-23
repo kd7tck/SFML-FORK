@@ -184,8 +184,13 @@ void Xmlw::createNewAttributeForCurrentNode(std::string name, std::string value)
 
 void Xmlw::removeChildNodeByIndexForCurrentNode(int index)
 {
-    sfml_xml_node n = node->first_node();
     int count = index;
+
+    if(index < 0)
+        count = 0;
+
+    sfml_xml_node n = node->first_node();
+
 
     while(n && count){
         n = n->next_sibling();
