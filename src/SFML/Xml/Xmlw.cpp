@@ -102,7 +102,7 @@ void Xmlw::goToRootNode()
 }
 
 
-void Xmlw::goToFirstChild()
+void Xmlw::goToFirstChildNode()
 {
     if(node->first_node() != NULL){
         node = node->first_node();
@@ -118,6 +118,15 @@ void Xmlw::goToNextSibling()
         node = node->next_sibling();
         if(node)
             attr = node->first_attribute();
+    }
+}
+
+
+void Xmlw::goToParentNode()
+{
+    if(node->parent())
+    {
+        node = node->parent();
     }
 }
 
