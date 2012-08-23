@@ -174,10 +174,27 @@ void Xmlw::createNewNodeForRootNode(std::string name, std::string value)
     xmldoc.append_node(n);
 }
 
+
 void Xmlw::createNewAttributeForCurrentNode(std::string name, std::string value)
 {
     sfml_xml_attribute at = xmldoc.allocate_attribute(name.c_str(), value.c_str());
     node->append_attribute(at);
+}
+
+
+void Xmlw::removeChildNodeByIndexForCurrentNode(int index)
+{
+    sfml_xml_node n = node->first_node();
+    int count = index;
+
+    while(n && count){
+        n = n->next_sibling();
+        count--;
+    }
+
+    if(n){
+        node->remove_node(n);
+    }
 }
 
 
