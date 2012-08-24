@@ -306,6 +306,8 @@ bool Xmlw::removeCurrentNode()
         node = n;
     }
     else{
+        xmldoc.remove_node(node);
+        node = n;
         return false;
     }
 
