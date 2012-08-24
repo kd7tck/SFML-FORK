@@ -286,4 +286,31 @@ bool Xmlw::removeChildNodeByIndexForCurrentNode(int index)
 }
 
 
+bool Xmlw::removeCurrentNode()
+{
+    sfml_xml_node n;
+
+    if(node->next_sibling()){
+        n = node->next_sibling();
+    }
+    else if(node->parent()){
+        n = node->parent();
+    }
+    else{
+        n = 0;
+    }
+
+    sfml_xml_node p = node->parent();
+    if(p){
+        p->remove_node(node);
+        node = n;
+    }
+    else{
+        return false;
+    }
+
+    return true;
+}
+
+
 } // namespace sf
