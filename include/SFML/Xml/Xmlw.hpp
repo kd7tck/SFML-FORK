@@ -30,6 +30,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Xml/Export.hpp>
 #include "rapidxml.hpp"
+#include "rapidxml_print.hpp"
 #include <iostream>
 #include <string>
 
@@ -68,13 +69,31 @@ public :
 
 
     ////////////////////////////////////////////////////////////
-    /// \brief build new xml doc
+    /// \brief build new xml doc from file
     ///
     /// \param string xml_document_string
     ///
     /// \return true on success
     ////////////////////////////////////////////////////////////
-    bool loadXml(std::string xmlstring);
+    bool loadXml(std::string xmlpath);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief build new xml doc from string
+    ///
+    /// \param string xml_document_string
+    ///
+    /// \return true on success
+    ////////////////////////////////////////////////////////////
+    bool loadXmlString(std::string xmlstring);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief save xml doc to file
+    ///
+    /// \param string path to xml output
+    ///
+    /// \return true on success
+    ////////////////////////////////////////////////////////////
+    bool saveXml(std::string xmlFilePath);
 
     ////////////////////////////////////////////////////////////
     /// \brief build new attribute and append it to the current node

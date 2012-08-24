@@ -34,6 +34,7 @@
 #include <string>
 #include <iostream>
 #include <stdio.h>
+#include <fstream>
 
 
 namespace sf
@@ -50,7 +51,7 @@ Xmlw::Xmlw(std::string xmlstring)
         xmldocstring[511999] = '\0';
     }
 
-    xmldoc.parse<0>(xmldocstring);
+    xmldoc.parse<rapidxml::parse_no_data_nodes>(xmldocstring);
 
     if(xmldoc.first_node()){
         node = xmldoc.first_node();
@@ -63,7 +64,7 @@ Xmlw::Xmlw()
     std::string xmlstring("<?xml version=\"1.0\"?>\n");
     xmlstring.copy(xmldocstring, xmlstring.size(), 0);
     xmldocstring[xmlstring.size()] = '\0';
-    xmldoc.parse<0>(xmldocstring);
+    xmldoc.parse<rapidxml::parse_no_data_nodes>(xmldocstring);
 }
 
 Xmlw::~Xmlw()
@@ -72,7 +73,35 @@ Xmlw::~Xmlw()
 }
 
 
-bool Xmlw::loadXml(std::string xmlstring)
+bool Xmlw::loadXml(std::string xmlpath)
+{
+    std::ifstream t(xmlpath.c_str());
+    std::stringstream buffer;
+    buffer << t.rdbuf();
+    std::string s(buffer.str());
+    t.close();
+
+    if(s.size() < 512000){
+        s.copy(xmldocstring, s.size(), 0);
+        xmldocstring[s.size()] = '\0';
+    }
+    else{
+        s.copy(xmldocstring, 511999, 0);
+        xmldocstring[511999] = '\0';
+    }
+
+    xmldoc.parse<rapidxml::parse_no_data_nodes>(xmldocstring);
+
+    if(xmldoc.first_node()){
+        node = xmldoc.first_node();
+        attr = node->first_attribute();
+        return true;
+    }
+    return false;
+}
+
+
+bool Xmlw::loadXmlString(std::string xmlstring)
 {
     if(xmlstring.size() < 512000){
         xmlstring.copy(xmldocstring, xmlstring.size(), 0);
@@ -83,11 +112,26 @@ bool Xmlw::loadXml(std::string xmlstring)
         xmldocstring[511999] = '\0';
     }
 
-    xmldoc.parse<0>(xmldocstring);
+    xmldoc.parse<rapidxml::parse_no_data_nodes>(xmldocstring);
 
     if(xmldoc.first_node()){
         node = xmldoc.first_node();
         attr = node->first_attribute();
+        return true;
+    }
+    return false;
+}
+
+
+bool Xmlw::saveXml(std::string xmlFilePath)
+{
+    if(xmldoc.first_node()){
+        std::string s;
+        rapidxml::print(std::back_inserter(s), xmldoc);
+        std::ofstream myfile;
+        myfile.open(xmlFilePath.c_str());
+        myfile << s;
+        myfile.close();
         return true;
     }
     return false;
