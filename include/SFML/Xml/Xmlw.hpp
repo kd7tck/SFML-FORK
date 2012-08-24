@@ -72,9 +72,9 @@ public :
     ///
     /// \param string xml_document_string
     ///
-    /// \return void
+    /// \return true on success
     ////////////////////////////////////////////////////////////
-    void loadXml(std::string xmlstring);
+    bool loadXml(std::string xmlstring);
 
     ////////////////////////////////////////////////////////////
     /// \brief build new attribute and append it to the current node
@@ -83,9 +83,9 @@ public :
     ///
     /// \param string value
     ///
-    /// \return void
+    /// \return true on success
     ////////////////////////////////////////////////////////////
-    void createNewAttributeForCurrentNode(std::string name, std::string value);
+    bool createNewAttributeForCurrentNode(std::string name, std::string value);
 
     ////////////////////////////////////////////////////////////
     /// \brief build new node and append it to the current node
@@ -94,9 +94,9 @@ public :
     ///
     /// \param string value
     ///
-    /// \return void
+    /// \return true on success
     ////////////////////////////////////////////////////////////
-    void createNewNodeForCurrentNode(std::string name, std::string value);
+    bool createNewNodeForCurrentNode(std::string name, std::string value);
 
     ////////////////////////////////////////////////////////////
     /// \brief build new node and append it to the root node
@@ -105,18 +105,18 @@ public :
     ///
     /// \param string value
     ///
-    /// \return void
+    /// \return true on success
     ////////////////////////////////////////////////////////////
-    void createNewNodeForRootNode(std::string name, std::string value);
+    bool createNewNodeForRootNode(std::string name, std::string value);
 
     ////////////////////////////////////////////////////////////
     /// \brief remove nth child for current node
     ///
     /// \param int index
     ///
-    /// \return void
+    /// \return true on success
     ////////////////////////////////////////////////////////////
-    void removeChildNodeByIndexForCurrentNode(int index);
+    bool removeChildNodeByIndexForCurrentNode(int index);
 
 
     ////////////////////////////////////////////////////////////
@@ -130,40 +130,40 @@ public :
     ////////////////////////////////////////////////////////////
     /// \brief transition to root, resets current position
     ///
-    /// \return void
+    /// \return true on success
     ////////////////////////////////////////////////////////////
-    void goToRootNode();
+    bool goToRootNode();
 
 
     ////////////////////////////////////////////////////////////
     /// \brief transition to first child node, from current node position
     ///
-    /// \return void
+    /// \return true on success
     ////////////////////////////////////////////////////////////
-    void goToFirstChildNode();
+    bool goToFirstChildNode();
 
 
     ////////////////////////////////////////////////////////////
     /// \brief transition to parent node, from current node position
     ///
-    /// \return void
+    /// \return true on success
     ////////////////////////////////////////////////////////////
-    void goToParentNode();
+    bool goToParentNode();
 
 
     ////////////////////////////////////////////////////////////
     /// \brief transition to next sibling node, from current node position
     ///
-    /// \return void
+    /// \return true on success
     ////////////////////////////////////////////////////////////
-    void goToNextSibling();
+    bool goToNextSibling();
 
     ////////////////////////////////////////////////////////////
     /// \brief transition to next attribute, based on current node position, node position is left unaltered
     ///
-    /// \return void
+    /// \return true on success
     ////////////////////////////////////////////////////////////
-    void goToNextAttribute();
+    bool goToNextAttribute();
 
 
     ////////////////////////////////////////////////////////////
