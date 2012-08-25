@@ -26,6 +26,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Xml.hpp>
+#include "pugixml.hpp"
+
 #include <cstdlib>
 #include <cstring>
 #include <iomanip>
@@ -34,6 +36,7 @@
 #include <string>
 #include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
 #include <fstream>
 
 
@@ -42,156 +45,107 @@ namespace sf
 
 Xmlw::Xmlw(std::string xmlstring)
 {
-    if(xmlstring.size() < 512000){
-        xmlstring.copy(xmldocstring, xmlstring.size(), 0);
-        xmldocstring[xmlstring.size()] = '\0';
-    }
-    else{
-        xmlstring.copy(xmldocstring, 511999, 0);
-        xmldocstring[511999] = '\0';
-    }
-
-    xmldoc.parse<rapidxml::parse_no_data_nodes>(xmldocstring);
-
-    if(xmldoc.first_node()){
-        node = xmldoc.first_node();
-        attr = node->first_attribute();
-    }
+    result = doc.load_buffer(xmlstring.c_str(), sizeof(xmlstring.c_str()));
 }
 
 Xmlw::Xmlw()
 {
-    std::string xmlstring("<?xml version=\"1.0\"?>\n");
-    xmlstring.copy(xmldocstring, xmlstring.size(), 0);
-    xmldocstring[xmlstring.size()] = '\0';
-    xmldoc.parse<rapidxml::parse_no_data_nodes>(xmldocstring);
+    ;
 }
 
 Xmlw::~Xmlw()
 {
-    xmldoc.clear();
+    doc.reset();
 }
 
 
-bool Xmlw::loadXml(std::string xmlpath)
+bool Xmlw::loadXmlFile(std::string xmlpath)
 {
-    std::ifstream t(xmlpath.c_str());
-    std::stringstream buffer;
-    buffer << t.rdbuf();
-    std::string s(buffer.str());
-    t.close();
-
-    if(s.size() < 512000){
-        s.copy(xmldocstring, s.size(), 0);
-        xmldocstring[s.size()] = '\0';
-    }
-    else{
-        s.copy(xmldocstring, 511999, 0);
-        xmldocstring[511999] = '\0';
-    }
-
-    xmldoc.parse<rapidxml::parse_no_data_nodes>(xmldocstring);
-
-    if(xmldoc.first_node()){
-        node = xmldoc.first_node();
-        attr = node->first_attribute();
+    result = doc.load_file(xmlpath.c_str());
+    if(result)
         return true;
-    }
+
     return false;
 }
 
 
 bool Xmlw::loadXmlString(std::string xmlstring)
 {
-    if(xmlstring.size() < 512000){
-        xmlstring.copy(xmldocstring, xmlstring.size(), 0);
-        xmldocstring[xmlstring.size()] = '\0';
-    }
-    else{
-        xmlstring.copy(xmldocstring, 511999, 0);
-        xmldocstring[511999] = '\0';
-    }
-
-    xmldoc.parse<rapidxml::parse_no_data_nodes>(xmldocstring);
-
-    if(xmldoc.first_node()){
-        node = xmldoc.first_node();
-        attr = node->first_attribute();
+    result = doc.load_buffer(xmlstring.c_str(), xmlstring.size());
+    if(result)
         return true;
-    }
+
     return false;
 }
 
 
-bool Xmlw::saveXml(std::string xmlFilePath)
+std::string Xmlw::saveXmlToString()
 {
-    if(xmldoc.first_node()){
-        std::string s;
-        rapidxml::print(std::back_inserter(s), xmldoc);
-        std::ofstream myfile;
-        myfile.open(xmlFilePath.c_str());
-        myfile << s;
-        myfile.close();
-        return true;
-    }
-    return false;
+    std::stringstream s;
+    doc.save(s);
+
+    return s.str();
 }
 
 
-sfml_xml_node Xmlw::getRootNode()
+bool Xmlw::saveXmlToFile(std::string path)
 {
-    return xmldoc.first_node();
+    return doc.save_file(path.c_str());
 }
 
 
 bool Xmlw::goToRootNode()
 {
-    if(xmldoc.first_node()){
-        node = xmldoc.first_node();
-        attr = node->first_attribute();
+    node = doc.first_child();
+    if(node){
+        attr = node.first_attribute();
         return true;
     }
+
     return false;
 }
 
 
 bool Xmlw::goToFirstChildNode()
 {
-    if(node->first_node() != NULL){
-        node = node->first_node();
-        attr = node->first_attribute();
+    node = node.first_child();
+    if(node){
+        attr = node.first_attribute();
         return true;
     }
+
     return false;
 }
 
 
-bool Xmlw::goToNextSibling()
+bool Xmlw::goToNextSiblingNode()
 {
-    if(node->parent() && node->next_sibling()){
-        node = node->next_sibling();
-        attr = node->first_attribute();
+    node = node.next_sibling();
+    if(node){
+        attr = node.first_attribute();
         return true;
     }
+
     return false;
 }
 
 
 bool Xmlw::goToParentNode()
 {
-    if(node->parent())
-    {
-        node = node->parent();
+    node = node.parent();
+    if(node){
+        attr = node.first_attribute();
         return true;
     }
+
     return false;
 }
 
 
 bool Xmlw::goToNextAttribute()
 {
-    if(attr->next_attribute()){
-        attr = attr->next_attribute();
+    attr = attr.next_attribute();
+    if(attr){
         return true;
     }
     return false;
@@ -200,41 +154,53 @@ bool Xmlw::goToNextAttribute()
 
 std::string Xmlw::getCurrentNodeValue()
 {
-    std::ostringstream Convert;
-    Convert << node->value();
-    return Convert.str();
+    if(node){
+        std::stringstream s;
+        s << node.value();
+        return s.str();
+    }
+    return "";
 }
 
 
 std::string Xmlw::getCurrentNodeName()
 {
-    std::ostringstream Convert;
-    Convert << node->name();
-    return Convert.str();
+    if(node){
+        std::stringstream s;
+        s << node.name();
+        return s.str();
+    }
+    return "";
 }
 
 
 std::string Xmlw::getCurrentAttributeValue()
 {
-    std::ostringstream Convert;
-    Convert << attr->value();
-    return Convert.str();
+    if(attr){
+        std::stringstream s;
+        s << attr.value();
+        return s.str();
+    }
+    return "";
 }
 
 
 std::string Xmlw::getCurrentAttributeName()
 {
-    std::ostringstream Convert;
-    Convert << attr->name();
-    return Convert.str();
+    if(attr){
+        std::stringstream s;
+        s << attr.name();
+        return s.str();
+    }
+    return "";
 }
 
 
 bool Xmlw::createNewNodeForCurrentNode(std::string name, std::string value)
 {
-    sfml_xml_node n = xmldoc.allocate_node(rapidxml::node_element, name.c_str(), value.c_str());
-    if(n){
-        node->append_node(n);
+    if(node){
+        pugi::xml_node n = node.append_child(name.c_str());
+        n.set_value(value.c_str());
         return true;
     }
     return false;
@@ -243,9 +209,9 @@ bool Xmlw::createNewNodeForCurrentNode(std::string name, std::string value)
 
 bool Xmlw::createNewNodeForRootNode(std::string name, std::string value)
 {
-    sfml_xml_node n = xmldoc.allocate_node(rapidxml::node_element, name.c_str(), value.c_str());
-    if(n){
-        xmldoc.append_node(n);
+    if(doc){
+        pugi::xml_node n = doc.append_child(name.c_str());
+        n.set_value(value.c_str());
         return true;
     }
     return false;
@@ -254,9 +220,8 @@ bool Xmlw::createNewNodeForRootNode(std::string name, std::string value)
 
 bool Xmlw::createNewAttributeForCurrentNode(std::string name, std::string value)
 {
-    sfml_xml_attribute at = xmldoc.allocate_attribute(name.c_str(), value.c_str());
-    if(at){
-        node->append_attribute(at);
+    if(node){
+        node.append_attribute(name.c_str()) = value.c_str();
         return true;
     }
     return false;
@@ -265,22 +230,33 @@ bool Xmlw::createNewAttributeForCurrentNode(std::string name, std::string value)
 
 bool Xmlw::removeChildNodeByIndexForCurrentNode(int index)
 {
-    int count = index;
+    if(node){
+        int count = index;
 
-    if(index < 0)
-        count = 0;
+        if(index < 0)
+            count = 0;
 
-    sfml_xml_node n = node->first_node();
+        pugi::xml_node n = node.first_child();
 
 
-    while(n && count){
-        n = n->next_sibling();
-        count--;
+        while(n && count){
+            n = n.next_sibling();
+            count--;
+        }
+
+        if(n){
+            node.remove_child(n.name());
+            return true;
+        }
     }
+    return false;
+}
 
-    if(n){
-        node->remove_node(n);
-        return true;
+
+bool Xmlw::removeChildNodeByStringForCurrentNode(std::string name)
+{
+    if(node){
+        return node.remove_child(name.c_str());
     }
     return false;
 }
@@ -288,25 +264,22 @@ bool Xmlw::removeChildNodeByIndexForCurrentNode(int index)
 
 bool Xmlw::removeCurrentNode()
 {
-    sfml_xml_node n;
+    pugi::xml_node n;
 
-    if(node->next_sibling()){
-        n = node->next_sibling();
+    if(node.next_sibling()){
+        n = node.next_sibling();
     }
-    else if(node->parent()){
-        n = node->parent();
-    }
-    else{
-        n = 0;
+    else if(node.parent()){
+        n = node.parent();
     }
 
-    sfml_xml_node p = node->parent();
+    pugi::xml_node p = node.parent();
     if(p){
-        p->remove_node(node);
+        p.remove_child(node.name());
         node = n;
     }
     else{
-        xmldoc.remove_node(node);
+        doc.remove_child(node.name());
         node = n;
         return false;
     }

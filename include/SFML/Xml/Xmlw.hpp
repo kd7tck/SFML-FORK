@@ -29,13 +29,10 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Xml/Export.hpp>
-#include "rapidxml.hpp"
-#include "rapidxml_print.hpp"
+#include "pugixml.hpp"
 #include <iostream>
 #include <string>
 
-typedef rapidxml::xml_node<> * sfml_xml_node;
-typedef rapidxml::xml_attribute<> * sfml_xml_attribute;
 
 namespace sf
 {
@@ -75,7 +72,7 @@ public :
     ///
     /// \return true on success
     ////////////////////////////////////////////////////////////
-    bool loadXml(std::string xmlpath);
+    bool loadXmlFile(std::string xmlpath);
 
     ////////////////////////////////////////////////////////////
     /// \brief build new xml doc from string
@@ -87,13 +84,20 @@ public :
     bool loadXmlString(std::string xmlstring);
 
     ////////////////////////////////////////////////////////////
+    /// \brief save xml doc to string and return it
+    ///
+    /// \return string xml
+    ////////////////////////////////////////////////////////////
+    std::string saveXmlToString();
+
+    ////////////////////////////////////////////////////////////
     /// \brief save xml doc to file
     ///
-    /// \param string path to xml output
+    /// \param string file_path
     ///
     /// \return true on success
     ////////////////////////////////////////////////////////////
-    bool saveXml(std::string xmlFilePath);
+    bool saveXmlToFile(std::string path);
 
     ////////////////////////////////////////////////////////////
     /// \brief build new attribute and append it to the current node
@@ -138,6 +142,15 @@ public :
     bool removeChildNodeByIndexForCurrentNode(int index);
 
     ////////////////////////////////////////////////////////////
+    /// \brief remove child node for current node, by name
+    ///
+    /// \param string name
+    ///
+    /// \return true on success
+    ////////////////////////////////////////////////////////////
+    bool removeChildNodeByStringForCurrentNode(std::string name);
+
+    ////////////////////////////////////////////////////////////
     /// \brief remove current node
     ///
     /// \param int index
@@ -145,14 +158,6 @@ public :
     /// \return true on success
     ////////////////////////////////////////////////////////////
     bool removeCurrentNode();
-
-
-    ////////////////////////////////////////////////////////////
-    /// \brief get the root node pointer
-    ///
-    /// \return typedef rapidxml::xml_node<> * sfml_xml_node;
-    ////////////////////////////////////////////////////////////
-    sfml_xml_node getRootNode();
 
 
     ////////////////////////////////////////////////////////////
@@ -184,7 +189,7 @@ public :
     ///
     /// \return true on success
     ////////////////////////////////////////////////////////////
-    bool goToNextSibling();
+    bool goToNextSiblingNode();
 
     ////////////////////////////////////////////////////////////
     /// \brief transition to next attribute, based on current node position, node position is left unaltered
@@ -227,10 +232,10 @@ public :
 
 
 protected :
-    rapidxml::xml_document<> xmldoc;
-    char xmldocstring[512000];//buffer that holds xml string, holds a max of 0.5 megabytes
-    sfml_xml_node node;//current node state position
-    sfml_xml_attribute attr;//attribute pointer
+    pugi::xml_document doc;
+    pugi::xml_parse_result result;
+    pugi::xml_node node;
+    pugi::xml_attribute attr;
 };
 
 } // namespace sf
@@ -251,7 +256,7 @@ protected :
 ///
 /// sf::Xmlw xml_reader;
 /// std::string out("");
-/// xml_reader.loadXml("<?xml version=\"1.0\"?><note><to>Tove</to><from>Jani</from><heading>Reminder</heading><body>Don't forget me this weekend!</body></note>");
+/// xml_reader.loadXmlString("<?xml version=\"1.0\"?><note><to>Tove</to><from>Jani</from><heading>Reminder</heading><body>Don't forget me this weekend!</body></note>");
 /// out += xml_reader.getCurrentNodeName();
 /// out += xml_reader.getCurrentNodeValue();
 /// xml_reader.goToFirstChild();
