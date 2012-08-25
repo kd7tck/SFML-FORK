@@ -22,20 +22,72 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef SFML_UTIL_HPP
-#define SFML_UTIL_HPP
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <SFML/Util.hpp>
 
-#include <SFML/Util/State.hpp>
-#include <SFML/Util/State_Event.hpp>
+#include <cstdlib>
+#include <cstring>
+#include <iomanip>
+#include <locale>
+#include <sstream>
+#include <string>
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fstream>
 
 
-#endif // SFML_UTIL_HPP
+namespace sf
+{
 
-////////////////////////////////////////////////////////////
-/// \defgroup util Util module
-/// 
-////////////////////////////////////////////////////////////
+State_Event::State_Event()
+{
+    event_id = event_count;
+    event_count++;
+}
+
+State_Event::~State_Event()
+{
+    ;
+}
+
+
+void State_Event::trigger()
+{
+    for ( it = registered_states.begin() ; it < registered_states.end(); it++ ){
+        (**it).trigger(event_id);
+    }
+}
+
+
+int State_Event::getId()
+{
+    return event_id;
+}
+
+
+void State_Event::registerState(State* s)
+{
+    registered_states.push_back(s);
+}
+
+
+void State_Event::unRegisterState(State* s)
+{
+    int count = 0;
+    for ( it = registered_states.begin() ; it < registered_states.end(); it++ ){
+        if(*it == s)
+        {
+            registered_states.erase(registered_states.begin() + count);
+        }
+        else
+            count++;
+    }
+}
+
+
+
+
+} // namespace sf

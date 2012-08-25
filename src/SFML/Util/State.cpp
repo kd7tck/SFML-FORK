@@ -55,11 +55,17 @@ State::~State()
 
 bool State::change_name(std::string name)
 {
-    if(name.size < 2)
+    if(name.size() < 2)
         return false;
 
     state_name = name;
     return true;
+}
+
+
+void State::trigger(int id)
+{
+    ;
 }
 
 

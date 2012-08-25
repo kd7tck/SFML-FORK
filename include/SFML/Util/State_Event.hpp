@@ -22,27 +22,29 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef SFML_STATE_HPP
-#define SFML_STATE_HPP
+#ifndef SFML_STATE_EVENT_HPP
+#define SFML_STATE_EVENT_HPP
 
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-
 #include "Export.hpp"
-#include "State_Event.hpp"
 #include <iostream>
 #include <string>
+#include <vector>
+
 
 
 namespace sf
 {
 
+class SFML_UTIL_API State;
+
 ////////////////////////////////////////////////////////////
-/// \brief The Util State class.
+/// \brief The Util State_Event class.
 ///
 ////////////////////////////////////////////////////////////
-class SFML_UTIL_API State
+class SFML_UTIL_API State_Event
 {
 public :
 
@@ -50,62 +52,77 @@ public :
     /// \brief constructor
     ///
     ////////////////////////////////////////////////////////////
-    State();
+    State_Event();
+
 
     ////////////////////////////////////////////////////////////
     /// \brief destructor
     ///
     ////////////////////////////////////////////////////////////
-    ~State();
+    ~State_Event();
 
 
     ////////////////////////////////////////////////////////////
-    /// \brief change state name
-    ///
-    /// \param string new name
-    ///
-    /// Example:
-    /// \code
-    /// state_node.change_name("init_state");
-    /// \endcode
-    ///
-    /// \return true if successful
-    ////////////////////////////////////////////////////////////
-    bool change_name(std::string name);
-
-
-    ////////////////////////////////////////////////////////////
-    /// \brief an event was triggered
-    ///
-    /// \param int ID of event
+    /// \brief trigger this event, and trigger all registered states
     ///
     /// \return void
     ////////////////////////////////////////////////////////////
-    void trigger(int);
+    void trigger();
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief obtain this event's ID
+    ///
+    /// \return int Event ID
+    ////////////////////////////////////////////////////////////
+    int getId();
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief register a state with this event
+    ///
+    /// \param State*
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void registerState(State*);
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief unregister a state from this event
+    ///
+    /// \param State*
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void unRegisterState(State*);
+
 
 
 protected :
-    std::string state_name;
-
+    static int event_count;
+    int event_id;
+    std::vector<State*> registered_states;
+    std::vector<State*>::iterator it;
 };
 
 } // namespace sf
 
 
-#endif // SFML_STATE_HPP
+#endif // SFML_STATE_EVENT_HPP
 
 
 ////////////////////////////////////////////////////////////
-/// \class sf::State
+/// \class sf::State_Event
 /// \ingroup util
 ///
-/// sf::State represents a single state within a finite state machine.
+/// sf::State represents an event that can register with multiple states.
 ///
 /// Example:
 /// \code
 ///
 /// \endcode
 ///
-/// \see sf::State
+/// \see sf::State_Event
 ///
 ////////////////////////////////////////////////////////////
