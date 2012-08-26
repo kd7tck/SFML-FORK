@@ -78,7 +78,7 @@ void State_Event::unRegisterState(State* s)
 {
     int count = 0;
     for ( it = registered_states.begin() ; it < registered_states.end(); it++ ){
-        if(*it == s)
+        if((**it).getName() == s->getName())
         {
             registered_states.erase(registered_states.begin() + count);
         }

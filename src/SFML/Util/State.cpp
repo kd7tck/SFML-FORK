@@ -49,11 +49,14 @@ State::State()
 
 State::~State()
 {
-    ;
+    for ( it = registered_events.begin() ; it < registered_events.end(); it++ ){
+        (**it).unRegisterState(this);
+    }
+    registered_events.clear();
 }
 
 
-bool State::change_name(std::string name)
+bool State::setName(std::string name)
 {
     if(name.size() < 2)
         return false;
@@ -62,10 +65,39 @@ bool State::change_name(std::string name)
     return true;
 }
 
-
-void State::trigger(int id)
+//this is called only by events
+void State::trigger(int event_id)
 {
     ;
+}
+
+
+std::string State::getName()
+{
+    return state_name;
+}
+
+
+
+void State::registerEvent(State_Event* e)
+{
+    registered_events.push_back(e);
+    e->registerState(this);
+}
+
+
+void State::unRegisterEvent(State_Event* e)
+{
+    int count = 0;
+    for ( it = registered_events.begin() ; it < registered_events.end(); it++ ){
+        if((**it).getId() == e->getId())
+        {
+            registered_events.erase(registered_events.begin() + count);
+            e->unRegisterState(this);
+        }
+        else
+            count++;
+    }
 }
 
 

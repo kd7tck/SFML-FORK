@@ -38,6 +38,9 @@
 namespace sf
 {
 
+
+class SFML_UTIL_API State_Event;
+
 ////////////////////////////////////////////////////////////
 /// \brief The Util State class.
 ///
@@ -64,14 +67,17 @@ public :
     ///
     /// \param string new name
     ///
-    /// Example:
-    /// \code
-    /// state_node.change_name("init_state");
-    /// \endcode
-    ///
     /// \return true if successful
     ////////////////////////////////////////////////////////////
-    bool change_name(std::string name);
+    bool setName(std::string name);
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief get state name
+    ///
+    /// \return string
+    ////////////////////////////////////////////////////////////
+    std::string getName();
 
 
     ////////////////////////////////////////////////////////////
@@ -81,11 +87,33 @@ public :
     ///
     /// \return void
     ////////////////////////////////////////////////////////////
-    void trigger(int);
+    void trigger(int event_id);
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief register a state_event with this state
+    ///
+    /// \param State_Event*
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void registerEvent(State_Event*);
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief unregister a state_event from this state
+    ///
+    /// \param State_Event*
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void unRegisterEvent(State_Event*);
 
 
 protected :
     std::string state_name;
+    std::vector<State_Event*> registered_events;
+    std::vector<State_Event*>::iterator it;
 
 };
 

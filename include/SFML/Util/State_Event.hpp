@@ -116,7 +116,7 @@ protected :
 /// \class sf::State_Event
 /// \ingroup util
 ///
-/// sf::State represents an event that can register with multiple states.
+/// sf::State_Event represents an event that can register with multiple states.
 ///
 /// Example:
 /// \code
