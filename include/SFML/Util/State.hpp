@@ -33,6 +33,7 @@
 #include "State_Event.hpp"
 #include <iostream>
 #include <string>
+#include <map>
 
 
 namespace sf
@@ -110,10 +111,35 @@ public :
     void unRegisterEvent(State_Event*);
 
 
+    ////////////////////////////////////////////////////////////
+    /// \brief register a state transition from this state node
+    ///
+    /// \param int event id
+    ///
+    /// \param string name of next state
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void registerStateChange(int event_id, std::string next_state_name);
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief unregister a state transition from this state node
+    ///
+    /// \param int event id
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void unRegisterStateChange(int event_id);
+
+
 protected :
     std::string state_name;
-    std::vector<State_Event*> registered_events;
-    std::vector<State_Event*>::iterator it;
+    std::vector <State_Event*> registered_events;
+    std::vector <State_Event*>::iterator it;
+    std::map <int, std::string> eventIdStateTrigger;//state to state mappings based on event_id
+    std::string next_state_name;//the next state to run after this state ends
+    std::string default_next_state_name;//if next_state_name is no longer valid
 
 };
 

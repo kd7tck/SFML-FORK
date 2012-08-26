@@ -68,7 +68,10 @@ bool State::setName(std::string name)
 //this is called only by events
 void State::trigger(int event_id)
 {
-    ;
+    if(eventIdStateTrigger[event_id].size() > 0)
+    {
+        next_state_name = eventIdStateTrigger[event_id];
+    }
 }
 
 
@@ -98,6 +101,18 @@ void State::unRegisterEvent(State_Event* e)
         else
             count++;
     }
+}
+
+
+void State::registerStateChange(int event_id, std::string next_state)
+{
+    eventIdStateTrigger[event_id] = next_state;
+}
+
+
+void State::unRegisterStateChange(int event_id)
+{
+    eventIdStateTrigger[event_id] = "";
 }
 
 
