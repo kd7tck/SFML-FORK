@@ -28,7 +28,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-
+#include <SFML/Graphics.hpp>
 #include "Export.hpp"
 #include <iostream>
 #include <string>
@@ -42,12 +42,19 @@ namespace sf
 class SFML_UTIL_API State_Event;
 
 ////////////////////////////////////////////////////////////
-/// \brief The Util State class.
+/// \brief The Util State Abstract class.
 ///
 ////////////////////////////////////////////////////////////
 class SFML_UTIL_API State
 {
 public :
+
+    //Virtual functions for assigning user desired functionality
+    virtual int Update (const double time);//second thing to be called every game cycle
+    virtual int Events ();//first thing to be called every game cycle
+    virtual int Draw (Image& canvas);//third thing to be called every game cycle
+    virtual int CleanUp ();//called once when state is left
+    virtual int Init ();//called once when state is entered
 
     ////////////////////////////////////////////////////////////
     /// \brief constructor
