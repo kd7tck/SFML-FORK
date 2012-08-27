@@ -29,8 +29,9 @@
 // Headers
 ////////////////////////////////////////////////////////////
 
-#include <SFML/Util/State.hpp>
 #include <SFML/Util/State_Event.hpp>
+#include <SFML/Util/State.hpp>
+#include <SFML/Util/State_Manager.hpp>
 
 
 #endif // SFML_UTIL_HPP
