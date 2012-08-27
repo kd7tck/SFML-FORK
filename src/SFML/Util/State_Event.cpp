@@ -34,9 +34,8 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
 #include <fstream>
+#include <cstdio>
 
 
 namespace sf
@@ -54,10 +53,10 @@ State_Event::~State_Event()
 }
 
 
-void State_Event::trigger()
+bool State_Event::trigger()
 {
     for ( it = registered_states.begin() ; it < registered_states.end(); it++ ){
-        (**it).trigger(event_id);
+        return (**it).trigger(event_id);
     }
 }
 

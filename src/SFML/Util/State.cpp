@@ -34,9 +34,8 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
 #include <fstream>
+#include <cstdio>
 
 
 namespace sf
@@ -65,13 +64,16 @@ bool State::setName(std::string name)
     return true;
 }
 
+
 //this is called only by events
-void State::trigger(int event_id)
+bool State::trigger(int event_id)
 {
     if(eventIdStateTrigger[event_id].size() > 0)
     {
         next_state_name = eventIdStateTrigger[event_id];
+        return true;
     }
+    return false;
 }
 
 

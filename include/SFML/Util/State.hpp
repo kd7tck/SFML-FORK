@@ -86,9 +86,9 @@ public :
     ///
     /// \param int ID of event
     ///
-    /// \return void
+    /// \return bool true on success
     ////////////////////////////////////////////////////////////
-    void trigger(int event_id);
+    bool trigger(int event_id);
 
 
     ////////////////////////////////////////////////////////////
