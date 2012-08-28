@@ -22,22 +22,37 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef SFML_UTIL_HPP
-#define SFML_UTIL_HPP
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Util/Math.hpp>
-#include <SFML/Util/State_Event.hpp>
-#include <SFML/Util/State_Manager.hpp>
-#include <SFML/Util/State.hpp>
+#include <SFML/Util.hpp>
+
+#include <cstdlib>
+#include <cstring>
+#include <iomanip>
+#include <locale>
+#include <sstream>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <cstdio>
+
+
+namespace sf
+{
+
+
+Math::Math()
+{
+    ;
+}
+
+
+Math::~Math()
+{
+    ;
+}
 
 
 
-#endif // SFML_UTIL_HPP
-
-////////////////////////////////////////////////////////////
-/// \defgroup util Util module
-///
-////////////////////////////////////////////////////////////
+} // namespace sf

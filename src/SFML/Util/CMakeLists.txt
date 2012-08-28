@@ -9,4 +9,4 @@ FILE(GLOB SRCPP *.cpp)
 sfml_add_library(sfml-util
                  SOURCES ${SRCPP} ${SRC}
                  DEPENDS sfml-window sfml-system
-                 EXTERNAL_LIBS)
+                 EXTERNAL_LIBS m)
