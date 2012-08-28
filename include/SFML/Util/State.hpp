@@ -40,6 +40,7 @@ namespace sf
 
 
 class SFML_UTIL_API State_Event;
+class SFML_UTIL_API State_Manager;
 
 ////////////////////////////////////////////////////////////
 /// \brief The Util State Abstract class.
@@ -48,6 +49,36 @@ class SFML_UTIL_API State_Event;
 class SFML_UTIL_API State
 {
 public :
+
+    ////////////////////////////////////////////////////////////
+    /// \brief constructor
+    ///
+    /// \param string name
+    ///
+    ////////////////////////////////////////////////////////////
+    State(std::string name);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief destructor
+    ///
+    ////////////////////////////////////////////////////////////
+    virtual ~State(){
+        if(registered_events.size() > 0)
+            registered_events[0]->unRegisterState(this);
+
+        if(manager != 0)
+            manager->unRegisterState(this);
+    }
+
+
+
+
+
+
+
+
+
+
 
     //Virtual functions for assigning user desired functionality
     ////////////////////////////////////////////////////////////
@@ -89,6 +120,26 @@ public :
     ////////////////////////////////////////////////////////////
     virtual int Init () = 0;
 
+    ////////////////////////////////////////////////////////////
+    /// \brief an event was triggered
+    ///
+    /// \param int ID of event
+    ///
+    /// \return bool true on success
+    ////////////////////////////////////////////////////////////
+    virtual bool trigger(int event_id)
+    {
+        if(eventIdStateTrigger[event_id].size() > 0)
+        {
+            next_state_name = eventIdStateTrigger[event_id];
+            triggered = true;
+            return true;
+        }
+        return false;
+    }
+
+
+
 
 
 
@@ -105,74 +156,38 @@ public :
     ///
     /// \return true if successful
     ////////////////////////////////////////////////////////////
-    virtual bool setName(std::string name)
-    {
-        if(name.size() < 1)
-            return false;
-
-        state_name = name;
-        return true;
-    }
+    bool setName(std::string name);
 
     ////////////////////////////////////////////////////////////
     /// \brief get state name
     ///
-    /// \return string
+    /// \return string name
     ////////////////////////////////////////////////////////////
-    virtual std::string getName()
-    {
-        return state_name;
-    }
+    std::string getName();
 
     ////////////////////////////////////////////////////////////
-    /// \brief an event was triggered
+    /// \brief get next state name
     ///
-    /// \param int ID of event
+    /// \return string name, "" if none
+    ////////////////////////////////////////////////////////////
+    std::string nextState();
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief change DefaultNextStateName
     ///
-    /// \return bool true on success
-    ////////////////////////////////////////////////////////////
-    virtual bool trigger(int event_id)
-    {
-        if(eventIdStateTrigger[event_id].size() > 0)
-        {
-            next_state_name = eventIdStateTrigger[event_id];
-            return true;
-        }
-        return false;
-    }
-
-
-
-
-
-
-
-
-
-
-
-    ////////////////////////////////////////////////////////////
-    /// \brief constructor
+    /// \param string new name
     ///
-    /// \param string name
+    /// \return true if successful
+    ////////////////////////////////////////////////////////////
+    bool setDefaultNextStateName(std::string name);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief check if state is done
     ///
+    /// \return bool
     ////////////////////////////////////////////////////////////
-    State(std::string name);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief destructor
-    ///
-    ////////////////////////////////////////////////////////////
-    virtual ~State(){
-        if(registered_events.size() > 0)
-            registered_events[0]->unRegisterState(this);
-    }
-
-
-
-
-
-
+    bool stateDone();
 
 
     ////////////////////////////////////////////////////////////
@@ -216,6 +231,16 @@ public :
     ////////////////////////////////////////////////////////////
     void unRegisterStateChange(int event_id);
 
+    ////////////////////////////////////////////////////////////
+    /// \brief set a manager for this state
+    ///
+    /// \param State_Manager*
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void setStateManager(State_Manager*);
+
+
 
 protected :
     std::string state_name;
@@ -224,7 +249,8 @@ protected :
     std::map <int, std::string> eventIdStateTrigger;//state to state mappings based on event_id
     std::string next_state_name;//the next state to run after this state ends
     std::string default_next_state_name;//if next_state_name is no longer valid
-
+    bool triggered;
+    State_Manager* manager;
 };
 
 } // namespace sf

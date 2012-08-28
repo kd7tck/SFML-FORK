@@ -43,10 +43,51 @@ namespace sf
 
 State::State(std::string n)
 {
+    next_state_name = "";
+    default_next_state_name = "";
+    triggered = false;
     state_name = n;
+    manager = 0;
 
     if(registered_events.size() > 0 && n.size() > 0)
         registered_events[0]->registerState(this);
+}
+
+bool State::setName(std::string name)
+{
+    if(name.size() < 1)
+        return false;
+
+    state_name = name;
+    return true;
+}
+
+std::string State::getName()
+{
+    return state_name;
+}
+
+std::string State::nextState()
+{
+    if(next_state_name.size() > 0)
+        return next_state_name;
+    else
+        return default_next_state_name;
+}
+
+
+bool State::setDefaultNextStateName(std::string name)
+{
+    if(name.size() < 1)
+        return false;
+
+    default_next_state_name = name;
+    return true;
+}
+
+bool State::stateDone()
+{
+    return triggered;
 }
 
 
@@ -80,6 +121,12 @@ void State::registerStateChange(int event_id, std::string next_state)
 void State::unRegisterStateChange(int event_id)
 {
     eventIdStateTrigger[event_id] = "";
+}
+
+
+void State::setStateManager(State_Manager* sm)
+{
+    manager = sm;
 }
 
 

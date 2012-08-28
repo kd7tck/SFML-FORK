@@ -30,8 +30,9 @@
 ////////////////////////////////////////////////////////////
 
 #include <SFML/Util/State_Event.hpp>
-#include <SFML/Util/State.hpp>
 #include <SFML/Util/State_Manager.hpp>
+#include <SFML/Util/State.hpp>
+
 
 
 #endif // SFML_UTIL_HPP

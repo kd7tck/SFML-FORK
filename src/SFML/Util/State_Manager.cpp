@@ -43,18 +43,60 @@ namespace sf
 
 State_Manager::State_Manager()
 {
-    ;
+    currentState = "";
+    nextState = "";
+    previousState = "";
 }
 
 State_Manager::~State_Manager()
 {
-    ;
+    if(states.size() > 0)
+        for ( it = states.begin() ; it < states.end(); it++ ){
+            (**it).setStateManager(0);
+        }
 }
 
 
 void State_Manager::registerState(State* s)
 {
+    unRegisterState(s);
     states.push_back(s);
+    (*s).setStateManager(this);
+}
+
+
+void State_Manager::unRegisterState(State* s)
+{
+    int count = 0;
+    for ( it = states.begin() ; it < states.end(); it++ ){
+        if((**it).getName() == s->getName())
+        {
+            states.erase(states.begin() + count);
+        }
+        else
+            count++;
+    }
+}
+
+
+void State_Manager::Cycle()
+{
+    State* cptr = 0;
+
+    for ( it = states.begin() ; it < states.end(); it++ ){
+        if((**it).getName() == currentState)
+            cptr = *it;
+        }
+
+    if((*cptr).stateDone()){//transition to next state
+        ;
+    }
+}
+
+void State_Manager::setCurrentState(State* s)
+{
+    if(s != 0)
+        currentState = (*s).getName();
 }
 
 

@@ -40,7 +40,6 @@ namespace sf
 {
 
 
-class SFML_UTIL_API State_Event;
 class SFML_UTIL_API State;
 
 ////////////////////////////////////////////////////////////
@@ -72,10 +71,38 @@ public :
     ////////////////////////////////////////////////////////////
     void registerState(State*);
 
+    ////////////////////////////////////////////////////////////
+    /// \brief unregister a state with this state manager
+    ///
+    /// \param State*
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void unRegisterState(State*);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief cycle one itteration, checks all states and runs them for one pass
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void Cycle();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief set current state
+    ///
+    /// \param State*
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void setCurrentState(State*);
+
 
 protected :
     std::vector<State*> states;
-    std::string next_state_name;
+    std::string currentState;
+    std::string nextState;
+    std::string previousState;
+    std::vector<State*>::iterator it;
 };
 
 } // namespace sf
