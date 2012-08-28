@@ -50,23 +50,28 @@ class SFML_UTIL_API State
 public :
 
     //Virtual functions for assigning user desired functionality
-    virtual int Update (const double time);//second thing to be called every game cycle
-    virtual int Events ();//first thing to be called every game cycle
-    virtual int Draw (Image& canvas);//third thing to be called every game cycle
-    virtual int CleanUp ();//called once when state is left
-    virtual int Init ();//called once when state is entered
+    virtual int Update (const double time) = 0;//second thing to be called every game cycle
+    virtual int Events () = 0;//first thing to be called every game cycle
+    virtual int Draw (Image& canvas) = 0;//third thing to be called every game cycle
+    virtual int CleanUp () = 0;//called once when state is left
+    virtual int Init () = 0;//called once when state is entered
 
     ////////////////////////////////////////////////////////////
     /// \brief constructor
     ///
+    /// \param string name
+    ///
     ////////////////////////////////////////////////////////////
-    State();
+    State(std::string name);
 
     ////////////////////////////////////////////////////////////
     /// \brief destructor
     ///
     ////////////////////////////////////////////////////////////
-    ~State();
+    virtual ~State(){
+        if(registered_events.size() > 0)
+            registered_events[0]->unRegisterState(this);
+    }
 
 
     ////////////////////////////////////////////////////////////
@@ -141,7 +146,7 @@ public :
 
 protected :
     std::string state_name;
-    std::vector <State_Event*> registered_events;
+    static std::vector <State_Event*> registered_events;
     std::vector <State_Event*>::iterator it;
     std::map <int, std::string> eventIdStateTrigger;//state to state mappings based on event_id
     std::string next_state_name;//the next state to run after this state ends

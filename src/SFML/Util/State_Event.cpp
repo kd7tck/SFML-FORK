@@ -41,15 +41,18 @@
 namespace sf
 {
 
-State_Event::State_Event()
+State_Event::State_Event(int id)
 {
-    event_id = event_count;
-    event_count++;
+    event_id = id;
+
+    if(registered_states.size() > 0)
+        registered_states[0]->registerEvent(this);
 }
 
 State_Event::~State_Event()
 {
-    ;
+    if(registered_states.size() > 0)
+        registered_states[0]->unRegisterEvent(this);
 }
 
 
@@ -64,6 +67,12 @@ bool State_Event::trigger()
 int State_Event::getId()
 {
     return event_id;
+}
+
+
+void State_Event::setId(int id)
+{
+    event_id = id;
 }
 
 

@@ -41,17 +41,12 @@
 namespace sf
 {
 
-State::State()
+State::State(std::string n)
 {
-    ;
-}
+    state_name = n;
 
-State::~State()
-{
-    for ( it = registered_events.begin() ; it < registered_events.end(); it++ ){
-        (**it).unRegisterState(this);
-    }
-    registered_events.clear();
+    if(registered_events.size() > 0)
+        registered_events[0]->registerState(this);
 }
 
 
@@ -87,7 +82,6 @@ std::string State::getName()
 void State::registerEvent(State_Event* e)
 {
     registered_events.push_back(e);
-    e->registerState(this);
 }
 
 
@@ -98,7 +92,6 @@ void State::unRegisterEvent(State_Event* e)
         if((**it).getId() == e->getId())
         {
             registered_events.erase(registered_events.begin() + count);
-            e->unRegisterState(this);
         }
         else
             count++;
