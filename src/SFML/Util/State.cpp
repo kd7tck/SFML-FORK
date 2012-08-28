@@ -45,36 +45,8 @@ State::State(std::string n)
 {
     state_name = n;
 
-    if(registered_events.size() > 0)
+    if(registered_events.size() > 0 && n.size() > 0)
         registered_events[0]->registerState(this);
-}
-
-
-bool State::setName(std::string name)
-{
-    if(name.size() < 2)
-        return false;
-
-    state_name = name;
-    return true;
-}
-
-
-//this is called only by events
-bool State::trigger(int event_id)
-{
-    if(eventIdStateTrigger[event_id].size() > 0)
-    {
-        next_state_name = eventIdStateTrigger[event_id];
-        return true;
-    }
-    return false;
-}
-
-
-std::string State::getName()
-{
-    return state_name;
 }
 
 

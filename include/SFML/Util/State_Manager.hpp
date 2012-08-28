@@ -33,6 +33,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <vector>
 
 
 namespace sf
@@ -62,10 +63,19 @@ public :
     ////////////////////////////////////////////////////////////
     ~State_Manager();
 
+    ////////////////////////////////////////////////////////////
+    /// \brief register a state with this state manager
+    ///
+    /// \param State*
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void registerState(State*);
+
 
 protected :
-
-
+    std::vector<State*> states;
+    std::string next_state_name;
 };
 
 } // namespace sf

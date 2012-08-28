@@ -50,11 +50,106 @@ class SFML_UTIL_API State
 public :
 
     //Virtual functions for assigning user desired functionality
-    virtual int Update (const double time) = 0;//second thing to be called every game cycle
-    virtual int Events () = 0;//first thing to be called every game cycle
-    virtual int Draw (Image& canvas) = 0;//third thing to be called every game cycle
-    virtual int CleanUp () = 0;//called once when state is left
-    virtual int Init () = 0;//called once when state is entered
+    ////////////////////////////////////////////////////////////
+    /// \brief second thing to be called every game cycle
+    ///
+    /// \param double current time in milliseconds
+    ///
+    /// \return 0 if successfull
+    ////////////////////////////////////////////////////////////
+    virtual int Update (const double time) = 0;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief first thing to be called every game cycle
+    ///
+    /// \return 0 if successfull
+    ////////////////////////////////////////////////////////////
+    virtual int Events () = 0;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief third thing to be called every game cycle
+    ///
+    /// \param Image, canvas to draw on
+    ///
+    /// \return 0 if successfull
+    ////////////////////////////////////////////////////////////
+    virtual int Draw (Image& canvas) = 0;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief called once when state is done
+    ///
+    /// \return 0 if successfull
+    ////////////////////////////////////////////////////////////
+    virtual int CleanUp () = 0;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief called once when state is entered
+    ///
+    /// \return 0 if successfull
+    ////////////////////////////////////////////////////////////
+    virtual int Init () = 0;
+
+
+
+
+
+
+
+
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief change state name
+    ///
+    /// \param string new name
+    ///
+    /// \return true if successful
+    ////////////////////////////////////////////////////////////
+    virtual bool setName(std::string name)
+    {
+        if(name.size() < 1)
+            return false;
+
+        state_name = name;
+        return true;
+    }
+
+    ////////////////////////////////////////////////////////////
+    /// \brief get state name
+    ///
+    /// \return string
+    ////////////////////////////////////////////////////////////
+    virtual std::string getName()
+    {
+        return state_name;
+    }
+
+    ////////////////////////////////////////////////////////////
+    /// \brief an event was triggered
+    ///
+    /// \param int ID of event
+    ///
+    /// \return bool true on success
+    ////////////////////////////////////////////////////////////
+    virtual bool trigger(int event_id)
+    {
+        if(eventIdStateTrigger[event_id].size() > 0)
+        {
+            next_state_name = eventIdStateTrigger[event_id];
+            return true;
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+
+
 
     ////////////////////////////////////////////////////////////
     /// \brief constructor
@@ -74,32 +169,10 @@ public :
     }
 
 
-    ////////////////////////////////////////////////////////////
-    /// \brief change state name
-    ///
-    /// \param string new name
-    ///
-    /// \return true if successful
-    ////////////////////////////////////////////////////////////
-    bool setName(std::string name);
 
 
-    ////////////////////////////////////////////////////////////
-    /// \brief get state name
-    ///
-    /// \return string
-    ////////////////////////////////////////////////////////////
-    std::string getName();
 
 
-    ////////////////////////////////////////////////////////////
-    /// \brief an event was triggered
-    ///
-    /// \param int ID of event
-    ///
-    /// \return bool true on success
-    ////////////////////////////////////////////////////////////
-    bool trigger(int event_id);
 
 
     ////////////////////////////////////////////////////////////

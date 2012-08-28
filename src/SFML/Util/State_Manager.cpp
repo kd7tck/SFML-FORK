@@ -52,6 +52,11 @@ State_Manager::~State_Manager()
 }
 
 
+void State_Manager::registerState(State* s)
+{
+    states.push_back(s);
+}
+
 
 
 } // namespace sf
