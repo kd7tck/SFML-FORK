@@ -94,7 +94,9 @@ bool State::stateDone()
 
 void State::registerEvent(State_Event* e)
 {
+    unRegisterEvent(e);
     registered_events.push_back(e);
+    (*e).registerState(this);
 }
 
 

@@ -253,6 +253,50 @@ protected :
     State_Manager* manager;
 };
 
+
+////////////////////////////////////////////////////////////
+/// \brief A NULL State.
+///
+////////////////////////////////////////////////////////////
+class SFML_UTIL_API NULLState : public State
+{
+public:
+
+    NULLState() : State("")
+    {
+        ;
+    }
+
+    ~NULLState()
+    {
+        ;
+    }
+
+    int Update (const double time)
+    {
+        return 0;
+    }
+    int Events ()
+    {
+        return 0;
+    }
+    int Draw (Image& canvas)
+    {
+        return 0;
+    }
+    int CleanUp ()
+    {
+        return 0;
+    }
+    int Init ()
+    {
+        return 0;
+    }
+
+protected:
+    ;
+};
+
 } // namespace sf
 
 

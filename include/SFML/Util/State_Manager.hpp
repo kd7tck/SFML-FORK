@@ -28,7 +28,6 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-
 #include "Export.hpp"
 #include <iostream>
 #include <string>
@@ -41,6 +40,8 @@ namespace sf
 
 
 class SFML_UTIL_API State;
+
+class SFML_UTIL_API NULLState;
 
 ////////////////////////////////////////////////////////////
 /// \brief The Util State_Manager class.
@@ -103,6 +104,7 @@ protected :
     std::string nextState;
     std::string previousState;
     std::vector<State*>::iterator it;
+    State* baseState;
 };
 
 } // namespace sf

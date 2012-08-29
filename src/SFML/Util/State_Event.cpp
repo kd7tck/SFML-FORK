@@ -78,7 +78,9 @@ void State_Event::setId(int id)
 
 void State_Event::registerState(State* s)
 {
+    unRegisterState(s);
     registered_states.push_back(s);
+    (*s).registerEvent(this);
 }
 
 
