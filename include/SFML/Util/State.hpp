@@ -129,7 +129,7 @@ public :
     ////////////////////////////////////////////////////////////
     virtual bool trigger(int event_id)
     {
-        if(eventIdStateTrigger[event_id].size() > 0)
+        if(isActive && eventIdStateTrigger[event_id].size() > 0)
         {
             next_state_name = eventIdStateTrigger[event_id];
             triggered = true;
@@ -172,7 +172,6 @@ public :
     ////////////////////////////////////////////////////////////
     std::string nextState();
 
-
     ////////////////////////////////////////////////////////////
     /// \brief change DefaultNextStateName
     ///
@@ -183,9 +182,9 @@ public :
     bool setDefaultNextStateName(std::string name);
 
     ////////////////////////////////////////////////////////////
-    /// \brief check if state is done
+    /// \brief check if state is done, then transition to next state
     ///
-    /// \return bool
+    /// \return bool ,this is the triggered variable
     ////////////////////////////////////////////////////////////
     bool stateDone();
 
@@ -240,6 +239,27 @@ public :
     ////////////////////////////////////////////////////////////
     void setStateManager(State_Manager*);
 
+    ////////////////////////////////////////////////////////////
+    /// \brief Change Active status, active status meaning is this state running?
+    ///
+    /// \param bool, active status true or false, the isActive variable
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void setActiveStatus(bool);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Get the Active status, active status meaning is this state running?
+    ///
+    /// \return bool, the isActive variable
+    ////////////////////////////////////////////////////////////
+    bool getActiveStatus();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief reset the trigger by setting it to false
+    ////////////////////////////////////////////////////////////
+    void resetTrigger();
+
 
 
 protected :
@@ -249,7 +269,8 @@ protected :
     std::map <int, std::string> eventIdStateTrigger;//state to state mappings based on event_id
     std::string next_state_name;//the next state to run after this state ends
     std::string default_next_state_name;//if next_state_name is no longer valid
-    bool triggered;
+    bool triggered;//if triggered then state manager will transition to next state, can only be triggered if state is active
+    bool isActive;//if this state is currently cycling with state manager
     State_Manager* manager;
 };
 

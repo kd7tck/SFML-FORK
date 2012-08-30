@@ -46,6 +46,7 @@ State::State(std::string n)
     next_state_name = "";
     default_next_state_name = "";
     triggered = false;
+    isActive = false;
     state_name = n;
     manager = 0;
 
@@ -131,6 +132,22 @@ void State::setStateManager(State_Manager* sm)
     manager = sm;
 }
 
+
+void State::setActiveStatus(bool b)
+{
+    isActive = b;
+}
+
+bool State::getActiveStatus()
+{
+    return isActive;
+}
+
+
+void State::resetTrigger()
+{
+    triggered = false;
+}
 
 
 
