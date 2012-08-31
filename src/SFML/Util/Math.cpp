@@ -458,6 +458,12 @@ T Math::gcd(T x, T y)
     }
 }
 
+template <class T>
+T Math::difference_eq(T (*fx)(T x), T h, T x)
+{
+    return (fx(x + h)-fx(x)) / h;
+}
+
 
 
 } // namespace sf

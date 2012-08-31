@@ -38,8 +38,11 @@
 
 
 
+
+
 namespace sf
 {
+
 
 ////////////////////////////////////////////////////////////
 /// \brief The Fraction class.
@@ -130,6 +133,29 @@ public :
     ////////////////////////////////////////////////////////////
     template <class T>
     T gcd(T x, T y);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief using function f(x), compute the difference eq. of x, all over h
+    ///
+    /// Example:
+    /// \code
+    /// static long double func_square(long double x){
+    /// return x*x;
+    /// }
+    /// difference_eq<long double>(&func_square, 0.0000001, 1.0);
+    /// \endcode
+    ///
+    /// \param MATH_FUNCTION<type>::func_x f
+    ///
+    /// \param type h
+    ///
+    /// \param type x
+    ///
+    /// \return type result
+    ///
+    ////////////////////////////////////////////////////////////
+    template <class T>
+    T difference_eq(T (*func_x)(T x), T h, T x);
 
 
 
