@@ -81,23 +81,57 @@ void State_Manager::unRegisterState(State* s)
 
 void State_Manager::Cycle()
 {
-    if(currentState != ""){
-        State* cptr = 0;
+    State* cptr = 0;
 
+    if(currentState != "")
+    {
         for ( it = states.begin() ; it < states.end(); it++ )
-        {
+        {//find current state
             if((**it).getName() == currentState)
                 cptr = *it;
         }
 
         if(cptr != 0 && (*cptr).stateDone())
-        {//transition to next state
-            (*cptr).setActiveStatus(false);
-            (*cptr).resetTrigger();
-            previousState = currentState;
-            currentState = "";
-            nextState = (*cptr).nextState();
+        {//if current state is done
+
+            if((*cptr).nextState() != "")
+            {//first phase of state shift
+                (*cptr).setActiveStatus(false);
+                (*cptr).resetTrigger();
+                nextState = (*cptr).nextState();
+                previousState = currentState;
+                currentState = "";
+                Cycle();//start second phase of state shift
+            }
+
+            cptr = 0;
         }
+    }
+    else
+    {
+        if(nextState != "")
+        {//second phase of state shift
+            for ( it = states.begin() ; it < states.end(); it++ )
+            {
+                if((**it).getName() == nextState)
+                    cptr = *it;
+            }
+
+            if(cptr != 0)
+            {
+                currentState = nextState;
+                nextState = "";
+            }
+        }
+    }
+
+
+    //////////////////////////////////////
+    //process current cycle, if no state shift
+    //////////////////////////////////////
+    if(cptr != 0)
+    {
+        ;
     }
 }
 
