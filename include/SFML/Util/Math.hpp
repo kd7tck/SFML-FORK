@@ -33,40 +33,68 @@
 #include <iostream>
 #include <string>
 #include <map>
-
-
-
-
-
-
-
-
-extern "C" {
-    typedef struct fract{
-        double whole;
-        double top;
-        double bottom;
-        bool positive;
-    }fraction;
-
-    typedef long double (*func_x)(long double x);
-    extern long double func_square(long double x);
-    extern long double func_pow_neg1(long double x);
-    extern double gcd(double x, double y);
-    extern fraction convertDecToFraction(double d);
-    extern long double integrate(func_x fx, double a, double b, unsigned int div);
-    extern long double integrate_x(func_x fx, double x);
-    extern long double naturalLog(double a);
-    extern long double difference_eq(func_x fx, long double h, long double x);
-    extern char* convertFractionToChar(fraction f);
-    extern long double slope_fx(func_x fx);
-}
+#include <cmath>
 
 
 
 
 namespace sf
 {
+
+////////////////////////////////////////////////////////////
+/// \brief The Fraction class.
+///
+////////////////////////////////////////////////////////////
+class SFML_UTIL_API Fraction
+{//Fraction class written by Naraku9333
+	public:
+		Fraction();
+		Fraction(int numer);
+		Fraction(int numer, int denom);
+		Fraction(char* frac);
+
+		Fraction operator+(const Fraction& op2) const;
+		friend Fraction operator+(const int op1, const Fraction& op2);
+		Fraction operator-(const Fraction& op2) const;
+		friend Fraction operator-(const int op1, const Fraction& op2);
+		Fraction operator*(const Fraction& op2) const;
+		friend Fraction operator*(const int op1, const Fraction& op2);
+		Fraction operator/(const Fraction& op2) const;
+		friend Fraction operator/(const int op1, const Fraction& op2);
+
+
+		bool operator<(const Fraction& op2) const;
+		friend bool operator<(const int op1, const Fraction& op2);
+		bool operator>(const Fraction& op2) const;
+		friend bool operator>(const int op1, const Fraction& op2);
+		bool operator<=(const Fraction& op2) const;
+		friend bool operator<=(const int op1, const Fraction& op2);
+		bool operator>=(const Fraction& op2) const;
+		friend bool operator>=(const int op1, const Fraction& op2);
+		bool operator==(const Fraction& op2) const;
+		friend bool operator==(const int op1, const Fraction& op2);
+		bool operator!=(const Fraction& op2) const;
+		friend bool operator!=(const int op1, const Fraction& op2);
+
+
+		Fraction operator-() const;
+
+
+		friend std::ostream& operator<<(std::ostream& ostr, const Fraction& frac);
+
+		friend std::istream& operator>>(std::istream& istr, Fraction& frac);
+
+		class Undefined{};
+		class Invalid{};
+
+	private:
+		int numer, denom, whole;
+		void reduce();
+		Fraction reduce(Fraction& frac) const;
+		bool isNum(char* n);
+};
+
+
 
 ////////////////////////////////////////////////////////////
 /// \brief The Util State Abstract class.
@@ -90,6 +118,19 @@ public :
     ////////////////////////////////////////////////////////////
     ~Math();
 
+    ////////////////////////////////////////////////////////////
+    /// \brief obtain greatest common denomenator
+    ///
+    /// \param type x
+    ///
+    /// \param type y
+    ///
+    /// \return type gcd result
+    ///
+    ////////////////////////////////////////////////////////////
+    template <class T>
+    T gcd(T x, T y);
+
 
 
 protected :
@@ -100,6 +141,21 @@ protected :
 
 
 #endif // SFML_MATH_HPP
+
+////////////////////////////////////////////////////////////
+/// \class sf::Fraction
+/// \ingroup util
+///
+/// sf::Fraction is a object type used to store fractional numbers
+///
+/// Example:
+/// \code
+///
+/// \endcode
+///
+/// \see sf::Fraction
+///
+////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////////////
