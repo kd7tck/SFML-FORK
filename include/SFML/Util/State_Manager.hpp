@@ -29,6 +29,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "Export.hpp"
+#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 #include <map>
@@ -105,6 +107,9 @@ protected :
     std::string previousState;
     std::vector<State*>::iterator it;
     State* baseState;
+    Image backBuffer;
+    Clock clock;
+    Time time;
 };
 
 } // namespace sf

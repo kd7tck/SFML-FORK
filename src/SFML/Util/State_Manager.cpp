@@ -46,6 +46,7 @@ State_Manager::State_Manager()
     currentState = "";
     nextState = "";
     previousState = "";
+    clock.restart();
 }
 
 State_Manager::~State_Manager()
@@ -81,6 +82,7 @@ void State_Manager::unRegisterState(State* s)
 
 void State_Manager::Cycle()
 {
+    time = clock.getElapsedTime();
     State* cptr = 0;
 
     if(currentState != "")
@@ -98,6 +100,7 @@ void State_Manager::Cycle()
             {//first phase of state shift
                 (*cptr).setActiveStatus(false);
                 (*cptr).resetTrigger();
+                (*cptr).CleanUp();
                 nextState = (*cptr).nextState();
                 previousState = currentState;
                 currentState = "";
@@ -119,8 +122,10 @@ void State_Manager::Cycle()
 
             if(cptr != 0)
             {
+                (*cptr).setActiveStatus(true);
                 currentState = nextState;
                 nextState = "";
+                (*cptr).Init();
             }
         }
     }
@@ -131,14 +136,21 @@ void State_Manager::Cycle()
     //////////////////////////////////////
     if(cptr != 0)
     {
-        ;
+        (*cptr).Events();
+        (*cptr).Update((double)time.asMilliseconds());
+        (*cptr).Draw(backBuffer);
     }
 }
+
 
 void State_Manager::setCurrentState(State* s)
 {
     if(s != 0)
-        currentState = (*s).getName();
+        for ( it = states.begin() ; it < states.end(); it++ )
+        {
+            if((**it).getName() == (*s).getName())
+                currentState = (*s).getName();
+        }
 }
 
 
