@@ -29,14 +29,33 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Export.hpp"
 #include <iostream>
 #include <string>
 #include <map>
 
 
+//holds data for state between cycles
+typedef struct STATE_DATA
+{
+    double time1;
+    double time2;
+    std::vector <sf::SoundBuffer*> sound_buffers;
+    std::vector <sf::SoundBuffer*>::iterator sound_it;
+    std::vector <sf::Image*> image_buffers;
+    std::vector <sf::Image*>::iterator image_it;
+}
+STATE_DATA_CACHE;
+
+
+
 namespace sf
 {
+
+
+
+
 
 
 class SFML_UTIL_API State_Event;
@@ -68,6 +87,24 @@ public :
 
         if(manager != 0)
             manager->unRegisterState(this);
+
+        if(cache.image_buffers.size() > 0)
+        {
+            for ( cache.image_it = cache.image_buffers.begin() ; cache.image_it < cache.image_buffers.end(); cache.image_it++ ){
+                delete *cache.image_it;
+            }
+
+            cache.image_buffers.clear();
+        }
+
+        if(cache.sound_buffers.size() > 0)
+        {
+            for ( cache.sound_it = cache.sound_buffers.begin() ; cache.sound_it < cache.sound_buffers.end(); cache.sound_it++ ){
+                delete *cache.sound_it;
+            }
+
+            cache.sound_buffers.clear();
+        }
     }
 
 
@@ -272,6 +309,7 @@ protected :
     bool triggered;//if triggered then state manager will transition to next state, can only be triggered if state is active
     bool isActive;//if this state is currently cycling with state manager
     State_Manager* manager;
+    STATE_DATA_CACHE cache;
 };
 
 
