@@ -36,27 +36,84 @@
 #include <map>
 
 
-//holds data for state between cycles
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////
+/// \brief STATE_DATA_CACHE type. Used for animation tracking between cycles.
+///
+////////////////////////////////////////////////////////////
 typedef struct STATE_DATA
-{
-    double time1;
-    double time2;
-    std::vector <sf::SoundBuffer*> sound_buffers;
-    std::vector <sf::SoundBuffer*>::iterator sound_it;
+{//holds data for state between cycles
+    double time[2];
     std::vector <sf::Image*> image_buffers;
     std::vector <sf::Image*>::iterator image_it;
+
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief creates new Image object, and pushes it onto back of image_buffer
+    ///
+    /// \param int x
+    ///
+    /// \param int y
+    ///
+    ////////////////////////////////////////////////////////////
+    void pushNewImage(int x, int y)
+    {
+        sf::Image* i = new sf::Image();
+        (*i).create(x,y);
+        image_buffers.push_back(i);
+    }
+
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief pops last element in image_buffer
+    ///
+    ////////////////////////////////////////////////////////////
+    void popImage()
+    {
+        delete image_buffers.back();
+        image_buffers.pop_back();
+    }
+
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief peeks at last image in buffer
+    ///
+    /// \return Image* last image in vector
+    ///
+    ////////////////////////////////////////////////////////////
+    sf::Image* peekImage()
+    {
+        return image_buffers.back();
+    }
 }
 STATE_DATA_CACHE;
 
 
 
+
+
+
+
+
+
+
+
 namespace sf
 {
-
-
-
-
-
 
 class SFML_UTIL_API State_Event;
 class SFML_UTIL_API State_Manager;
@@ -88,23 +145,22 @@ public :
         if(manager != 0)
             manager->unRegisterState(this);
 
-        if(cache.image_buffers.size() > 0)
+        //clear out cache
+        if(cache != 0)
         {
-            for ( cache.image_it = cache.image_buffers.begin() ; cache.image_it < cache.image_buffers.end(); cache.image_it++ ){
-                delete *cache.image_it;
+            if((*cache).image_buffers.size() > 0)
+            {
+                for ( (*cache).image_it = (*cache).image_buffers.begin() ; (*cache).image_it < (*cache).image_buffers.end(); (*cache).image_it++ ){
+                    delete *(*cache).image_it;
+                }
+                (*cache).image_buffers.clear();
             }
 
-            cache.image_buffers.clear();
+            delete cache;
         }
 
-        if(cache.sound_buffers.size() > 0)
-        {
-            for ( cache.sound_it = cache.sound_buffers.begin() ; cache.sound_it < cache.sound_buffers.end(); cache.sound_it++ ){
-                delete *cache.sound_it;
-            }
 
-            cache.sound_buffers.clear();
-        }
+
     }
 
 
@@ -300,17 +356,25 @@ public :
 
 
 protected :
-    std::string state_name;
+    std::string state_name;//state identifier
     static std::vector <State_Event*> registered_events;
     std::vector <State_Event*>::iterator it;
+
     std::map <int, std::string> eventIdStateTrigger;//state to state mappings based on event_id
     std::string next_state_name;//the next state to run after this state ends
     std::string default_next_state_name;//if next_state_name is no longer valid
     bool triggered;//if triggered then state manager will transition to next state, can only be triggered if state is active
     bool isActive;//if this state is currently cycling with state manager
     State_Manager* manager;
-    STATE_DATA_CACHE cache;
+    STATE_DATA_CACHE *cache;//holds animation data for state between cycles
 };
+
+
+
+
+
+
+
 
 
 ////////////////////////////////////////////////////////////

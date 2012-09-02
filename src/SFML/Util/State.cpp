@@ -50,6 +50,12 @@ State::State(std::string n)
     state_name = n;
     manager = 0;
 
+    if(n.size() > 0){
+        cache = new STATE_DATA_CACHE;
+        (*cache).time[0]=0.0;
+        (*cache).time[1]=0.0;
+    }
+
     if(registered_events.size() > 0 && n.size() > 0)
         registered_events[0]->registerState(this);
 }
