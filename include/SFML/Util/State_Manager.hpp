@@ -186,13 +186,22 @@ protected :
 ///
 ///
 ///int main() {
+///	   sf::State* sp;
+///
+///	   //create two new classes from abstract type State
 ///	   IntroState *sptr = new IntroState("Intro");
 ///	   IntroState *nsptr = new IntroState("Level1");
+///
+///	   //create event trigger
 ///	   sf::State_Event* enter_key_press_event = new sf::State_Event(0);
-///	   sptr->registerEvent(enter_key_press_event);
-///	   sptr->registerStateChange(enter_key_press_event->getId(), nsptr->getName());
+///
+///	   //access Parent attributes by using State pointer
+///	   sp = sptr;
+///	   sp->registerEvent(enter_key_press_event);
+///	   sp->registerStateChange(enter_key_press_event->getId(), nsptr->getName());
 ///
 ///
+///	   //assign states to state manager
 ///	   sf::State_Manager* sm = new sf::State_Manager();
 ///	   sm->registerState(sptr);
 ///	   sm->registerState(nsptr);
@@ -201,7 +210,7 @@ protected :
 ///
 ///	   while(true)
 ///	   {
-///		   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+///		   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
 ///		   {
 ///			   enter_key_press_event->trigger();
 ///		   }
@@ -211,6 +220,7 @@ protected :
 ///	   }
 ///
 ///
+///	   //clean up
 ///	   sptr->unRegisterEvent(enter_key_press_event);
 ///	   enter_key_press_event->unRegisterState(sptr);
 ///	   delete enter_key_press_event;
