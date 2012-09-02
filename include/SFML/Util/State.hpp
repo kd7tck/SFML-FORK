@@ -37,86 +37,11 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-////////////////////////////////////////////////////////////
-/// \brief STATE_DATA_CACHE type. Used for animation tracking between cycles.
-///
-////////////////////////////////////////////////////////////
-typedef struct STATE_DATA
-{//holds data for state between cycles
-    double time[2];
-    std::vector <sf::Image*> image_buffers;
-    std::vector <sf::Image*>::iterator image_it;
-
-
-
-    ////////////////////////////////////////////////////////////
-    /// \brief creates new Image object, and pushes it onto back of image_buffer
-    ///
-    /// \param int x
-    ///
-    /// \param int y
-    ///
-    ////////////////////////////////////////////////////////////
-    void pushNewImage(int x, int y)
-    {
-        sf::Image* i = new sf::Image();
-        (*i).create(x,y);
-        image_buffers.push_back(i);
-    }
-
-
-
-    ////////////////////////////////////////////////////////////
-    /// \brief pops last element in image_buffer
-    ///
-    ////////////////////////////////////////////////////////////
-    void popImage()
-    {
-        delete image_buffers.back();
-        image_buffers.pop_back();
-    }
-
-
-
-    ////////////////////////////////////////////////////////////
-    /// \brief peeks at last image in buffer
-    ///
-    /// \return Image* last image in vector
-    ///
-    ////////////////////////////////////////////////////////////
-    sf::Image* peekImage()
-    {
-        return image_buffers.back();
-    }
-}
-STATE_DATA_CACHE;
-
-
-
-
-
-
-
-
-
-
-
 namespace sf
 {
 
-class SFML_UTIL_API State_Event;
-class SFML_UTIL_API State_Manager;
+class State_Event;
+class State_Manager;
 
 ////////////////////////////////////////////////////////////
 /// \brief The Util State Abstract class.
@@ -139,28 +64,8 @@ public :
     ///
     ////////////////////////////////////////////////////////////
     virtual ~State(){
-        if(registered_events.size() > 0)
-            registered_events[0]->unRegisterState(this);
-
         if(manager != 0)
             manager->unRegisterState(this);
-
-        //clear out cache
-        if(cache != 0)
-        {
-            if((*cache).image_buffers.size() > 0)
-            {
-                for ( (*cache).image_it = (*cache).image_buffers.begin() ; (*cache).image_it < (*cache).image_buffers.end(); (*cache).image_it++ ){
-                    delete *(*cache).image_it;
-                }
-                (*cache).image_buffers.clear();
-            }
-
-            delete cache;
-        }
-
-
-
     }
 
 
@@ -356,17 +261,30 @@ public :
 
 
 protected :
-    std::string state_name;//state identifier
+
+    //state identifier
+    std::string state_name;
+
     static std::vector <State_Event*> registered_events;
     std::vector <State_Event*>::iterator it;
 
-    std::map <int, std::string> eventIdStateTrigger;//state to state mappings based on event_id
-    std::string next_state_name;//the next state to run after this state ends
-    std::string default_next_state_name;//if next_state_name is no longer valid
-    bool triggered;//if triggered then state manager will transition to next state, can only be triggered if state is active
-    bool isActive;//if this state is currently cycling with state manager
+    //state to state mappings based on event_id
+    std::map <int, std::string> eventIdStateTrigger;
+
+    //the next state to run after this state ends
+    std::string next_state_name;
+
+    //if next_state_name is no longer valid
+    std::string default_next_state_name;
+
+    //if triggered then state manager will transition to next state, can only be triggered if state is active
+    bool triggered;
+
+    //if this state is currently cycling with state manager
+    bool isActive;
+
+    //pointer to the state_manager for this state
     State_Manager* manager;
-    STATE_DATA_CACHE *cache;//holds animation data for state between cycles
 };
 
 
@@ -438,5 +356,20 @@ protected:
 /// \endcode
 ///
 /// \see sf::State
+///
+////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// \class sf::NULLState
+/// \ingroup util
+///
+/// sf::NULLState represents a single state within no real functionality.
+///
+/// Example:
+/// \code
+///
+/// \endcode
+///
+/// \see sf::NULLState
 ///
 ////////////////////////////////////////////////////////////

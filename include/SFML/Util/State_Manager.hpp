@@ -29,8 +29,6 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "Export.hpp"
-#include <SFML/System.hpp>
-#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 #include <map>
@@ -41,9 +39,12 @@ namespace sf
 {
 
 
-class SFML_UTIL_API State;
+class State;
+class Image;
+class Clock;
+class Time;
 
-class SFML_UTIL_API NULLState;
+class NULLState;
 
 ////////////////////////////////////////////////////////////
 /// \brief The Util State_Manager class.
@@ -100,16 +101,25 @@ public :
     void setCurrentState(State*);
 
 
+    ////////////////////////////////////////////////////////////
+    /// \brief get current state
+    ///
+    /// \return State*
+    ////////////////////////////////////////////////////////////
+    State* getCurrentState();
+
+
 protected :
     std::vector<State*> states;
     std::string currentState;
     std::string nextState;
     std::string previousState;
     std::vector<State*>::iterator it;
+
     State* baseState;
-    Image backBuffer;
-    Clock clock;
-    Time time;
+    Image* backBuffer;
+    Clock* clock;
+    Time* time;
 };
 
 } // namespace sf
@@ -126,6 +136,89 @@ protected :
 ///
 /// Example:
 /// \code
+///
+///class IntroState : public sf::State
+///{
+///public:
+///	   std::string name;
+///
+///	   IntroState(std::string n) : sf::State(n)
+///    {
+///        name = n;
+///    }
+///
+///    ~IntroState()
+///    {
+///        ;
+///    }
+///
+///    int Update (const double time)
+///    {
+///    	   std::cout << "Intro_Update_" << name << std::endl;
+///        return 0;
+///    }
+///
+///    int Events ()
+///    {
+///    	   std::cout << "Intro_Events_" << name << std::endl;
+///        return 0;
+///    }
+///
+///    int Draw (sf::Image& canvas)
+///    {
+///    	   std::cout << "Intro_Draw_" << name << std::endl;
+///        return 0;
+///    }
+///
+///    int CleanUp ()
+///    {
+///    	   std::cout << "Intro_Cleanup_" << name << std::endl;
+///        return 0;
+///    }
+///
+///    int Init ()
+///    {
+///    	   std::cout << "Intro_Init_" << name << std::endl;
+///        return 0;
+///    }
+///};
+///
+///
+///
+///int main() {
+///	   IntroState *sptr = new IntroState("Intro");
+///	   IntroState *nsptr = new IntroState("Level1");
+///	   sf::State_Event* enter_key_press_event = new sf::State_Event(0);
+///	   sptr->registerEvent(enter_key_press_event);
+///	   sptr->registerStateChange(enter_key_press_event->getId(), nsptr->getName());
+///
+///
+///	   sf::State_Manager* sm = new sf::State_Manager();
+///	   sm->registerState(sptr);
+///	   sm->registerState(nsptr);
+///	   sm->setCurrentState(sptr);
+///
+///
+///	   while(true)
+///	   {
+///		   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+///		   {
+///			   enter_key_press_event->trigger();
+///		   }
+///		   sm->Cycle();
+///		   if(sm->getCurrentState() == nsptr)
+///			   break;
+///	   }
+///
+///
+///	   sptr->unRegisterEvent(enter_key_press_event);
+///	   enter_key_press_event->unRegisterState(sptr);
+///	   delete enter_key_press_event;
+///	   delete sptr;
+///	   delete nsptr;
+///	   delete sm;
+///	   return 0;
+///}
 ///
 /// \endcode
 ///

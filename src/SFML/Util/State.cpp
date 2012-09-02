@@ -49,15 +49,6 @@ State::State(std::string n)
     isActive = false;
     state_name = n;
     manager = 0;
-
-    if(n.size() > 0){
-        cache = new STATE_DATA_CACHE;
-        (*cache).time[0]=0.0;
-        (*cache).time[1]=0.0;
-    }
-
-    if(registered_events.size() > 0 && n.size() > 0)
-        registered_events[0]->registerState(this);
 }
 
 bool State::setName(std::string name)
@@ -103,7 +94,7 @@ void State::registerEvent(State_Event* e)
 {
     unRegisterEvent(e);
     registered_events.push_back(e);
-    (*e).registerState(this);
+    e->registerState(this);
 }
 
 

@@ -26,6 +26,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Util.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
 
 #include <cstdlib>
 #include <cstring>
@@ -46,7 +48,11 @@ State_Manager::State_Manager()
     currentState = "";
     nextState = "";
     previousState = "";
-    clock.restart();
+
+    clock = new Clock();
+    time = new Time();
+    backBuffer = new Image();
+    clock->restart();
 }
 
 State_Manager::~State_Manager()
@@ -55,6 +61,10 @@ State_Manager::~State_Manager()
         for ( it = states.begin() ; it < states.end(); it++ ){
             (**it).setStateManager(0);
         }
+
+    delete clock;
+    delete time;
+    delete backBuffer;
 }
 
 
@@ -82,7 +92,7 @@ void State_Manager::unRegisterState(State* s)
 
 void State_Manager::Cycle()
 {
-    time = clock.getElapsedTime();
+    *time = clock->getElapsedTime();
     State* cptr = 0;
 
     if(currentState != "")
@@ -137,8 +147,8 @@ void State_Manager::Cycle()
     if(cptr != 0)
     {
         (*cptr).Events();
-        (*cptr).Update((double)time.asMilliseconds());
-        (*cptr).Draw(backBuffer);
+        (*cptr).Update((double)time->asMilliseconds());
+        (*cptr).Draw(*backBuffer);
     }
 }
 
@@ -151,6 +161,17 @@ void State_Manager::setCurrentState(State* s)
             if((**it).getName() == (*s).getName())
                 currentState = (*s).getName();
         }
+}
+
+
+State* State_Manager::getCurrentState()
+{
+    for ( it = states.begin() ; it < states.end(); it++ )
+    {//find current state
+        if((**it).getName() == currentState)
+            return *it;
+    }
+    return 0;
 }
 
 

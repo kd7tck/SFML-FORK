@@ -44,15 +44,14 @@ namespace sf
 State_Event::State_Event(int id)
 {
     event_id = id;
-
-    if(registered_states.size() > 0)
-        registered_states[0]->registerEvent(this);
 }
 
 State_Event::~State_Event()
 {
-    if(registered_states.size() > 0)
-        registered_states[0]->unRegisterEvent(this);
+    if(registered_states.size() > 0){
+        it = registered_states.begin();
+        (**it).unRegisterEvent(this);
+    }
 }
 
 

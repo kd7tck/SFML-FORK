@@ -38,7 +38,7 @@
 namespace sf
 {
 
-class SFML_UTIL_API State;
+class State;
 
 ////////////////////////////////////////////////////////////
 /// \brief The Util State_Event class.

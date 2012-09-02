@@ -8,5 +8,5 @@ FILE(GLOB SRCPP *.cpp)
 # define the sfml-util target
 sfml_add_library(sfml-util
                  SOURCES ${SRCPP} ${SRC}
-                 DEPENDS sfml-window sfml-system
+                 DEPENDS sfml-graphics sfml-window sfml-system
                  EXTERNAL_LIBS m)
