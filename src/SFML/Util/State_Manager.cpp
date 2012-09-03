@@ -79,8 +79,8 @@ void State_Manager::registerState(State* s)
 void State_Manager::unRegisterState(State* s)
 {
     int count = 0;
-    for ( it = states.begin() ; it < states.end(); it++ ){
-        if((**it).getName() == s->getName())
+    for ( it = states.begin() ; it != states.end(); it++ ){
+        if((*it)->getName() == s->getName())
         {
             states.erase(states.begin() + count);
         }
@@ -97,21 +97,21 @@ void State_Manager::Cycle()
 
     if(currentState != "")
     {
-        for ( it = states.begin() ; it < states.end(); it++ )
+        for ( it = states.begin() ; it != states.end(); it++ )
         {//find current state
-            if((**it).getName() == currentState)
+            if((*it)->getName() == currentState)
                 cptr = *it;
         }
 
-        if(cptr != 0 && (*cptr).stateDone())
+        if(cptr != 0 && cptr->stateDone())
         {//if current state is done
 
-            if((*cptr).nextState() != "")
+            if(cptr->nextState() != "")
             {//first phase of state shift
-                (*cptr).setActiveStatus(false);
-                (*cptr).resetTrigger();
-                (*cptr).CleanUp();
-                nextState = (*cptr).nextState();
+                cptr->setActiveStatus(false);
+                cptr->resetTrigger();
+                cptr->CleanUp();
+                nextState = cptr->nextState();
                 previousState = currentState;
                 currentState = "";
                 Cycle();//start second phase of state shift
@@ -124,18 +124,18 @@ void State_Manager::Cycle()
     {
         if(nextState != "")
         {//second phase of state shift
-            for ( it = states.begin() ; it < states.end(); it++ )
+            for ( it = states.begin() ; it != states.end(); it++ )
             {
-                if((**it).getName() == nextState)
+                if((*it)->getName() == nextState)
                     cptr = *it;
             }
 
             if(cptr != 0)
             {
-                (*cptr).setActiveStatus(true);
+                cptr->setActiveStatus(true);
                 currentState = nextState;
                 nextState = "";
-                (*cptr).Init();
+                cptr->Init();
             }
         }
     }
@@ -146,9 +146,9 @@ void State_Manager::Cycle()
     //////////////////////////////////////
     if(cptr != 0)
     {
-        (*cptr).Events();
-        (*cptr).Update((double)time->asMilliseconds());
-        (*cptr).Draw(*backBuffer);
+        cptr->Events();
+        cptr->Update((double)time->asMilliseconds());
+        cptr->Draw(*backBuffer);
     }
 }
 
@@ -156,9 +156,9 @@ void State_Manager::Cycle()
 void State_Manager::setCurrentState(State* s)
 {
     if(s != 0)
-        for ( it = states.begin() ; it < states.end(); it++ )
+        for ( it = states.begin() ; it != states.end(); it++ )
         {
-            if((**it).getName() == (*s).getName())
+            if((*it)->getName() == (*s).getName())
                 currentState = (*s).getName();
         }
 }
@@ -166,11 +166,12 @@ void State_Manager::setCurrentState(State* s)
 
 State* State_Manager::getCurrentState()
 {
-    for ( it = states.begin() ; it < states.end(); it++ )
+    for ( it = states.begin() ; it != states.end(); it++ )
     {//find current state
-        if((**it).getName() == currentState)
+        if((*it)->getName() == currentState)
             return *it;
     }
+
     return 0;
 }
 

@@ -118,6 +118,22 @@ public :
     ////////////////////////////////////////////////////////////
     virtual int Init () = 0;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     ////////////////////////////////////////////////////////////
     /// \brief an event was triggered
     ///
@@ -125,27 +141,7 @@ public :
     ///
     /// \return bool true on success
     ////////////////////////////////////////////////////////////
-    virtual bool trigger(int event_id)
-    {
-        if(isActive && eventIdStateTrigger[event_id].size() > 0)
-        {
-            next_state_name = eventIdStateTrigger[event_id];
-            triggered = true;
-            return true;
-        }
-        return false;
-    }
-
-
-
-
-
-
-
-
-
-
-
+    bool trigger(int event_id);
 
     ////////////////////////////////////////////////////////////
     /// \brief change state name

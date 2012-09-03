@@ -91,6 +91,18 @@ bool State::stateDone()
 }
 
 
+bool State::trigger(int event_id)
+{
+    if(isActive && eventIdStateTrigger.find(event_id) != eventIdStateTrigger.end())
+    {
+        next_state_name = eventIdStateTrigger[event_id];
+        triggered = true;
+        return true;
+    }
+    return false;
+}
+
+
 
 void State::registerEvent(State_Event* e)
 {
@@ -103,14 +115,21 @@ void State::registerEvent(State_Event* e)
 void State::unRegisterEvent(State_Event* e)
 {
     int count = 0;
-    for ( it = registered_events.begin() ; it < registered_events.end(); it++ ){
-        if((**it).getId() == e->getId())
+
+    if(registered_events.size() > 0)
+    {
+        for ( it = registered_events.begin(); it != registered_events.end() ; it++ )
         {
-            registered_events.erase(registered_events.begin() + count);
+            if((*it)->getId() == e->getId())
+            {
+                registered_events.erase(registered_events.begin() + count);
+                break;
+            }
+            else
+                count++;
         }
-        else
-            count++;
     }
+
 }
 
 

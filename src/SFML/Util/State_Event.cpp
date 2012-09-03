@@ -59,9 +59,15 @@ State_Event::~State_Event()
 
 bool State_Event::trigger()
 {
-    for ( it = registered_states.begin(); it < registered_states.end(); it++ ){
-        return (*it)->trigger(event_id);
+    if(registered_states.size() > 0)
+    {
+        for ( it = registered_states.begin(); it != registered_states.end() ; it++ )
+        {
+            (*it)->trigger(event_id);
+        }
+        return true;
     }
+    return false;
 }
 
 
@@ -81,21 +87,27 @@ void State_Event::registerState(State* s)
 {
     unRegisterState(s);
     registered_states.push_back(s);
-    s->registerEvent(this);
 }
 
 
 void State_Event::unRegisterState(State* s)
 {
     int count = 0;
-    for ( it = registered_states.begin() ; it < registered_states.end(); it++ ){
-        if((*it)->getName() == s->getName())
+
+    if(registered_states.size() > 0)
+    {
+        for ( it = registered_states.begin(); it != registered_states.end() ; it++ )
         {
-            registered_states.erase(registered_states.begin() + count);
+            if((*it)->getName() == s->getName())
+            {
+                registered_states.erase(registered_states.begin() + count);
+                break;
+            }
+            else
+                count++;
         }
-        else
-            count++;
     }
+
 }
 
 
