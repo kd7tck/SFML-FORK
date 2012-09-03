@@ -41,6 +41,8 @@
 namespace sf
 {
 
+std::vector<State*> State_Event::registered_states;
+
 State_Event::State_Event(int id)
 {
     event_id = id;
@@ -50,15 +52,15 @@ State_Event::~State_Event()
 {
     if(registered_states.size() > 0){
         it = registered_states.begin();
-        (**it).unRegisterEvent(this);
+        (*it)->unRegisterEvent(this);
     }
 }
 
 
 bool State_Event::trigger()
 {
-    for ( it = registered_states.begin() ; it < registered_states.end(); it++ ){
-        return (**it).trigger(event_id);
+    for ( it = registered_states.begin(); it < registered_states.end(); it++ ){
+        return (*it)->trigger(event_id);
     }
 }
 
@@ -79,7 +81,7 @@ void State_Event::registerState(State* s)
 {
     unRegisterState(s);
     registered_states.push_back(s);
-    (*s).registerEvent(this);
+    s->registerEvent(this);
 }
 
 
@@ -87,7 +89,7 @@ void State_Event::unRegisterState(State* s)
 {
     int count = 0;
     for ( it = registered_states.begin() ; it < registered_states.end(); it++ ){
-        if((**it).getName() == s->getName())
+        if((*it)->getName() == s->getName())
         {
             registered_states.erase(registered_states.begin() + count);
         }

@@ -187,6 +187,7 @@ protected :
 ///
 ///int main() {
 ///	   sf::State* sp;
+///    sf::State* sp2;
 ///
 ///	   //create two new classes from abstract type State
 ///	   IntroState *sptr = new IntroState("Intro");
@@ -197,15 +198,16 @@ protected :
 ///
 ///	   //access Parent attributes by using State pointer
 ///	   sp = sptr;
+///    sp2 = nsptr;
 ///	   sp->registerEvent(enter_key_press_event);
-///	   sp->registerStateChange(enter_key_press_event->getId(), nsptr->getName());
+///	   sp->registerStateChange(enter_key_press_event->getId(), sp2->getName());
 ///
 ///
 ///	   //assign states to state manager
 ///	   sf::State_Manager* sm = new sf::State_Manager();
-///	   sm->registerState(sptr);
-///	   sm->registerState(nsptr);
-///	   sm->setCurrentState(sptr);
+///	   sm->registerState(sp);
+///	   sm->registerState(sp2);
+///	   sm->setCurrentState(sp);
 ///
 ///
 ///	   while(true)

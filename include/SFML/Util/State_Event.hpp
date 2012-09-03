@@ -129,7 +129,15 @@ protected :
 ///
 /// Example:
 /// \code
+/// //create new state_event and register it to a State
+/// sf::State_Event* enter_key_press_event = new sf::State_Event(0);
+/// state_pntr->registerEvent(enter_key_press_event);
 ///
+/// //map event to other state
+/// state_pntr->registerStateChange(enter_key_press_event->getId(), state_pntr_2->getName());
+///
+/// //trigger an event, activates the mapping made earlier
+/// enter_key_press_event->trigger();
 /// \endcode
 ///
 /// \see sf::State_Event

@@ -348,10 +348,56 @@ protected:
 /// \class sf::State
 /// \ingroup util
 ///
-/// sf::State represents a single state within a finite state machine.
+/// sf::State represents a single state within a finite state machine. This is an abstract class.
 ///
 /// Example:
 /// \code
+///
+///class IntroState : public sf::State
+///{
+///public:
+///	   std::string name;
+///
+///	   IntroState(std::string n) : sf::State(n)
+///    {
+///        name = n;
+///    }
+///
+///    ~IntroState()
+///    {
+///        ;
+///    }
+///
+///    int Update (const double time)
+///    {
+///    	   std::cout << "Intro_Update_" << name << std::endl;
+///        return 0;
+///    }
+///
+///    int Events ()
+///    {
+///    	   std::cout << "Intro_Events_" << name << std::endl;
+///        return 0;
+///    }
+///
+///    int Draw (sf::Image& canvas)
+///    {
+///    	   std::cout << "Intro_Draw_" << name << std::endl;
+///        return 0;
+///    }
+///
+///    int CleanUp ()
+///    {
+///    	   std::cout << "Intro_Cleanup_" << name << std::endl;
+///        return 0;
+///    }
+///
+///    int Init ()
+///    {
+///    	   std::cout << "Intro_Init_" << name << std::endl;
+///        return 0;
+///    }
+///};
 ///
 /// \endcode
 ///

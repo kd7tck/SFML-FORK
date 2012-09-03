@@ -41,6 +41,8 @@
 namespace sf
 {
 
+std::vector <State_Event*> State::registered_events;
+
 State::State(std::string n)
 {
     next_state_name = "";
