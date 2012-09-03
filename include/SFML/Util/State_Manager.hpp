@@ -92,6 +92,13 @@ public :
     void Cycle();
 
     ////////////////////////////////////////////////////////////
+    /// \brief ends state machine, and cleans everyhting up
+    ///
+    /// \return void
+    ////////////////////////////////////////////////////////////
+    void Halt();
+
+    ////////////////////////////////////////////////////////////
     /// \brief set current state
     ///
     /// \param State*
@@ -186,22 +193,26 @@ protected :
 ///
 ///
 ///int main() {
+///
 ///	   sf::State* sp;
-///    sf::State* sp2;
+///	   sf::State* sp2;
+///
 ///
 ///	   //create two new classes from abstract type State
 ///	   IntroState *sptr = new IntroState("Intro");
 ///	   IntroState *nsptr = new IntroState("Level1");
 ///
+///
 ///	   //create event trigger
 ///	   sf::State_Event* enter_key_press_event = new sf::State_Event(0);
 ///
+///
 ///	   //access Parent attributes by using State pointer
 ///	   sp = sptr;
-///    sp2 = nsptr;
+///	   sp2 = nsptr;
+///
 ///	   sp->registerEvent(enter_key_press_event);
 ///	   sp->registerStateChange(enter_key_press_event->getId(), sp2->getName());
-///
 ///
 ///	   //assign states to state manager
 ///	   sf::State_Manager* sm = new sf::State_Manager();
@@ -212,15 +223,22 @@ protected :
 ///
 ///	   while(true)
 ///	   {
-///		   if(sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+///		   //detect action for trigger
+///		   if(sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 ///		   {
 ///			   enter_key_press_event->trigger();
 ///		   }
-///		   sm->Cycle();
-///		   if(sm->getCurrentState() == nsptr)
-///			   break;
-///	   }
 ///
+///		   sm->Cycle();//state cycle
+///
+///
+///		   //exit game loop
+///		   if(sm->getCurrentState()->getName() == nsptr->getName())
+///		   {
+///			   sm->Halt();
+///			   break;
+///		   }
+///	   }
 ///
 ///	   //clean up
 ///	   sptr->unRegisterEvent(enter_key_press_event);

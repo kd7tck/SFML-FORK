@@ -144,11 +144,30 @@ void State_Manager::Cycle()
     //////////////////////////////////////
     //process current cycle, if no state shift
     //////////////////////////////////////
-    if(cptr != 0)
+    if(cptr != 0 && cptr->getActiveStatus())
     {
         cptr->Events();
         cptr->Update((double)time->asMilliseconds());
         cptr->Draw(*backBuffer);
+    }
+}
+
+
+void State_Manager::Halt()
+{
+    State* cptr = 0;
+
+    if(currentState != "")
+    {
+        for ( it = states.begin() ; it != states.end(); it++ )
+        {//find current state
+            if((*it)->getName() == currentState)
+                cptr = *it;
+        }
+
+        cptr->setActiveStatus(false);
+        cptr->resetTrigger();
+        cptr->CleanUp();
     }
 }
 
@@ -158,8 +177,11 @@ void State_Manager::setCurrentState(State* s)
     if(s != 0)
         for ( it = states.begin() ; it != states.end(); it++ )
         {
-            if((*it)->getName() == (*s).getName())
-                currentState = (*s).getName();
+            if((*it)->getName() == s->getName())
+            {
+                currentState = s->getName();
+                s->setActiveStatus(true);
+            }
         }
 }
 
