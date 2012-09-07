@@ -42,7 +42,45 @@ RectangleShape::RectangleShape(const Vector2f& size)
 void RectangleShape::setSize(const Vector2f& size)
 {
     m_size = size;
+    coordinates[0] = Vector2f(0, 0);
+    coordinates[1] = Vector2f(m_size.x, 0);
+    coordinates[2] = Vector2f(m_size.x, m_size.y);
+    coordinates[3] = Vector2f(0, m_size.y);
     update();
+}
+
+
+////////////////////////////////////////////////////////////
+void RectangleShape::line(const Vector2f& p1, const Vector2f& p2, unsigned int thickness)
+{
+    if(p1.x == p2.x)//vertical line
+    {
+        coordinates[0] = Vector2f(p1.x-thickness, p1.y);
+        coordinates[1] = Vector2f(p1.x+thickness, p1.y);
+        coordinates[2] = Vector2f(p2.x+thickness, p2.y);
+        coordinates[3] = Vector2f(p2.x-thickness, p2.y);
+    }
+    else if(p1.y > p2.y)
+    {
+        coordinates[0] = Vector2f(p1.x+thickness, p1.y+thickness);
+        coordinates[1] = Vector2f(p1.x-thickness, p1.y-thickness);
+        coordinates[2] = Vector2f(p2.x-thickness, p2.y-thickness);
+        coordinates[3] = Vector2f(p2.x+thickness, p2.y+thickness);
+    }
+    else if (p1.y < p2.y)
+    {
+        coordinates[0] = Vector2f(p1.x-thickness, p1.y+thickness);
+        coordinates[1] = Vector2f(p1.x+thickness, p1.y-thickness);
+        coordinates[2] = Vector2f(p2.x+thickness, p2.y-thickness);
+        coordinates[3] = Vector2f(p2.x-thickness, p2.y+thickness);
+    }
+    else//horizontal line
+    {
+        coordinates[0] = Vector2f(p1.x, p1.y-thickness);
+        coordinates[1] = Vector2f(p1.x, p1.y+thickness);
+        coordinates[2] = Vector2f(p2.x, p2.y+thickness);
+        coordinates[3] = Vector2f(p2.x, p2.y-thickness);
+    }
 }
 
 
@@ -66,11 +104,12 @@ Vector2f RectangleShape::getPoint(unsigned int index) const
     switch (index)
     {
         default:
-        case 0: return Vector2f(0, 0);
-        case 1: return Vector2f(m_size.x, 0);
-        case 2: return Vector2f(m_size.x, m_size.y);
-        case 3: return Vector2f(0, m_size.y);
+        case 0: return coordinates[index];
+        case 1: return coordinates[index];
+        case 2: return coordinates[index];
+        case 3: return coordinates[index];
     }
+
 }
 
 } // namespace sf

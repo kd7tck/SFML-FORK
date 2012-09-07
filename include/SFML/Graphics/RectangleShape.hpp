@@ -61,6 +61,18 @@ public :
     void setSize(const Vector2f& size);
 
     ////////////////////////////////////////////////////////////
+    /// \brief Line option for rectangle, auto converts coordinates to line with thickness
+    ///
+    /// \param int point 1
+    ///
+    /// \param int point 2
+    ///
+    /// \param int line thickness
+    ///
+    ////////////////////////////////////////////////////////////
+    void line(const Vector2f& p1, const Vector2f& p2 = Vector2f(0, 0), unsigned int thickness = 1);
+
+    ////////////////////////////////////////////////////////////
     /// \brief Get the size of the rectangle
     ///
     /// \return Size of the rectangle
@@ -96,6 +108,7 @@ private :
     // Member data
     ////////////////////////////////////////////////////////////
     Vector2f m_size; ///< Size of the rectangle
+    Vector2f coordinates[4];
 };
 
 } // namespace sf
