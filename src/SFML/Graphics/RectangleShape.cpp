@@ -51,35 +51,31 @@ void RectangleShape::setSize(const Vector2f& size)
 
 
 ////////////////////////////////////////////////////////////
-void RectangleShape::line(const Vector2f& p1, const Vector2f& p2, unsigned int thickness)
+void RectangleShape::line(const Vector2f& p1, const Vector2f& p2, unsigned int thick)
 {
-    if(p1.x == p2.x)//vertical line
+    int thickness = thick;
+
+    if(thickness == 0)
+        thickness = 1;
+
+    float dist = sqrt( pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2) );
+    setSize(Vector2f(thickness, dist));
+
+
+    if(p1.x == p2.x)
     {
-        coordinates[0] = Vector2f(p1.x-thickness, p1.y);
-        coordinates[1] = Vector2f(p1.x+thickness, p1.y);
-        coordinates[2] = Vector2f(p2.x+thickness, p2.y);
-        coordinates[3] = Vector2f(p2.x-thickness, p2.y);
+        if(p1.y < p2.y)
+            setPosition(p1.x, p1.y);
+        else
+            setPosition(p2.x, p2.y);
     }
-    else if(p1.y > p2.y)
+    else if(p1.y == p2.y)
     {
-        coordinates[0] = Vector2f(p1.x+thickness, p1.y+thickness);
-        coordinates[1] = Vector2f(p1.x-thickness, p1.y-thickness);
-        coordinates[2] = Vector2f(p2.x-thickness, p2.y-thickness);
-        coordinates[3] = Vector2f(p2.x+thickness, p2.y+thickness);
-    }
-    else if (p1.y < p2.y)
-    {
-        coordinates[0] = Vector2f(p1.x-thickness, p1.y+thickness);
-        coordinates[1] = Vector2f(p1.x+thickness, p1.y-thickness);
-        coordinates[2] = Vector2f(p2.x+thickness, p2.y-thickness);
-        coordinates[3] = Vector2f(p2.x-thickness, p2.y+thickness);
-    }
-    else//horizontal line
-    {
-        coordinates[0] = Vector2f(p1.x, p1.y-thickness);
-        coordinates[1] = Vector2f(p1.x, p1.y+thickness);
-        coordinates[2] = Vector2f(p2.x, p2.y+thickness);
-        coordinates[3] = Vector2f(p2.x, p2.y-thickness);
+        setRotation(-90.f);
+        if(p1.x < p2.x)
+            setPosition(p1.x, p1.y);
+        else
+            setPosition(p2.x, p2.y);
     }
 }
 
