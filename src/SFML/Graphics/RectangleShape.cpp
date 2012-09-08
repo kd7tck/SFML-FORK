@@ -31,6 +31,7 @@
 
 namespace sf
 {
+
 ////////////////////////////////////////////////////////////
 RectangleShape::RectangleShape(const Vector2f& size)
 {
@@ -58,25 +59,53 @@ void RectangleShape::line(const Vector2f& p1, const Vector2f& p2, unsigned int t
     if(thickness == 0)
         thickness = 1;
 
-    float dist = sqrt( pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2) );
-    setSize(Vector2f(thickness, dist));
+    if(p1 == p2)//pixel
+    {
+        setSize(Vector2f(thickness, thickness));
+        setPosition(p1.x-(thickness/2), p1.y-(thickness/2));
+    }
+    else//line
+    {
+
+        float dist = sqrt( pow(p2.x - p1.x, 2) + pow(p2.y - p1.y, 2) );
+        setSize(Vector2f(thickness, dist));
 
 
-    if(p1.x == p2.x)
-    {
-        if(p1.y < p2.y)
+
+        if(p1.x == p2.x)//vertical line
+        {
+            if(p1.y < p2.y)
+                setPosition(p1.x, p1.y);
+            else
+                setPosition(p2.x, p2.y);
+        }
+        else if(p1.y == p2.y)//horizontal line
+        {
+            setRotation(-90.f);
+            if(p1.x < p2.x)
+                setPosition(p1.x, p1.y);
+            else
+                setPosition(p2.x, p2.y);
+        }
+        else if(p1.x < p2.x)
+        {
+            float deltaX = p2.x - p1.x;
+            float deltaY = p2.y - p1.y;
+            float angleInDegrees = atan2(deltaX, deltaY) * 57.295779513082320876798154814105170L;
+            setRotation(-angleInDegrees);
             setPosition(p1.x, p1.y);
-        else
+        }
+        else if(p1.x > p2.x)
+        {
+            float deltaX = p1.x - p2.x;
+            float deltaY = p1.y - p2.y;
+            float angleInDegrees = atan2(deltaX, deltaY) * 57.295779513082320876798154814105170L;
+            setRotation(-angleInDegrees);
             setPosition(p2.x, p2.y);
+        }
     }
-    else if(p1.y == p2.y)
-    {
-        setRotation(-90.f);
-        if(p1.x < p2.x)
-            setPosition(p1.x, p1.y);
-        else
-            setPosition(p2.x, p2.y);
-    }
+
+
 }
 
 
