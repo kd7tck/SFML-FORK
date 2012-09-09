@@ -69,6 +69,13 @@ public :
     ///
     /// \param int line thickness
     ///
+    /// \code
+    /// sf::RectangleShape rec;
+	/// rec.line(sf::Vector2f(400.f, 600.f), sf::Vector2f(800.f, 0.f), 1);
+	/// rec.setFillColor(sf::Color::Red);
+	/// window.draw(rec);
+    /// \endcode
+    ///
     ////////////////////////////////////////////////////////////
     void line(const Vector2f& p1, const Vector2f& p2 = Vector2f(0, 0), unsigned int thickness = 1);
 
