@@ -175,14 +175,37 @@ void State_Manager::Halt()
 void State_Manager::setCurrentState(State* s)
 {
     if(s != 0)
+    {
+        //remove current state
+        if(currentState != "")
+        {
+            State* cptr = 0;
+            for ( it = states.begin() ; it != states.end(); it++ )
+            {//find current state
+                if((*it)->getName() == currentState)
+                    cptr = *it;
+            }
+            cptr->setActiveStatus(false);
+            cptr->resetTrigger();
+            cptr->CleanUp();
+            previousState = currentState;
+            currentState = "";
+        }
+
+
+        //replace current state
         for ( it = states.begin() ; it != states.end(); it++ )
         {
             if((*it)->getName() == s->getName())
             {
                 currentState = s->getName();
                 s->setActiveStatus(true);
+                s->Init();
             }
         }
+
+
+    }
 }
 
 
