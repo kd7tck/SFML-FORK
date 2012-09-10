@@ -22,21 +22,37 @@
 //
 ////////////////////////////////////////////////////////////
 
-#ifndef SFML_UTIL_HPP
-#define SFML_UTIL_HPP
-
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Util/Math.hpp>
-#include <SFML/Util/State_Event.hpp>
-#include <SFML/Util/State_Manager.hpp>
-#include <SFML/Util/State.hpp>
+#include <SFML/Graphics.hpp>
+#include "giflib/gif_lib.h"
+
+#include <cstdlib>
+#include <cstring>
+#include <iomanip>
+#include <locale>
+#include <sstream>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <cstdio>
 
 
-#endif // SFML_UTIL_HPP
+namespace sf
+{
 
-////////////////////////////////////////////////////////////
-/// \defgroup util Util module
-///
-////////////////////////////////////////////////////////////
+GifReader::GifReader()
+{
+    ;
+}
+
+GifReader::~GifReader()
+{
+    ;
+}
+
+
+
+
+} // namespace sf

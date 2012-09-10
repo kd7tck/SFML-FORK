@@ -65,6 +65,15 @@ set(SRC
     ${INCROOT}/VertexArray.hpp
     ${SRCROOT}/stb_image/stb_image.h
     ${SRCROOT}/stb_image/stb_image_write.h
+    ${SRCROOT}/GifReader.cpp
+    ${INCROOT}/GifReader.hpp
+    ${SRCROOT}/giflib/dgif_lib.c
+    ${SRCROOT}/giflib/egif_lib.c
+    ${SRCROOT}/giflib/gifalloc.c
+    ${SRCROOT}/giflib/gif_err.c
+    ${SRCROOT}/giflib/gif_font.c
+    ${SRCROOT}/giflib/gif_hash.c
+    ${SRCROOT}/giflib/quantize.c
 )
 
 # let CMake know about our additional graphics libraries paths (on Windows and OSX)
