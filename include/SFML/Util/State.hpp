@@ -66,6 +66,11 @@ public :
     virtual ~State(){
         if(manager != 0)
             manager->unRegisterState(this);
+
+        if(State::registered_events.size() > 0){
+            it = State::registered_events.begin();
+            (*it)->unRegisterState(this);
+        }
     }
 
 

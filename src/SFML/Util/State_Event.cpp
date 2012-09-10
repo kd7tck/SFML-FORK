@@ -50,8 +50,8 @@ State_Event::State_Event(int id)
 
 State_Event::~State_Event()
 {
-    if(registered_states.size() > 0){
-        it = registered_states.begin();
+    if(State_Event::registered_states.size() > 0){
+        it = State_Event::registered_states.begin();
         (*it)->unRegisterEvent(this);
     }
 }
@@ -59,9 +59,9 @@ State_Event::~State_Event()
 
 bool State_Event::trigger()
 {
-    if(registered_states.size() > 0)
+    if(State_Event::registered_states.size() > 0)
     {
-        for ( it = registered_states.begin(); it != registered_states.end() ; it++ )
+        for ( it = State_Event::registered_states.begin(); it != State_Event::registered_states.end() ; it++ )
         {
             (*it)->trigger(event_id);
         }
@@ -86,7 +86,7 @@ void State_Event::setId(int id)
 void State_Event::registerState(State* s)
 {
     unRegisterState(s);
-    registered_states.push_back(s);
+    State_Event::registered_states.push_back(s);
 }
 
 
@@ -94,13 +94,13 @@ void State_Event::unRegisterState(State* s)
 {
     int count = 0;
 
-    if(registered_states.size() > 0)
+    if(State_Event::registered_states.size() > 0)
     {
-        for ( it = registered_states.begin(); it != registered_states.end() ; it++ )
+        for ( it = State_Event::registered_states.begin(); it != State_Event::registered_states.end() ; it++ )
         {
             if((*it)->getName() == s->getName())
             {
-                registered_states.erase(registered_states.begin() + count);
+                State_Event::registered_states.erase(State_Event::registered_states.begin() + count);
                 break;
             }
             else
