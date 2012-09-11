@@ -58,6 +58,20 @@ public :
     ////////////////////////////////////////////////////////////
     ~GifReader();
 
+    ////////////////////////////////////////////////////////////
+    /// \brief constructor
+    ///
+    /// \param int width of frame
+    ///
+    /// \param int height of frame
+    ///
+    /// \param int number of frames in animation
+    ///
+    /// \return char* the pointer to the pixel array
+    ///
+    ////////////////////////////////////////////////////////////
+    char* Gif2RGB(std::string filename, int& framewidth, int& frameheight, int& numberOfFrames);
+
 
 
 protected :

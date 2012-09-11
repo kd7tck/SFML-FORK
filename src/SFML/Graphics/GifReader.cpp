@@ -52,6 +52,41 @@ GifReader::~GifReader()
     ;
 }
 
+char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& numberOfFrames)
+{
+    char* output;
+
+    int	i, j, Size, Row, Col, Width, Height, ExtCode, Count;
+    GifRecordType RecordType;
+    GifByteType *Extension;
+    GifRowType *ScreenBuffer;
+    GifFileType *GifFile;
+
+    int
+        InterlacedOffset[] = { 0, 4, 2, 1 }, /* The way Interlaced image should. */
+        InterlacedJumps[] = { 8, 8, 4, 2 };    /* be read - offsets and jumps... */
+
+    int ImageNum = 0;
+    ColorMapObject *ColorMap;
+    int Error;
+
+
+
+    if ((GifFile = DGifOpenFileName(filename.c_str(), &Error)) != NULL)
+    {
+        if (DGifCloseFile(GifFile) == GIF_ERROR)
+        {
+            exit(0);
+        }
+
+        return output;
+    }
+
+
+
+    return 0;
+}
+
 
 
 
