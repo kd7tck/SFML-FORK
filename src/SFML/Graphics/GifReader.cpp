@@ -74,10 +74,37 @@ char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& num
 
     if ((GifFile = DGifOpenFileName(filename.c_str(), &Error)) != NULL)
     {
-        if (DGifCloseFile(GifFile) == GIF_ERROR)
+        //allocate SHeight number of row arrays
+        if ((ScreenBuffer = (GifRowType *) malloc(GifFile->SHeight * sizeof(GifRowType))) == NULL)
+            exit(1);
+
+        //determin size of row
+        Size = GifFile->SWidth * sizeof(GifPixelType);
+
+        //allocate for row
+        if ((ScreenBuffer[0] = (GifRowType) malloc(Size)) == NULL)
+            exit(1);
+
+        //set to black
+        for (i = 0; i < GifFile->SWidth; i++)
+            ScreenBuffer[0][i] = GifFile->SBackGroundColor;
+
+        // Allocate the other rows, and set their color to background too
+        for (i = 1; i < GifFile->SHeight; i++)
         {
-            exit(0);
+            if ((ScreenBuffer[i] = (GifRowType) malloc(Size)) == NULL)
+                exit(1);
+
+            memcpy(ScreenBuffer[i], ScreenBuffer[0], Size);
         }
+
+
+
+
+
+        //close file
+        if (DGifCloseFile(GifFile) == GIF_ERROR)
+            exit(2);
 
         return output;
     }
