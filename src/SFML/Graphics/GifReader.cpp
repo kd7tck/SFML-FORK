@@ -101,6 +101,75 @@ char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& num
 
 
 
+        /* Scan the content of the GIF file and load the image(s) in: */
+        do
+        {
+            if (DGifGetRecordType(GifFile, &RecordType) == GIF_ERROR)
+            {
+                exit(3);
+            }
+            switch (RecordType)
+            {
+                case IMAGE_DESC_RECORD_TYPE:
+                    if (DGifGetImageDesc(GifFile) == GIF_ERROR)
+                    {
+                        exit(3);
+                    }
+                    Row = GifFile->Image.Top; /* Image Position relative to Screen. */
+                    Col = GifFile->Image.Left;
+                    Width = GifFile->Image.Width;
+                    Height = GifFile->Image.Height;
+                    if (GifFile->Image.Left + GifFile->Image.Width > GifFile->SWidth || GifFile->Image.Top + GifFile->Image.Height > GifFile->SHeight)
+                    {
+                        exit(3);
+                    }
+                    if (GifFile->Image.Interlace)
+                    {
+                        /* Need to perform 4 passes on the images: */
+                        for (Count = i = 0; i < 4; i++)
+                            for (j = Row + InterlacedOffset[i]; j < Row + Height; j += InterlacedJumps[i])
+                            {
+                                if (DGifGetLine(GifFile, &ScreenBuffer[j][Col], Width) == GIF_ERROR)
+                                {
+                                    exit(3);
+                                }
+                            }
+                    }
+                    else
+                    {
+                        for (i = 0; i < Height; i++)
+                        {
+                            if (DGifGetLine(GifFile, &ScreenBuffer[Row++][Col],Width) == GIF_ERROR)
+                            {
+                                exit(3);
+                            }
+                        }
+                    }
+                    break;
+                case EXTENSION_RECORD_TYPE:
+                    /* Skip any extension blocks in file: */
+                    if (DGifGetExtension(GifFile, &ExtCode, &Extension) == GIF_ERROR)
+                    {
+                        exit(3);
+                    }
+                    while (Extension != NULL)
+                    {
+                        if (DGifGetExtensionNext(GifFile, &Extension) == GIF_ERROR)
+                        {
+                        exit(3);
+                        }
+                    }
+                    break;
+                case TERMINATE_RECORD_TYPE:
+                    break;
+                default:		    /* Should be trapped by DGifGetRecordType. */
+                    break;
+            }//end of switch
+        } while (RecordType != TERMINATE_RECORD_TYPE);
+
+
+
+
 
         //close file
         if (DGifCloseFile(GifFile) == GIF_ERROR)
