@@ -54,12 +54,7 @@ GifReader::~GifReader()
 
 unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& numberOfFrames)
 {
-    numberOfFrames = 1;
     unsigned char* output;
-
-
-    int	i, j, Size, Row, Col, Width, Height, ExtCode, Count;
-    GifRecordType RecordType;
     GifByteType *Extension;
     GifRowType *ScreenBuffer;
     GifFileType *GifFile;
@@ -78,114 +73,13 @@ unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height,
 
     if ((GifFile = DGifOpenFileName(filename.c_str(), &Error)) != NULL)
     {
-        //allocate SHeight number of row arrays
-        if ((ScreenBuffer = (GifRowType *) malloc(GifFile->SHeight * sizeof(GifRowType))) == NULL)
+        if(DGifSlurp(GifFile) == GIF_ERROR)
             exit(1);
 
-        //determin size of row
-        Size = GifFile->SWidth * sizeof(GifPixelType);
+        numberOfFrames = GifFile->ImageCount;
+        width = GifFile->Image.Width;
+        height = GifFile->Image.Height;
 
-        //allocate for row
-        if ((ScreenBuffer[0] = (GifRowType) malloc(Size)) == NULL)
-            exit(1);
-
-        //set to black
-        for (i = 0; i < GifFile->SWidth; i++)
-            ScreenBuffer[0][i] = GifFile->SBackGroundColor;
-
-        // Allocate the other rows, and set their color to background too
-        for (i = 1; i < GifFile->SHeight; i++)
-        {
-            if ((ScreenBuffer[i] = (GifRowType) malloc(Size)) == NULL)
-                exit(1);
-
-            memcpy(ScreenBuffer[i], ScreenBuffer[0], Size);
-        }
-
-
-
-
-
-
-
-
-
-        /* Scan the content of the GIF file and load the image(s) in: */
-        do
-        {
-            if (DGifGetRecordType(GifFile, &RecordType) == GIF_ERROR)
-            {
-                exit(3);
-            }
-            switch (RecordType)
-            {
-                case IMAGE_DESC_RECORD_TYPE:
-                    if (DGifGetImageDesc(GifFile) == GIF_ERROR)
-                    {
-                        exit(3);
-                    }
-                    Row = GifFile->Image.Top; /* Image Position relative to Screen. */
-                    Col = GifFile->Image.Left;
-                    Width = GifFile->Image.Width;
-                    Height = GifFile->Image.Height;
-                    if (GifFile->Image.Left + GifFile->Image.Width > GifFile->SWidth || GifFile->Image.Top + GifFile->Image.Height > GifFile->SHeight)
-                    {
-                        exit(3);
-                    }
-                    if (GifFile->Image.Interlace)
-                    {
-                        /* Need to perform 4 passes on the images: */
-                        for (Count = i = 0; i < 4; i++)
-                            for (j = Row + InterlacedOffset[i]; j < Row + Height; j += InterlacedJumps[i])
-                            {
-                                if (DGifGetLine(GifFile, &ScreenBuffer[j][Col], Width) == GIF_ERROR)
-                                {
-                                    exit(3);
-                                }
-                            }
-                    }
-                    else
-                    {
-                        for (i = 0; i < Height; i++)
-                        {
-                            if (DGifGetLine(GifFile, &ScreenBuffer[Row++][Col],Width) == GIF_ERROR)
-                            {
-                                exit(3);
-                            }
-                        }
-                    }
-                    break;
-                case EXTENSION_RECORD_TYPE:
-                    /* Skip any extension blocks in file: */
-                    if (DGifGetExtension(GifFile, &ExtCode, &Extension) == GIF_ERROR)
-                    {
-                        exit(3);
-                    }
-                    while (Extension != NULL)
-                    {
-                        if (DGifGetExtensionNext(GifFile, &Extension) == GIF_ERROR)
-                        {
-                            exit(3);
-                        }
-                    }
-                    break;
-                case TERMINATE_RECORD_TYPE:
-                    break;
-                default:		    /* Should be trapped by DGifGetRecordType. */
-                    break;
-            }//end of switch
-        } while (RecordType != TERMINATE_RECORD_TYPE);
-
-
-
-
-
-
-
-
-        //output data to char stream
-        width = GifFile->SWidth;
-        height = GifFile->SHeight;
         if ((output = (unsigned char *) malloc(width * height * numberOfFrames * 3)) == NULL)
             exit(4);
 
@@ -195,30 +89,17 @@ unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height,
             exit(4);
         }
 
-        for (i = 0; i < height; i++)
+        for(int x=0; x < GifFile->SWidth * GifFile->SHeight; x++)
         {
-            GifRow = ScreenBuffer[i];
-            for (j = 0; j < width; j++)
-            {
-                ColorMapEntry = &ColorMap->Colors[GifRow[j]];
-                *output++ = ColorMapEntry->Red;
-                *output++ = ColorMapEntry->Green;
-                *output++ = ColorMapEntry->Blue;
-            }
+            ColorMapEntry = &ColorMap->Colors[GifFile->SavedImages->RasterBits[x]];
+            *output++ = ColorMapEntry->Red;
+            *output++ = ColorMapEntry->Green;
+            *output++ = ColorMapEntry->Blue;
         }
 
 
-
-
-
-
-
-
-        //close file and clean up
         if (DGifCloseFile(GifFile) == GIF_ERROR)
             exit(2);
-
-        (void)free(ScreenBuffer);
 
         return output;
     }
