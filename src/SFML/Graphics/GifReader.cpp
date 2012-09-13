@@ -52,15 +52,18 @@ GifReader::~GifReader()
     ;
 }
 
-char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& numberOfFrames)
+unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& numberOfFrames)
 {
-    char* output;
+    numberOfFrames = 1;
+    unsigned char* output;
+
 
     int	i, j, Size, Row, Col, Width, Height, ExtCode, Count;
     GifRecordType RecordType;
     GifByteType *Extension;
     GifRowType *ScreenBuffer;
     GifFileType *GifFile;
+    GifColorType *ColorMapEntry;
 
     int
         InterlacedOffset[] = { 0, 4, 2, 1 }, /* The way Interlaced image should. */
@@ -69,6 +72,7 @@ char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& num
     int ImageNum = 0;
     ColorMapObject *ColorMap;
     int Error;
+    GifRowType GifRow;
 
 
 
@@ -97,6 +101,11 @@ char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& num
 
             memcpy(ScreenBuffer[i], ScreenBuffer[0], Size);
         }
+
+
+
+
+
 
 
 
@@ -156,7 +165,7 @@ char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& num
                     {
                         if (DGifGetExtensionNext(GifFile, &Extension) == GIF_ERROR)
                         {
-                        exit(3);
+                            exit(3);
                         }
                     }
                     break;
@@ -171,9 +180,45 @@ char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& num
 
 
 
-        //close file
+
+
+
+        //output data to char stream
+        width = GifFile->SWidth;
+        height = GifFile->SHeight;
+        if ((output = (unsigned char *) malloc(width * height * numberOfFrames * 3)) == NULL)
+            exit(4);
+
+        ColorMap = (GifFile->Image.ColorMap ? GifFile->Image.ColorMap : GifFile->SColorMap);
+        if (ColorMap == NULL)
+        {
+            exit(4);
+        }
+
+        for (i = 0; i < height; i++)
+        {
+            GifRow = ScreenBuffer[i];
+            for (j = 0; j < width; j++)
+            {
+                ColorMapEntry = &ColorMap->Colors[GifRow[j]];
+                *output++ = ColorMapEntry->Red;
+                *output++ = ColorMapEntry->Green;
+                *output++ = ColorMapEntry->Blue;
+            }
+        }
+
+
+
+
+
+
+
+
+        //close file and clean up
         if (DGifCloseFile(GifFile) == GIF_ERROR)
             exit(2);
+
+        (void)free(ScreenBuffer);
 
         return output;
     }

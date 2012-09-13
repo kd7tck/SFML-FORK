@@ -67,10 +67,10 @@ public :
     ///
     /// \param int number of frames in animation
     ///
-    /// \return char* the pointer to the pixel array
+    /// \return unsigned char* the pointer to the pixel array
     ///
     ////////////////////////////////////////////////////////////
-    char* Gif2RGB(std::string filename, int& framewidth, int& frameheight, int& numberOfFrames);
+    unsigned char* Gif2RGB(std::string filename, int& framewidth, int& frameheight, int& numberOfFrames);
 
 
 
