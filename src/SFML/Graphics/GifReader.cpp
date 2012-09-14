@@ -122,12 +122,12 @@ unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth,
 
 
 
-    position = frameNumber%nf;
+    position = frameNumber % nf;
 
 
 
 
-    for(int x=0;x<position*framewidth*frameheight*3;x++)
+    for(int x = 0; x < position*framewidth*frameheight*3; x++)
         outp++;
 
 
@@ -137,7 +137,7 @@ unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth,
 
     out2p = out2;
 
-    for(int y=0;y<framewidth*frameheight*3;y++)
+    for(int y = 0; y < framewidth*frameheight*3; y++)
         *out2p++ = *outp++;
 
 
@@ -155,19 +155,21 @@ void GifReader::GetImageByIndex(Image& i, int frameNumber, std::string filename)
     int width, height;
     int position;//frame number, zero based
     int nf;//returns the number of frames in gif
-    unsigned char* out = Gif2RGB(filename.c_str(),width,height,nf);
+    unsigned char* out = Gif2RGB(filename.c_str(), width, height, nf);
     unsigned char* outp = out;
     sf::Color c;
 
-    i.create(width, height, sf::Color::Black);
+    sf::Vector2u s = i.getSize();
+    if(s.x != width || s.y != height)
+        i.create(width, height, sf::Color::Black);
 
-    position = frameNumber%nf;
+    position = frameNumber % nf;
 
-    for(int x=0;x<position*width*height*3;x++)
+    for(int x = 0; x < position*width*height*3; x++)
         outp++;
 
-    for(int y=0;y<height;y++)
-        for(int x=0;x<width;x++)
+    for(int y = 0; y < height; y++)
+        for(int x = 0; x < width; x++)
         {
             c.r = *outp++;
             c.g = *outp++;
