@@ -125,10 +125,7 @@ unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth,
     position = frameNumber % nf;
 
 
-
-
-    for(int x = 0; x < position*framewidth*frameheight*3; x++)
-        outp++;
+    outp+=position*framewidth*frameheight*3;
 
 
 
@@ -165,8 +162,7 @@ void GifReader::GetImageByIndex(Image& i, int frameNumber, std::string filename)
 
     position = frameNumber % nf;
 
-    for(int x = 0; x < position*width*height*3; x++)
-        outp++;
+    outp+=position*width*height*3;
 
     for(int y = 0; y < height; y++)
         for(int x = 0; x < width; x++)
