@@ -121,12 +121,8 @@ unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth,
     unsigned char* out2p;
 
 
-    if(frameNumber >= nf)
-        position = nf-1;
-    else if(frameNumber < 0)
-        position = 0;
-    else
-        position = frameNumber;
+
+    position = frameNumber%nf;
 
 
 
@@ -149,6 +145,37 @@ unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth,
     free(out);
 
     return out2;
+}
+
+
+
+
+void GifReader::GetImageByIndex(Image& i, int frameNumber, std::string filename)
+{
+    int width, height;
+    int position;//frame number, zero based
+    int nf;//returns the number of frames in gif
+    unsigned char* out = Gif2RGB(filename.c_str(),width,height,nf);
+    unsigned char* outp = out;
+    sf::Color c;
+
+    i.create(width, height, sf::Color::Black);
+
+    position = frameNumber%nf;
+
+    for(int x=0;x<position*width*height*3;x++)
+        outp++;
+
+    for(int y=0;y<height;y++)
+        for(int x=0;x<width;x++)
+        {
+            c.r = *outp++;
+            c.g = *outp++;
+            c.b = *outp++;
+            i.setPixel(x,y,c);
+        }
+
+    free(out);
 }
 
 

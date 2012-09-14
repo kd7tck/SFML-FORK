@@ -38,6 +38,8 @@
 namespace sf
 {
 
+class Image;
+
 ////////////////////////////////////////////////////////////
 /// \brief The GifReader class.
 ///
@@ -85,6 +87,20 @@ public :
     ///
     ////////////////////////////////////////////////////////////
     unsigned char* GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int frameNumber);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief load gif frame number into Image passed by reference
+    ///
+    /// \param Image file to load frame into
+    ///
+    /// \param int the frame to retrieve
+    ///
+    /// \param string filename
+    ///
+    /// \return void
+    ///
+    ////////////////////////////////////////////////////////////
+    void GetImageByIndex(Image& image, int frameNumber, std::string filename);
 
 
 
