@@ -59,7 +59,7 @@ public :
     ~GifReader();
 
     ////////////////////////////////////////////////////////////
-    /// \brief constructor
+    /// \brief convert entire gif, including animations into char array, free array when done with it
     ///
     /// \param int width of frame
     ///
@@ -71,6 +71,20 @@ public :
     ///
     ////////////////////////////////////////////////////////////
     unsigned char* Gif2RGB(std::string filename, int& framewidth, int& frameheight, int& numberOfFrames);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief convert gif frame number into array of pixels, free array when done
+    ///
+    /// \param int width of frame
+    ///
+    /// \param int height of frame
+    ///
+    /// \param int the frame to retrieve
+    ///
+    /// \return unsigned char* the pointer to the pixel array
+    ///
+    ////////////////////////////////////////////////////////////
+    unsigned char* GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int frameNumber);
 
 
 

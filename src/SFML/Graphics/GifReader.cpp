@@ -47,27 +47,23 @@ GifReader::GifReader()
     ;
 }
 
+
+
 GifReader::~GifReader()
 {
     ;
 }
 
+
+
 unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& numberOfFrames)
 {
     unsigned char* output;
-    GifByteType *Extension;
-    GifRowType *ScreenBuffer;
+    unsigned char* op;
     GifFileType *GifFile;
     GifColorType *ColorMapEntry;
-
-    int
-        InterlacedOffset[] = { 0, 4, 2, 1 }, /* The way Interlaced image should. */
-        InterlacedJumps[] = { 8, 8, 4, 2 };    /* be read - offsets and jumps... */
-
-    int ImageNum = 0;
     ColorMapObject *ColorMap;
     int Error;
-    GifRowType GifRow;
 
 
 
@@ -83,18 +79,20 @@ unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height,
         if ((output = (unsigned char *) malloc(width * height * numberOfFrames * 3)) == NULL)
             exit(4);
 
+        op = output;
+
         ColorMap = (GifFile->Image.ColorMap ? GifFile->Image.ColorMap : GifFile->SColorMap);
         if (ColorMap == NULL)
         {
             exit(4);
         }
 
-        for(int x=0; x < GifFile->SWidth * GifFile->SHeight; x++)
+        for(int x=0; x < width*height*numberOfFrames; x++)
         {
             ColorMapEntry = &ColorMap->Colors[GifFile->SavedImages->RasterBits[x]];
-            *output++ = ColorMapEntry->Red;
-            *output++ = ColorMapEntry->Green;
-            *output++ = ColorMapEntry->Blue;
+            *op++ = ColorMapEntry->Red;
+            *op++ = ColorMapEntry->Green;
+            *op++ = ColorMapEntry->Blue;
         }
 
 
@@ -107,6 +105,50 @@ unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height,
 
 
     return 0;
+}
+
+
+
+
+
+unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int frameNumber)
+{
+    int position;//frame number, zero based
+    int nf;//returns the number of frames in gif
+    unsigned char* out = Gif2RGB(filename.c_str(),framewidth,frameheight,nf);
+    unsigned char* outp = out;
+    unsigned char* out2;//the pixel array for chosen frame number
+    unsigned char* out2p;
+
+
+    if(frameNumber >= nf)
+        position = nf-1;
+    else if(frameNumber < 0)
+        position = 0;
+    else
+        position = frameNumber;
+
+
+
+
+    for(int x=0;x<position*framewidth*frameheight*3;x++)
+        outp++;
+
+
+
+    if ((out2 = (unsigned char *) malloc(framewidth * frameheight * 3)) == NULL)
+        exit(4);
+
+    out2p = out2;
+
+    for(int y=0;y<framewidth*frameheight*3;y++)
+        *out2p++ = *outp++;
+
+
+
+    free(out);
+
+    return out2;
 }
 
 
