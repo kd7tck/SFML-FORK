@@ -76,7 +76,7 @@ unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height,
         width = GifFile->Image.Width;
         height = GifFile->Image.Height;
 
-        if ((output = (unsigned char *) malloc(width * height * numberOfFrames * 3)) == NULL)
+        if ((output = (unsigned char *) malloc(width * height * numberOfFrames * 4)) == NULL)
             exit(4);
 
         op = output;
@@ -91,6 +91,7 @@ unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height,
             for(int x=0; x < width*height; x++)
             {
                 ColorMapEntry = &ColorMap->Colors[GifFile->SavedImages[y].RasterBits[x]];
+                *op++ = 255;//alpha
                 *op++ = ColorMapEntry->Red;
                 *op++ = ColorMapEntry->Green;
                 *op++ = ColorMapEntry->Blue;
@@ -137,7 +138,7 @@ unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth,
         width = GifFile->Image.Width;
         height = GifFile->Image.Height;
 
-        if ((out = (unsigned char *) malloc(width * height * 3)) == NULL)
+        if ((out = (unsigned char *) malloc(width * height * 4)) == NULL)
             exit(4);
 
         outp = out;
@@ -156,6 +157,7 @@ unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth,
             for(int x = 0; x < width; x++)
             {
                 ColorMapEntry = &ColorMap->Colors[*op++];
+                *outp++ = 255;//alpha
                 *outp++ = ColorMapEntry->Red;
                 *outp++ = ColorMapEntry->Green;
                 *outp++ = ColorMapEntry->Blue;
@@ -173,7 +175,7 @@ unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth,
 
 
 
-void GifReader::GetImageByIndex(Image& i, int& frameNumber, std::string filename)
+int GifReader::GetImageByIndex(Image& i, int& frameNumber, std::string filename)
 {
     int width, height;
     int nf;//returns the number of frames in gif
@@ -184,6 +186,7 @@ void GifReader::GetImageByIndex(Image& i, int& frameNumber, std::string filename
     ColorMapObject *ColorMap;
     int Error;
     SavedImage* sv;
+    GraphicsControlBlock GCB;
 
 
 
@@ -215,10 +218,16 @@ void GifReader::GetImageByIndex(Image& i, int& frameNumber, std::string filename
         frameNumber = frameNumber % nf;
         sv = &GifFile->SavedImages[frameNumber];
         op = sv->RasterBits;
+        DGifSavedExtensionToGCB(GifFile, frameNumber, &GCB);
 
         for(int y = 0; y < height; y++)
             for(int x = 0; x < width; x++)
             {
+                if(*op == GCB.TransparentColor)
+                    c.a = 0;
+                else
+                    c.a = 255;
+
                 ColorMapEntry = &ColorMap->Colors[*op++];
                 c.r = ColorMapEntry->Red;
                 c.g = ColorMapEntry->Green;
@@ -228,8 +237,11 @@ void GifReader::GetImageByIndex(Image& i, int& frameNumber, std::string filename
 
         if (DGifCloseFile(GifFile) == GIF_ERROR)
             exit(2);
+
+        return GCB.DisposalMode;
     }
 
+    return 0;
 }
 
 

@@ -97,10 +97,10 @@ public :
     ///
     /// \param string filename
     ///
-    /// \return void
+    /// \return int frame disposal mode, 0=unspecified, 1=do_not_dispose, 2=clear, 3=restore_previous_content
     ///
     ////////////////////////////////////////////////////////////
-    void GetImageByIndex(Image& image, int& frameNumber, std::string filename);
+    int GetImageByIndex(Image& image, int& frameNumber, std::string filename);
 
 
 
@@ -122,7 +122,38 @@ protected :
 ///
 /// Example:
 /// \code
+///    sf::GifReader gr;
+///    sf::Image i;
+///    sf::Texture t;
+///    sf::Time sleeptime = sf::seconds(0.01f);
+///    int counter=0;
 ///
+///    sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+///
+///    // run the program as long as the window is open
+///    while (window.isOpen())
+///    {
+///        // check all the window's events that were triggered since the last iteration of the loop
+///        sf::Event event;
+///        while (window.pollEvent(event))
+///        {
+///            // "close requested" event: we close the window
+///            if (event.type == sf::Event::Closed)
+///                window.close();
+///        }
+///
+///        if(gr.GetImageByIndex(i,counter,"a.gif") == 2)
+///            window.clear();
+///
+///        t.loadFromImage(i);
+///        sf::Sprite s(t);
+///
+///        window.draw(s);
+///        window.display();
+///
+///        sf::sleep(sleeptime);
+///        counter++;
+///    }
 /// \endcode
 ///
 /// \see sf::GifReader
