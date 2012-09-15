@@ -113,35 +113,60 @@ unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height,
 
 unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int frameNumber)
 {
+    int width, height;
     int position;//frame number, zero based
     int nf;//returns the number of frames in gif
-    unsigned char* out = Gif2RGB(filename.c_str(),framewidth,frameheight,nf);
-    unsigned char* outp = out;
-    unsigned char* out2;//the pixel array for chosen frame number
-    unsigned char* out2p;
+    sf::Color c;
+    unsigned char* op;
+    unsigned char* out;
+    unsigned char* outp;
+    GifFileType *GifFile;
+    GifColorType *ColorMapEntry;
+    ColorMapObject *ColorMap;
+    int Error;
 
 
 
-    position = frameNumber % nf;
+    if ((GifFile = DGifOpenFileName(filename.c_str(), &Error)) != NULL)
+    {
+        if(DGifSlurp(GifFile) == GIF_ERROR)
+            exit(1);
 
+        nf = GifFile->ImageCount;
+        width = GifFile->Image.Width;
+        height = GifFile->Image.Height;
 
-    outp+=position*framewidth*frameheight*3;
+        if ((out = (unsigned char *) malloc(width * height * 3)) == NULL)
+            exit(4);
 
+        outp = out;
 
+        ColorMap = (GifFile->Image.ColorMap ? GifFile->Image.ColorMap : GifFile->SColorMap);
+        if (ColorMap == NULL)
+        {
+            exit(4);
+        }
 
-    if ((out2 = (unsigned char *) malloc(framewidth * frameheight * 3)) == NULL)
-        exit(4);
+        position = frameNumber % nf;
+        op = GifFile->SavedImages->RasterBits;
+        op += position*width*height;
 
-    out2p = out2;
+        for(int y = 0; y < height; y++)
+            for(int x = 0; x < width; x++)
+            {
+                ColorMapEntry = &ColorMap->Colors[*op++];
+                *outp++ = ColorMapEntry->Red;
+                *outp++ = ColorMapEntry->Green;
+                *outp++ = ColorMapEntry->Blue;
+            }
 
-    for(int y = 0; y < framewidth*frameheight*3; y++)
-        *out2p++ = *outp++;
+        if (DGifCloseFile(GifFile) == GIF_ERROR)
+            exit(2);
 
+        return out;
+    }
 
-
-    free(out);
-
-    return out2;
+    return 0;
 }
 
 
@@ -152,28 +177,58 @@ void GifReader::GetImageByIndex(Image& i, int frameNumber, std::string filename)
     int width, height;
     int position;//frame number, zero based
     int nf;//returns the number of frames in gif
-    unsigned char* out = Gif2RGB(filename.c_str(), width, height, nf);
-    unsigned char* outp = out;
     sf::Color c;
+    unsigned char* op;
+    GifFileType *GifFile;
+    GifColorType *ColorMapEntry;
+    ColorMapObject *ColorMap;
+    int Error;
 
-    sf::Vector2u s = i.getSize();
-    if(s.x != width || s.y != height)
-        i.create(width, height, sf::Color::Black);
 
-    position = frameNumber % nf;
 
-    outp+=position*width*height*3;
+    if ((GifFile = DGifOpenFileName(filename.c_str(), &Error)) != NULL)
+    {
+        if(DGifSlurp(GifFile) == GIF_ERROR)
+            exit(1);
 
-    for(int y = 0; y < height; y++)
-        for(int x = 0; x < width; x++)
+        nf = GifFile->ImageCount;
+        width = GifFile->Image.Width;
+        height = GifFile->Image.Height;
+
+        ColorMap = (GifFile->Image.ColorMap ? GifFile->Image.ColorMap : GifFile->SColorMap);
+        if (ColorMap == NULL)
         {
-            c.r = *outp++;
-            c.g = *outp++;
-            c.b = *outp++;
-            i.setPixel(x,y,c);
+            exit(4);
         }
 
-    free(out);
+        sf::Vector2u s = i.getSize();
+        if(s.x != width || s.y != height)
+        {
+            ColorMapEntry = &ColorMap->Colors[GifFile->SBackGroundColor];
+            c.r = ColorMapEntry->Red;
+            c.g = ColorMapEntry->Green;
+            c.b = ColorMapEntry->Blue;
+            i.create(width, height, c);
+        }
+
+        position = frameNumber % nf;
+        op = GifFile->SavedImages->RasterBits;
+        op += position*width*height;
+
+        for(int y = 0; y < height; y++)
+            for(int x = 0; x < width; x++)
+            {
+                ColorMapEntry = &ColorMap->Colors[*op++];
+                c.r = ColorMapEntry->Red;
+                c.g = ColorMapEntry->Green;
+                c.b = ColorMapEntry->Blue;
+                i.setPixel(x,y,c);
+            }
+
+        if (DGifCloseFile(GifFile) == GIF_ERROR)
+            exit(2);
+    }
+
 }
 
 
