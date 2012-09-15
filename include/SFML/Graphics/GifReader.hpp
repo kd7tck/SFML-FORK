@@ -86,7 +86,7 @@ public :
     /// \return unsigned char* the pointer to the pixel array
     ///
     ////////////////////////////////////////////////////////////
-    unsigned char* GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int frameNumber);
+    unsigned char* GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int& frameNumber);
 
     ////////////////////////////////////////////////////////////
     /// \brief load gif frame number into Image passed by reference
@@ -100,7 +100,7 @@ public :
     /// \return void
     ///
     ////////////////////////////////////////////////////////////
-    void GetImageByIndex(Image& image, int frameNumber, std::string filename);
+    void GetImageByIndex(Image& image, int& frameNumber, std::string filename);
 
 
 
