@@ -170,6 +170,14 @@ public :
     ////////////////////////////////////////////////////////////
     int getNumberFrames();
 
+    ////////////////////////////////////////////////////////////
+    /// \brief get array of frame disposal modes, these are equal to number of frames
+    ///
+    /// \return int array of frame disposal modes, 0=unspecified, 1=do_not_dispose, 2=clear_to_color, 3=restore_previous_content, it's size is equal to number of frames
+    ///
+    ////////////////////////////////////////////////////////////
+    int* getFrameDisposalModes();
+
 
 
 protected :

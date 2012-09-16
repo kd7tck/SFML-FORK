@@ -29,7 +29,6 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 #include "Export.hpp"
 #include <iostream>
 #include <string>

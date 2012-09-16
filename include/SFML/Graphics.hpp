@@ -51,11 +51,12 @@
 #include <SFML/Graphics/VertexArray.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Graphics/GifReader.hpp>
+#include <SFML/Graphics/SlideShow.hpp>
 
 
 #endif // SFML_GRAPHICS_HPP
 
 ////////////////////////////////////////////////////////////
 /// \defgroup graphics Graphics module
-/// 
+///
 ////////////////////////////////////////////////////////////

@@ -314,6 +314,13 @@ int GifReader::getNumberFrames()
 
 
 
+int* GifReader::getFrameDisposalModes()
+{
+    return fdisposal;
+}
+
+
+
 
 
 

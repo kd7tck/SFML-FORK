@@ -67,6 +67,8 @@ set(SRC
     ${SRCROOT}/stb_image/stb_image_write.h
     ${SRCROOT}/GifReader.cpp
     ${INCROOT}/GifReader.hpp
+    ${SRCROOT}/SlideShow.cpp
+    ${INCROOT}/SlideShow.hpp
     ${SRCROOT}/giflib/dgif_lib.c
     ${SRCROOT}/giflib/egif_lib.c
     ${SRCROOT}/giflib/gifalloc.c
