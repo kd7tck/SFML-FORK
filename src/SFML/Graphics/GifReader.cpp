@@ -57,12 +57,12 @@ GifReader::GifReader()
 
 GifReader::~GifReader()
 {
-    ;
+    free(fdisposal);
 }
 
 
 
-unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& numberOfFrames)
+unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& numberOfFrames, int** frameDisposal)
 {
     unsigned char* output;
     unsigned char* op;
@@ -94,20 +94,24 @@ unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height,
             exit(4);
         }
 
+        if ((*frameDisposal = (int *) malloc(numberOfFrames * 4)) == NULL)
+            exit(4);
+
         for(int y=0; y < numberOfFrames; y++)
         {
             DGifSavedExtensionToGCB(GifFile, y, &GCB);
+            (*frameDisposal)[y] = GCB.DisposalMode;
+
             for(int x=0; x < width*height; x++)
             {
-                if(GifFile->SavedImages[y].RasterBits[x] == GCB.TransparentColor)
-                    *op++ = 0;
-                else
-                    *op++ = 255;
-
                 ColorMapEntry = &ColorMap->Colors[GifFile->SavedImages[y].RasterBits[x]];
                 *op++ = ColorMapEntry->Red;
                 *op++ = ColorMapEntry->Green;
                 *op++ = ColorMapEntry->Blue;
+                if(GifFile->SavedImages[y].RasterBits[x] == GCB.TransparentColor)
+                    *op++ = 0;
+                else
+                    *op++ = 255;
             }
         }
 
@@ -127,7 +131,7 @@ unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height,
 
 
 
-unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int& frameNumber)
+unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int& frameNumber, int** frameDisposal)
 {
     int width, height;
     int nf;//returns the number of frames in gif
@@ -164,23 +168,26 @@ unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth,
             exit(4);
         }
 
+        if ((*frameDisposal = (int *) malloc(4)) == NULL)
+            exit(4);
+
         frameNumber = frameNumber % nf;
         sv = &GifFile->SavedImages[frameNumber];
         op = sv->RasterBits;
         DGifSavedExtensionToGCB(GifFile, frameNumber, &GCB);
+        **frameDisposal = GCB.DisposalMode;
 
         for(int y = 0; y < height; y++)
             for(int x = 0; x < width; x++)
             {
-                if(*op == GCB.TransparentColor)
-                    *outp++ = 0;
-                else
-                    *outp++ = 255;
-
-                ColorMapEntry = &ColorMap->Colors[*op++];
+                ColorMapEntry = &ColorMap->Colors[*op];
                 *outp++ = ColorMapEntry->Red;
                 *outp++ = ColorMapEntry->Green;
                 *outp++ = ColorMapEntry->Blue;
+                if(*op++ == GCB.TransparentColor)
+                    *outp++ = 0;
+                else
+                    *outp++ = 255;
             }
 
         if (DGifCloseFile(GifFile) == GIF_ERROR)
@@ -270,7 +277,7 @@ int GifReader::GetImageByIndex(Image& i, int& frameNumber, std::string filename)
 bool GifReader::loadGifAnimationFromFile(const std::string& filename)
 {
     m_pixels.clear();
-    unsigned char* p = Gif2RGB(filename.c_str(), fwidth, fheight, totalFrames);
+    unsigned char* p = Gif2RGB(filename.c_str(), fwidth, fheight, totalFrames, &fdisposal);
 
     if(!p)
         return false;
@@ -288,6 +295,19 @@ bool GifReader::loadGifAnimationFromFile(const std::string& filename)
     free (p);
 
     return true;
+}
+
+
+
+sf::Vector2<int> GifReader::getFrameSize()
+{
+    return sf::Vector2<int>(fwidth,fheight);
+}
+
+
+int GifReader::getNumberFrames()
+{
+    return totalFrames;
 }
 
 
