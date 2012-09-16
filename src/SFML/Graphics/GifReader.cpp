@@ -51,13 +51,15 @@ GifReader::GifReader()
     fwidth = 0;
     fheight = 0;
     totalFrames = 0;
+    fdisposal = 0;
 }
 
 
 
 GifReader::~GifReader()
 {
-    free(fdisposal);
+    if(fdisposal)
+        free(fdisposal);
 }
 
 
