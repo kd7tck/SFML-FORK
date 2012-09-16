@@ -28,6 +28,10 @@
 #include <SFML/Graphics.hpp>
 #include "giflib/gif_lib.h"
 
+#include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/ImageLoader.hpp>
+#include <SFML/System/Err.hpp>
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <iomanip>
@@ -44,7 +48,9 @@ namespace sf
 
 GifReader::GifReader()
 {
-    ;
+    fwidth = 0;
+    fheight = 0;
+    totalFrames = 0;
 }
 
 
@@ -256,6 +262,32 @@ int GifReader::GetImageByIndex(Image& i, int& frameNumber, std::string filename)
     }
 
     return 0;
+}
+
+
+
+
+bool GifReader::loadGifAnimationFromFile(const std::string& filename)
+{
+    m_pixels.clear();
+    unsigned char* p = Gif2RGB(filename.c_str(), fwidth, fheight, totalFrames);
+
+    if(!p)
+        return false;
+
+    if(fheight*totalFrames > 8191){//height can not be greater than 8192
+        free(p);
+        return false;
+    }
+
+    m_size.x = fwidth;
+    m_size.y = fheight*totalFrames;
+
+    m_pixels.resize(fwidth * fheight * totalFrames * 4);
+    memcpy(&m_pixels[0], p, m_pixels.size());
+    free (p);
+
+    return true;
 }
 
 

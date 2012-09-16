@@ -41,10 +41,10 @@ namespace sf
 class Image;
 
 ////////////////////////////////////////////////////////////
-/// \brief The GifReader class.
+/// \brief The GifReader class, designed to read animated gif files.
 ///
 ////////////////////////////////////////////////////////////
-class SFML_GRAPHICS_API GifReader
+class SFML_GRAPHICS_API GifReader : public Image
 {
 public :
 
@@ -61,7 +61,7 @@ public :
     ~GifReader();
 
     ////////////////////////////////////////////////////////////
-    /// \brief convert entire gif, including animations into char array, free array when done with it
+    /// \brief convert entire gif, including animations into char array, make sure to free array when done
     ///
     /// \param int width of frame
     ///
@@ -72,10 +72,10 @@ public :
     /// \return unsigned char* the pointer to the pixel array
     ///
     ////////////////////////////////////////////////////////////
-    unsigned char* Gif2RGB(std::string filename, int& framewidth, int& frameheight, int& numberOfFrames);
+    unsigned char* Gif2RGB(const std::string filename, int& framewidth, int& frameheight, int& numberOfFrames);
 
     ////////////////////////////////////////////////////////////
-    /// \brief convert gif frame number into array of pixels, free array when done
+    /// \brief convert gif frame number into array of pixels, make sure to free array when done
     ///
     /// \param int width of frame
     ///
@@ -86,7 +86,7 @@ public :
     /// \return unsigned char* the pointer to the pixel array
     ///
     ////////////////////////////////////////////////////////////
-    unsigned char* GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int& frameNumber);
+    unsigned char* GetImageByIndex(const std::string filename, int& framewidth, int& frameheight, int& frameNumber);
 
     ////////////////////////////////////////////////////////////
     /// \brief load gif frame number into Image passed by reference
@@ -100,11 +100,26 @@ public :
     /// \return int frame disposal mode, 0=unspecified, 1=do_not_dispose, 2=clear, 3=restore_previous_content
     ///
     ////////////////////////////////////////////////////////////
-    int GetImageByIndex(Image& image, int& frameNumber, std::string filename);
+    int GetImageByIndex(Image& image, int& frameNumber, const std::string filename);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Load the animated image from a file on disk into this object, sf::GifReader is a child of sf::Image.
+    ///
+    /// The supported image formats are animated gif.
+    /// If this function fails, the image is left unchanged.
+    /// This image if fully draw onto a window, will be a series of frames from top to bottom.
+    ///
+    /// \param filename Path of the image file to load
+    ///
+    /// \return True if loading was successful
+    ///
+    ////////////////////////////////////////////////////////////
+    bool loadGifAnimationFromFile(const std::string& filename);
 
 
 
 protected :
+    int fwidth, fheight, totalFrames;
 
 };
 
@@ -118,7 +133,7 @@ protected :
 /// \class sf::GifReader
 /// \ingroup graphics
 ///
-/// sf::GifReader contains static functions for reading from gif files
+/// sf::GifReader contains static functions for reading from animated gif files
 ///
 /// Example:
 /// \code
