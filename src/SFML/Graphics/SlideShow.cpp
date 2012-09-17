@@ -89,7 +89,9 @@ bool SlideShow::setCurrentSlide(int index)
                 count++;
             }
         }
+        return true;
     }
+    return false;
 }
 
 
