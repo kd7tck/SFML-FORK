@@ -53,14 +53,73 @@ SlideShow::SlideShow()
 
 SlideShow::~SlideShow()
 {
-    ;
+    deleteSlides();
+}
+
+
+void SlideShow::deleteSlides()
+{
+    if(slides.size() > 0)
+    {
+        for ( it = slides.begin(); it != slides.end() ; it++ )
+        {
+                delete(*it);
+        }
+        slides.clear();
+    }
 }
 
 
 
 bool SlideShow::setCurrentSlide(int index)
 {
-    ;
+    int count = 0;
+
+    if(slides.size() > index)
+    {
+        for ( it = slides.begin(); it != slides.end() ; it++ )
+        {
+            if(count == index)
+            {
+                copy((**it),0,0);
+                break;
+            }
+            else
+            {
+                count++;
+            }
+        }
+    }
+}
+
+
+////////////////////////////////////////////////////////////
+bool SlideShow::loadSlideFromFile(const std::string& filename)
+{
+    sf::Image* i = new sf::Image();
+    bool r = i->loadFromFile(filename);
+    slides.push_back(i);
+    return r;
+}
+
+
+////////////////////////////////////////////////////////////
+bool SlideShow::loadSlideFromMemory(const void* data, std::size_t size)
+{
+    sf::Image* i = new sf::Image();
+    bool r = i->loadFromMemory(data,size);
+    slides.push_back(i);
+    return r;
+}
+
+
+////////////////////////////////////////////////////////////
+bool SlideShow::loadSlideFromStream(InputStream& stream)
+{
+    sf::Image* i = new sf::Image();
+    bool r = i->loadFromStream(stream);
+    slides.push_back(i);
+    return r;
 }
 
 

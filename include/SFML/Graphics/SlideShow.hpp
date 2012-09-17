@@ -45,6 +45,8 @@ class Image;
 
 ////////////////////////////////////////////////////////////
 /// \brief The SlideShow class, designed to display series of images.
+/// Be very careful with SlideShow class, they are heavy weight objects and take up vast amount of computer memory.
+/// SlideShow is also very slow and the image should not be changed more than once every second.
 ///
 ////////////////////////////////////////////////////////////
 class SFML_GRAPHICS_API SlideShow : public Image
@@ -64,6 +66,12 @@ public :
     ~SlideShow();
 
     ////////////////////////////////////////////////////////////
+    /// \brief clear out all slides from memory
+    ///
+    ////////////////////////////////////////////////////////////
+    void deleteSlides();
+
+    ////////////////////////////////////////////////////////////
     /// \brief get array of frame disposal modes, these are equal to number of frames
     ///
     /// \param int index of image
@@ -72,6 +80,58 @@ public :
     ///
     ////////////////////////////////////////////////////////////
     bool setCurrentSlide(int index);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Load the image from a file on disk
+    ///
+    /// The supported image formats are bmp, png, tga, jpg, gif,
+    /// psd, hdr and pic. Some format options are not supported,
+    /// like progressive jpeg.
+    /// If this function fails, the image is left unchanged.
+    ///
+    /// \param filename Path of the image file to load
+    ///
+    /// \return True if loading was successful
+    ///
+    /// \see loadFromMemory, loadFromStream, saveToFile
+    ///
+    ////////////////////////////////////////////////////////////
+    bool loadSlideFromFile(const std::string& filename);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Load the image from a file in memory
+    ///
+    /// The supported image formats are bmp, png, tga, jpg, gif,
+    /// psd, hdr and pic. Some format options are not supported,
+    /// like progressive jpeg.
+    /// If this function fails, the image is left unchanged.
+    ///
+    /// \param data Pointer to the file data in memory
+    /// \param size Size of the data to load, in bytes
+    ///
+    /// \return True if loading was successful
+    ///
+    /// \see loadFromFile, loadFromStream
+    ///
+    ////////////////////////////////////////////////////////////
+    bool loadSlideFromMemory(const void* data, std::size_t size);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Load the image from a custom stream
+    ///
+    /// The supported image formats are bmp, png, tga, jpg, gif,
+    /// psd, hdr and pic. Some format options are not supported,
+    /// like progressive jpeg.
+    /// If this function fails, the image is left unchanged.
+    ///
+    /// \param stream Source stream to read from
+    ///
+    /// \return True if loading was successful
+    ///
+    /// \see loadFromFile, loadFromMemory
+    ///
+    ////////////////////////////////////////////////////////////
+    bool loadSlideFromStream(InputStream& stream);
 
 
 
