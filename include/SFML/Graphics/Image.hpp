@@ -56,6 +56,16 @@ public :
     Image();
 
     ////////////////////////////////////////////////////////////
+    /// \brief Load Image File constructor
+    ///
+    /// \param string image filename
+    ///
+    /// Creates an image preloaded with filename.
+    ///
+    ////////////////////////////////////////////////////////////
+    Image(const std::string& filename);
+
+    ////////////////////////////////////////////////////////////
     /// \brief Create the image and fill it with a unique color
     ///
     /// \param width  Width of the image
@@ -190,7 +200,7 @@ public :
     /// \param applyAlpha Should the copy take in account the source transparency?
     ///
     ////////////////////////////////////////////////////////////
-    void copy(const Image& source, unsigned int destX, unsigned int destY, const IntRect& sourceRect = IntRect(0, 0, 0, 0), bool applyAlpha = false);
+    void copy(const Image& source, unsigned int destX = 0, unsigned int destY = 0, const IntRect& sourceRect = IntRect(0, 0, 0, 0), bool applyAlpha = false);
 
     ////////////////////////////////////////////////////////////
     /// \brief Change the color of a pixel

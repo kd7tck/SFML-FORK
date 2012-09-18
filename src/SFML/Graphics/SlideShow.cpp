@@ -44,16 +44,11 @@
 namespace sf
 {
 
-SlideShow::SlideShow()
-{
-    ;
-}
-
 
 
 SlideShow::~SlideShow()
 {
-    deleteSlides();
+    ;
 }
 
 
@@ -71,17 +66,25 @@ void SlideShow::deleteSlides()
 
 
 
-bool SlideShow::setCurrentSlide(int index)
+bool SlideShow::setCurrentSlide(unsigned int index)
 {
     int count = 0;
 
     if(slides.size() > index)
     {
-        for ( it = slides.begin(); it != slides.end() ; it++ )
+        for ( it = slides.begin(); it != slides.end(); it++ )
         {
             if(count == index)
             {
-                copy((**it),0,0);
+                sf::Vector2u vs = (*it)->getSize();
+                create(vs.x, vs.y, sf::Color::Black);
+                for(int y = 0; y < vs.y; y++)
+                {
+                    for(int x = 0; x < vs.x; x++)
+                    {
+                        setPixel(x,y,(*it)->getPixel(x,y));
+                    }
+                }
                 break;
             }
             else
@@ -89,16 +92,29 @@ bool SlideShow::setCurrentSlide(int index)
                 count++;
             }
         }
-        return true;
     }
+
+    if(count == index)
+        return true;
+
     return false;
 }
+
+
+
+
+int SlideShow::getSlideCount()
+{
+    return slides.size();
+}
+
+
 
 
 ////////////////////////////////////////////////////////////
 bool SlideShow::loadSlideFromFile(const std::string& filename)
 {
-    sf::Image* i = new sf::Image();
+    sf::Image* i = new sf::Image;
     bool r = i->loadFromFile(filename);
     slides.push_back(i);
     return r;
@@ -108,7 +124,7 @@ bool SlideShow::loadSlideFromFile(const std::string& filename)
 ////////////////////////////////////////////////////////////
 bool SlideShow::loadSlideFromMemory(const void* data, std::size_t size)
 {
-    sf::Image* i = new sf::Image();
+    sf::Image* i = new sf::Image;
     bool r = i->loadFromMemory(data,size);
     slides.push_back(i);
     return r;
@@ -118,10 +134,21 @@ bool SlideShow::loadSlideFromMemory(const void* data, std::size_t size)
 ////////////////////////////////////////////////////////////
 bool SlideShow::loadSlideFromStream(InputStream& stream)
 {
-    sf::Image* i = new sf::Image();
+    sf::Image* i = new sf::Image;
     bool r = i->loadFromStream(stream);
     slides.push_back(i);
     return r;
+}
+
+
+bool SlideShow::loadSlideFromImage(sf::Image* image)
+{
+    int c = slides.size();
+    slides.push_back(image);
+    if(slides.size() > c)
+        return true;
+
+    return false;
 }
 
 

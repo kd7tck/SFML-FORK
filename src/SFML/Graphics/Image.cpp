@@ -41,6 +41,12 @@ m_size(0, 0)
 
 }
 
+Image::Image(const std::string& filename) :
+m_size(0, 0)
+{
+    loadFromFile(filename);
+}
+
 
 ////////////////////////////////////////////////////////////
 void Image::create(unsigned int width, unsigned int height, const Color& color)
@@ -156,13 +162,13 @@ void Image::createMaskFromColor(const Color& color, Uint8 alpha)
 ////////////////////////////////////////////////////////////
 void Image::copy(const Image& source, unsigned int destX, unsigned int destY, const IntRect& sourceRect, bool applyAlpha)
 {
-    // Make sure that both images are valid
-    if ((source.m_size.x == 0) || (source.m_size.y == 0) || (m_size.x == 0) || (m_size.y == 0))
+    // Make sure that images are valid
+    if (source.m_size.x == 0 || source.m_size.y == 0)
         return;
 
     // Adjust the source rectangle
     IntRect srcRect = sourceRect;
-    if (srcRect.width == 0 || (srcRect.height == 0))
+    if (srcRect.width == 0 || srcRect.height == 0)
     {
         srcRect.left   = 0;
         srcRect.top    = 0;
@@ -175,6 +181,13 @@ void Image::copy(const Image& source, unsigned int destX, unsigned int destY, co
         if (srcRect.top    < 0) srcRect.top  = 0;
         if (srcRect.width  > static_cast<int>(source.m_size.x)) srcRect.width  = source.m_size.x;
         if (srcRect.height > static_cast<int>(source.m_size.y)) srcRect.height = source.m_size.y;
+    }
+
+    if(m_size.x == 0 || m_size.y == 0)
+    {
+        srcRect.left = 0;
+        srcRect.top  = 0;
+        create(sourceRect.width, sourceRect.height, sf::Color::Transparent);
     }
 
     // Then find the valid bounds of the destination rectangle

@@ -57,7 +57,10 @@ public :
     /// \brief constructor
     ///
     ////////////////////////////////////////////////////////////
-    SlideShow();
+    SlideShow() : sf::Image()
+    {
+        ;
+    }
 
     ////////////////////////////////////////////////////////////
     /// \brief destructor
@@ -72,6 +75,14 @@ public :
     void deleteSlides();
 
     ////////////////////////////////////////////////////////////
+    /// \brief get the number of slides
+    ///
+    /// \return int number of slides
+    ///
+    ////////////////////////////////////////////////////////////
+    int getSlideCount();
+
+    ////////////////////////////////////////////////////////////
     /// \brief get array of frame disposal modes, these are equal to number of frames
     ///
     /// \param int index of image
@@ -79,7 +90,7 @@ public :
     /// \return int array of frame disposal modes, 0=unspecified, 1=do_not_dispose, 2=clear_to_color, 3=restore_previous_content, it's size is equal to number of frames
     ///
     ////////////////////////////////////////////////////////////
-    bool setCurrentSlide(int index);
+    bool setCurrentSlide(unsigned int index);
 
     ////////////////////////////////////////////////////////////
     /// \brief Load the image from a file on disk
@@ -132,6 +143,17 @@ public :
     ///
     ////////////////////////////////////////////////////////////
     bool loadSlideFromStream(InputStream& stream);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Load the image from a dynamic image pointer
+    ///
+    ///
+    /// \param Image* dynamic image pointer
+    ///
+    /// \return True if loading was successful
+    ///
+    ////////////////////////////////////////////////////////////
+    bool loadSlideFromImage(sf::Image* image);
 
 
 
