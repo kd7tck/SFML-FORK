@@ -183,6 +183,44 @@ protected :
 /// Example:
 /// \code
 ///
+///    sf::SlideShow s;
+///    s.loadSlideFromFile("1.jpg");
+///    s.loadSlideFromFile("2.jpg");
+///    s.loadSlideFromFile("3.jpg");
+///    sf::Texture t;
+///    sf::Time sleeptime = sf::seconds(1.0f);
+///    int counter=0;
+///    sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+///
+///    // run the program as long as the window is open
+///    while (window.isOpen())
+///    {
+///        if(!s.getSlideCount())
+///            window.close();
+///
+///        // check all the window's events that were triggered since the last iteration of the loop
+///        sf::Event event;
+///        while (window.pollEvent(event))
+///        {
+///            // "close requested" event: we close the window
+///            if (event.type == sf::Event::Closed)
+///                window.close();
+///        }
+///
+///        if(!s.setCurrentSlide(counter))
+///            window.close();
+///
+///        t.loadFromImage(s);
+///        sf::Sprite spr(t);
+///        window.draw(spr);
+///        window.display();
+///        sf::sleep(sleeptime);
+///        counter++;
+///        counter=counter % s.getSlideCount();
+///    }
+///
+///    s.deleteSlides();
+///
 /// \endcode
 ///
 /// \see sf::SlideShow
