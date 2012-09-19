@@ -27,6 +27,7 @@
 ////////////////////////////////////////////////////////////
 
 #include <SFML/Box2d.hpp>
+#include "Box2D/Box2D.h"
 #include <cstdlib>
 #include <cstring>
 #include <iomanip>
@@ -45,13 +46,30 @@ namespace sf
 
 b2d::b2d()
 {
-    ;
+    doSleep = true;
+    iterations = 10;
+    scale = 30.f;
+    timeStep = 1/60;
+    gravity.y = 9.8f;
+    worldAABB = new b2AABB;
 }
 
 
 b2d::~b2d()
 {
-    ;
+    delete worldAABB;
+}
+
+
+bool b2d::toggleSleepState()
+{
+    doSleep = !doSleep;
+    return doSleep;
+}
+
+bool b2d::getSleepState()
+{
+    return doSleep;
 }
 
 

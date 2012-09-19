@@ -29,6 +29,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "Export.hpp"
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 #include <map>
@@ -36,7 +37,7 @@
 
 
 
-
+class b2AABB;
 
 
 namespace sf
@@ -53,8 +54,6 @@ public :
     ////////////////////////////////////////////////////////////
     /// \brief constructor
     ///
-    /// \param string name
-    ///
     ////////////////////////////////////////////////////////////
     b2d();
 
@@ -64,8 +63,30 @@ public :
     ////////////////////////////////////////////////////////////
     ~b2d();
 
+    ////////////////////////////////////////////////////////////
+    /// \brief toggle sleep
+    ///
+    /// \return bool current sleep state
+    ///
+    ////////////////////////////////////////////////////////////
+    bool toggleSleepState();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief get current sleep state
+    ///
+    /// \return bool current sleep state
+    ///
+    ////////////////////////////////////////////////////////////
+    bool getSleepState();
+
 
 protected :
+    bool doSleep;
+    int iterations;
+    float scale;
+    float timeStep;
+    sf::Vector2f gravity;
+    b2AABB* worldAABB;
 
 };
 
