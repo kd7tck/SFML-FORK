@@ -52,6 +52,7 @@ b2d::b2d()
     gravity.Set(0, 9.8f);
     resizeWorld();
     world = new b2World(gravity);
+    world->SetAllowSleeping(doSleep);
 }
 
 
@@ -61,57 +62,80 @@ b2d::~b2d()
 }
 
 
+
 bool b2d::toggleSleepState()
 {
     doSleep = !doSleep;
+    world->SetAllowSleeping(doSleep);
     return doSleep;
 }
+
+
 
 bool b2d::getSleepState()
 {
     return doSleep;
 }
 
+
+
 void b2d::setScale(float Scale)
 {
     scale = Scale;
 }
+
+
 
 float b2d::getScale()
 {
     return scale;
 }
 
+
+
 void b2d::setTimeStep(float step)
 {
     timeStep = step;
 }
+
+
 
 float b2d::getTimeStep()
 {
     return timeStep;
 }
 
+
+
 void b2d::setIterations(int it)
 {
     iterations = it;
 }
+
+
 
 int b2d::getIterations()
 {
     return iterations;
 }
 
+
+
 void b2d::setGravity(sf::Vector2f grav)
 {
     gravity.x = grav.x;
     gravity.y = grav.y;
+    world->SetGravity(gravity);
 }
+
+
 
 sf::Vector2f b2d::getGravity()
 {
     return sf::Vector2f(gravity.x, gravity.y);
 }
+
+
 
 void b2d::resizeWorld()
 {
@@ -120,6 +144,30 @@ void b2d::resizeWorld()
 
     //lower right corner of window
     worldAABB.upperBound.Set(1000/scale, 1000/scale);
+}
+
+
+
+
+void b2d::queryAABB(b2QueryCallback* callback)
+{
+    world->QueryAABB(callback, worldAABB);
+}
+
+
+
+
+void b2d::queryAABB(b2QueryCallback* callback, const b2AABB& aabb)
+{
+    world->QueryAABB(callback, aabb);
+}
+
+
+
+
+void b2d::queryAABB()
+{
+    world->QueryAABB(&gcallback, worldAABB);
 }
 
 

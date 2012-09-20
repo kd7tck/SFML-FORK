@@ -40,6 +40,21 @@
 namespace sf
 {
 
+
+//subclass b2QueryCallback
+class GenericQueryCallback : public b2QueryCallback
+{
+public:
+    std::vector<b2Body*> foundBodies;
+    bool ReportFixture(b2Fixture* fixture)
+    {
+        foundBodies.push_back( fixture->GetBody() );
+        return true;//keep going to find all fixtures in the query area
+    }
+};
+
+
+
 ////////////////////////////////////////////////////////////
 /// \brief The BOX2D wrapper class.
 ///
@@ -146,15 +161,43 @@ public :
     ////////////////////////////////////////////////////////////
     void resizeWorld();
 
+    ////////////////////////////////////////////////////////////
+    /// \brief Query for any fixtures intersecting worldAABB
+    /// Uses Generic Query call back class named gcallback
+    /// Uses default worldAABB
+    ///
+    ////////////////////////////////////////////////////////////
+    void queryAABB();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Query for any fixtures intersecting worldAABB
+    /// Uses default worldAABB
+    ///
+    /// \param b2QueryCallback* callback
+    ///
+    ////////////////////////////////////////////////////////////
+    void queryAABB(b2QueryCallback* callback);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Query for any fixtures intersecting worldAABB
+    ///
+    /// \param b2QueryCallback* callback
+    ///
+    /// \param b2AABB& aabb box
+    ///
+    ////////////////////////////////////////////////////////////
+    void queryAABB(b2QueryCallback* callback, const b2AABB& aabb);
+
 
 protected :
     bool doSleep;//process sleeping objects
     int iterations;
     float scale;//number of pixels per meter
     float timeStep;
-    b2AABB worldAABB;
+    b2AABB worldAABB;//query Box
     b2Vec2 gravity;
     b2World* world;
+    GenericQueryCallback gcallback;
 
 };
 
