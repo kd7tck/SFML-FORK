@@ -16,22 +16,23 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2Contact.h"
-#include "b2CircleContact.h"
-#include "b2PolygonAndCircleContact.h"
-#include "b2PolygonContact.h"
-#include "b2EdgeAndCircleContact.h"
-#include "b2EdgeAndPolygonContact.h"
-#include "b2ChainAndCircleContact.h"
-#include "b2ChainAndPolygonContact.h"
-#include "b2ContactSolver.h"
-#include "b2Collision.h"
-#include "b2TimeOfImpact.h"
-#include "b2Shape.h"
-#include "b2BlockAllocator.h"
-#include "b2Body.h"
-#include "b2Fixture.h"
-#include "b2World.h"
+#include <SFML/Box2d/b2Contact.h>
+#include <SFML/Box2d/b2CircleContact.h>
+#include <SFML/Box2d/b2PolygonAndCircleContact.h>
+#include <SFML/Box2d/b2PolygonContact.h>
+#include <SFML/Box2d/b2EdgeAndCircleContact.h>
+#include <SFML/Box2d/b2EdgeAndPolygonContact.h>
+#include <SFML/Box2d/b2ChainAndCircleContact.h>
+#include <SFML/Box2d/b2ChainAndPolygonContact.h>
+#include <SFML/Box2d/b2ContactSolver.h>
+
+#include <SFML/Box2d/b2Collision.h>
+#include <SFML/Box2d/b2TimeOfImpact.h>
+#include <SFML/Box2d/b2Shape.h>
+#include <SFML/Box2d/b2BlockAllocator.h>
+#include <SFML/Box2d/b2Body.h>
+#include <SFML/Box2d/b2Fixture.h>
+#include <SFML/Box2d/b2World.h>
 
 b2ContactRegister b2Contact::s_registers[b2Shape::e_typeCount][b2Shape::e_typeCount];
 bool b2Contact::s_initialized = false;

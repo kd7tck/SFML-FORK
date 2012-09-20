@@ -27,7 +27,6 @@
 ////////////////////////////////////////////////////////////
 
 #include <SFML/Box2d.hpp>
-#include "Box2D/Box2D.h"
 #include <cstdlib>
 #include <cstring>
 #include <iomanip>
@@ -50,15 +49,15 @@ b2d::b2d()
     iterations = 10;
     scale = 30.f;
     timeStep = 1/60;
-    gravity = new b2Vec2(0,9.8f);
-    worldAABB = new b2AABB;
+    gravity.Set(0, 9.8f);
+    resizeWorld();
+    world = new b2World(gravity);
 }
 
 
 b2d::~b2d()
 {
-    delete gravity;
-    delete worldAABB;
+    delete world;
 }
 
 
@@ -105,13 +104,22 @@ int b2d::getIterations()
 
 void b2d::setGravity(sf::Vector2f grav)
 {
-    gravity->x = grav.x;
-    gravity->y = grav.y;
+    gravity.x = grav.x;
+    gravity.y = grav.y;
 }
 
 sf::Vector2f b2d::getGravity()
 {
-    return sf::Vector2f(gravity->x, gravity->y);
+    return sf::Vector2f(gravity.x, gravity.y);
+}
+
+void b2d::resizeWorld()
+{
+    //upper left window corner
+    worldAABB.lowerBound.Set(-1000/scale, -1000/scale);
+
+    //lower right corner of window
+    worldAABB.upperBound.Set(1000/scale, 1000/scale);
 }
 
 

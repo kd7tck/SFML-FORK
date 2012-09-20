@@ -16,7 +16,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2BlockAllocator.h"
+#include <SFML/Box2d/b2BlockAllocator.h>
 #include <cstdlib>
 #include <climits>
 #include <cstring>

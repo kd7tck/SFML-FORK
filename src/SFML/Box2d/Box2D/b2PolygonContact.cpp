@@ -16,12 +16,12 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2PolygonContact.h"
-#include "b2BlockAllocator.h"
-#include "b2TimeOfImpact.h"
-#include "b2Body.h"
-#include "b2Fixture.h"
-#include "b2WorldCallbacks.h"
+#include <SFML/Box2d/b2PolygonContact.h>
+#include <SFML/Box2d/b2BlockAllocator.h>
+#include <SFML/Box2d/b2TimeOfImpact.h>
+#include <SFML/Box2d/b2Body.h>
+#include <SFML/Box2d/b2Fixture.h>
+#include <SFML/Box2d/b2WorldCallbacks.h>
 
 #include <new>
 using namespace std;

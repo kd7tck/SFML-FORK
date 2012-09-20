@@ -16,9 +16,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2PulleyJoint.h"
-#include "b2Body.h"
-#include "b2TimeStep.h"
+#include <SFML/Box2d/b2PulleyJoint.h>
+#include <SFML/Box2d/b2Body.h>
+#include <SFML/Box2d/b2TimeStep.h>
 
 // Pulley:
 // length1 = norm(p1 - s1)

@@ -29,16 +29,12 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include "Export.hpp"
+#include "Box2D.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 #include <map>
 #include <cmath>
-
-
-
-class b2AABB;
-class b2Vec2;
 
 
 namespace sf
@@ -83,7 +79,7 @@ public :
     ////////////////////////////////////////////////////////////
     /// \brief set the float scale
     ///
-    /// \param float Scale
+    /// \param float Scale, number of pixels per meter
     ///
     ////////////////////////////////////////////////////////////
     void setScale(float Scale);
@@ -144,14 +140,21 @@ public :
     ////////////////////////////////////////////////////////////
     sf::Vector2f getGravity();
 
+    ////////////////////////////////////////////////////////////
+    /// \brief resize world based on scale
+    ///
+    ////////////////////////////////////////////////////////////
+    void resizeWorld();
+
 
 protected :
     bool doSleep;//process sleeping objects
     int iterations;
-    float scale;
+    float scale;//number of pixels per meter
     float timeStep;
-    b2Vec2* gravity;
-    b2AABB* worldAABB;
+    b2AABB worldAABB;
+    b2Vec2 gravity;
+    b2World* world;
 
 };
 

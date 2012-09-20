@@ -16,11 +16,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2ChainAndPolygonContact.h"
-#include "b2BlockAllocator.h"
-#include "b2Fixture.h"
-#include "b2ChainShape.h"
-#include "b2EdgeShape.h"
+#include <SFML/Box2d/b2ChainAndPolygonContact.h>
+#include <SFML/Box2d/b2BlockAllocator.h>
+#include <SFML/Box2d/b2Fixture.h>
+#include <SFML/Box2d/b2ChainShape.h>
+#include <SFML/Box2d/b2EdgeShape.h>
 
 #include <new>
 using namespace std;

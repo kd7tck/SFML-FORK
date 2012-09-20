@@ -16,11 +16,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2GearJoint.h"
-#include "b2RevoluteJoint.h"
-#include "b2PrismaticJoint.h"
-#include "b2Body.h"
-#include "b2TimeStep.h"
+#include <SFML/Box2d/b2GearJoint.h>
+#include <SFML/Box2d/b2RevoluteJoint.h>
+#include <SFML/Box2d/b2PrismaticJoint.h>
+#include <SFML/Box2d/b2Body.h>
+#include <SFML/Box2d/b2TimeStep.h>
 
 // Gear Joint:
 // C0 = (coordinate1 + ratio * coordinate2)_initial

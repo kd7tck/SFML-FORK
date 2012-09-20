@@ -16,8 +16,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2WorldCallbacks.h"
-#include "b2Fixture.h"
+#include <SFML/Box2d/b2WorldCallbacks.h>
+#include <SFML/Box2d/b2Fixture.h>
 
 // Return true if contact calculations should be performed between these two shapes.
 // If you implement your own collision filter you may want to build from this implementation.

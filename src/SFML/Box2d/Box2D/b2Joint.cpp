@@ -16,20 +16,20 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2Joint.h"
-#include "b2DistanceJoint.h"
-#include "b2WheelJoint.h"
-#include "b2MouseJoint.h"
-#include "b2RevoluteJoint.h"
-#include "b2PrismaticJoint.h"
-#include "b2PulleyJoint.h"
-#include "b2GearJoint.h"
-#include "b2WeldJoint.h"
-#include "b2FrictionJoint.h"
-#include "b2RopeJoint.h"
-#include "b2Body.h"
-#include "b2World.h"
-#include "b2BlockAllocator.h"
+#include <SFML/Box2d/b2Joint.h>
+#include <SFML/Box2d/b2DistanceJoint.h>
+#include <SFML/Box2d/b2WheelJoint.h>
+#include <SFML/Box2d/b2MouseJoint.h>
+#include <SFML/Box2d/b2RevoluteJoint.h>
+#include <SFML/Box2d/b2PrismaticJoint.h>
+#include <SFML/Box2d/b2PulleyJoint.h>
+#include <SFML/Box2d/b2GearJoint.h>
+#include <SFML/Box2d/b2WeldJoint.h>
+#include <SFML/Box2d/b2FrictionJoint.h>
+#include <SFML/Box2d/b2RopeJoint.h>
+#include <SFML/Box2d/b2Body.h>
+#include <SFML/Box2d/b2World.h>
+#include <SFML/Box2d/b2BlockAllocator.h>
 
 #include <new>
 

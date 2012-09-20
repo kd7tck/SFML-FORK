@@ -16,8 +16,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2Collision.h"
-#include "b2Distance.h"
+#include <SFML/Box2d/b2Collision.h>
+#include <SFML/Box2d/b2Distance.h>
 
 void b2WorldManifold::Initialize(const b2Manifold* manifold,
 						  const b2Transform& xfA, float32 radiusA,

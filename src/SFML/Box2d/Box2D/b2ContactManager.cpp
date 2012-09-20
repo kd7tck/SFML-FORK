@@ -16,11 +16,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2ContactManager.h"
-#include "b2Body.h"
-#include "b2Fixture.h"
-#include "b2WorldCallbacks.h"
-#include "b2Contact.h"
+#include <SFML/Box2d/b2ContactManager.h>
+#include <SFML/Box2d/b2Body.h>
+#include <SFML/Box2d/b2Fixture.h>
+#include <SFML/Box2d/b2WorldCallbacks.h>
+#include <SFML/Box2d/b2Contact.h>
 
 b2ContactFilter b2_defaultFilter;
 b2ContactListener b2_defaultListener;

@@ -16,9 +16,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2EdgeAndPolygonContact.h"
-#include "b2BlockAllocator.h"
-#include "b2Fixture.h"
+#include <SFML/Box2d/b2EdgeAndPolygonContact.h>
+#include <SFML/Box2d/b2BlockAllocator.h>
+#include <SFML/Box2d/b2Fixture.h>
 
 #include <new>
 using namespace std;

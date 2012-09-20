@@ -16,7 +16,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2Settings.h"
+#include <SFML/Box2d/b2Settings.h>
 #include <cstdlib>
 #include <cstdio>
 #include <cstdarg>

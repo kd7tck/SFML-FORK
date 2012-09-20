@@ -16,22 +16,22 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "b2World.h"
-#include "b2Body.h"
-#include "b2Fixture.h"
-#include "b2Island.h"
-#include "b2PulleyJoint.h"
-#include "b2Contact.h"
-#include "b2ContactSolver.h"
-#include "b2Collision.h"
-#include "b2BroadPhase.h"
-#include "b2CircleShape.h"
-#include "b2EdgeShape.h"
-#include "b2ChainShape.h"
-#include "b2PolygonShape.h"
-#include "b2TimeOfImpact.h"
-#include "b2Draw.h"
-#include "b2Timer.h"
+#include <SFML/Box2d/b2World.h>
+#include <SFML/Box2d/b2Body.h>
+#include <SFML/Box2d/b2Fixture.h>
+#include <SFML/Box2d/b2Island.h>
+#include <SFML/Box2d/b2PulleyJoint.h>
+#include <SFML/Box2d/b2Contact.h>
+#include <SFML/Box2d/b2ContactSolver.h>
+#include <SFML/Box2d/b2Collision.h>
+#include <SFML/Box2d/b2BroadPhase.h>
+#include <SFML/Box2d/b2CircleShape.h>
+#include <SFML/Box2d/b2EdgeShape.h>
+#include <SFML/Box2d/b2ChainShape.h>
+#include <SFML/Box2d/b2PolygonShape.h>
+#include <SFML/Box2d/b2TimeOfImpact.h>
+#include <SFML/Box2d/b2Draw.h>
+#include <SFML/Box2d/b2Timer.h>
 #include <new>
 
 b2World::b2World(const b2Vec2& gravity)
