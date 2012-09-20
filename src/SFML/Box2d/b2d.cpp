@@ -50,13 +50,14 @@ b2d::b2d()
     iterations = 10;
     scale = 30.f;
     timeStep = 1/60;
-    gravity.y = 9.8f;
+    gravity = new b2Vec2(0,9.8f);
     worldAABB = new b2AABB;
 }
 
 
 b2d::~b2d()
 {
+    delete gravity;
     delete worldAABB;
 }
 
@@ -70,6 +71,47 @@ bool b2d::toggleSleepState()
 bool b2d::getSleepState()
 {
     return doSleep;
+}
+
+void b2d::setScale(float Scale)
+{
+    scale = Scale;
+}
+
+float b2d::getScale()
+{
+    return scale;
+}
+
+void b2d::setTimeStep(float step)
+{
+    timeStep = step;
+}
+
+float b2d::getTimeStep()
+{
+    return timeStep;
+}
+
+void b2d::setIterations(int it)
+{
+    iterations = it;
+}
+
+int b2d::getIterations()
+{
+    return iterations;
+}
+
+void b2d::setGravity(sf::Vector2f grav)
+{
+    gravity->x = grav.x;
+    gravity->y = grav.y;
+}
+
+sf::Vector2f b2d::getGravity()
+{
+    return sf::Vector2f(gravity->x, gravity->y);
 }
 
 
