@@ -157,7 +157,7 @@ m_keyRepeat   (true)
         {
             static const unsigned long MWM_HINTS_FUNCTIONS   = 1 << 0;
             static const unsigned long MWM_HINTS_DECORATIONS = 1 << 1;
-    
+
             //static const unsigned long MWM_DECOR_ALL         = 1 << 0;
             static const unsigned long MWM_DECOR_BORDER      = 1 << 1;
             static const unsigned long MWM_DECOR_RESIZEH     = 1 << 2;
@@ -172,7 +172,7 @@ m_keyRepeat   (true)
             static const unsigned long MWM_FUNC_MINIMIZE     = 1 << 3;
             static const unsigned long MWM_FUNC_MAXIMIZE     = 1 << 4;
             static const unsigned long MWM_FUNC_CLOSE        = 1 << 5;
-    
+
             struct WMHints
             {
                 unsigned long Flags;
@@ -181,7 +181,7 @@ m_keyRepeat   (true)
                 long          InputMode;
                 unsigned long State;
             };
-    
+
             WMHints hints;
             hints.Flags       = MWM_HINTS_FUNCTIONS | MWM_HINTS_DECORATIONS;
             hints.Decorations = 0;
@@ -214,7 +214,7 @@ m_keyRepeat   (true)
             sizeHints.flags      = PMinSize | PMaxSize;
             sizeHints.min_width  = sizeHints.max_width  = width;
             sizeHints.min_height = sizeHints.max_height = height;
-            XSetWMNormalHints(m_display, m_window, &sizeHints); 
+            XSetWMNormalHints(m_display, m_window, &sizeHints);
         }
     }
 
@@ -361,7 +361,7 @@ void WindowImplX11::setIcon(unsigned int width, unsigned int height, const Uint8
                 if (i * 8 + k < width)
                 {
                     Uint8 opacity = (pixels[(i * 8 + k + j * width) * 4 + 3] > 0) ? 1 : 0;
-                    maskPixels[i + j * pitch] |= (opacity << k);                    
+                    maskPixels[i + j * pitch] |= (opacity << k);
                 }
             }
         }
@@ -526,7 +526,7 @@ void WindowImplX11::cleanup()
     {
         // Get current screen info
         XRRScreenConfiguration* config = XRRGetScreenInfo(m_display, RootWindow(m_display, m_screen));
-        if (config) 
+        if (config)
         {
             // Get the current rotation
             Rotation currentRotation;
@@ -537,7 +537,7 @@ void WindowImplX11::cleanup()
 
             // Free the configuration instance
             XRRFreeScreenConfigInfo(config);
-        } 
+        }
 
         // Reset the fullscreen window
         fullscreenWindow = NULL;
@@ -641,7 +641,7 @@ bool WindowImplX11::processEvent(XEvent windowEvent)
         // Close event
         case ClientMessage :
         {
-            if ((windowEvent.xclient.format == 32) && (windowEvent.xclient.data.l[0]) == static_cast<long>(m_atomClose))  
+            if ((windowEvent.xclient.format == 32) && (windowEvent.xclient.data.l[0]) == static_cast<long>(m_atomClose))
             {
                 Event event;
                 event.type = Event::Closed;
@@ -747,7 +747,7 @@ bool WindowImplX11::processEvent(XEvent windowEvent)
                     case Button2 : event.mouseButton.button = Mouse::Middle;   break;
                     case Button3 : event.mouseButton.button = Mouse::Right;    break;
                     case 8 :       event.mouseButton.button = Mouse::XButton1; break;
-                    case 9 :       event.mouseButton.button = Mouse::XButton2; break;            
+                    case 9 :       event.mouseButton.button = Mouse::XButton2; break;
                 }
                 pushEvent(event);
             }
@@ -770,7 +770,7 @@ bool WindowImplX11::processEvent(XEvent windowEvent)
                     case Button2 : event.mouseButton.button = Mouse::Middle;   break;
                     case Button3 : event.mouseButton.button = Mouse::Right;    break;
                     case 8 :       event.mouseButton.button = Mouse::XButton1; break;
-                    case 9 :       event.mouseButton.button = Mouse::XButton2; break;            
+                    case 9 :       event.mouseButton.button = Mouse::XButton2; break;
                 }
                 pushEvent(event);
             }
