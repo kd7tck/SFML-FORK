@@ -155,10 +155,21 @@ public :
     ////////////////////////////////////////////////////////////
     bool loadSlideFromImage(sf::Image* image);
 
+    ////////////////////////////////////////////////////////////
+    /// \brief Load gif animation file into series of slides
+    ///
+    ///
+    /// \param const std::string& gifFilename
+    ///
+    /// \return True if loading was successful
+    ///
+    ////////////////////////////////////////////////////////////
+    bool loadSlidesFromGifFile(const std::string& filename);
+
 
 
 protected :
-    int swidth, sheight, totalSlides;
+    int totalSlides;
 
     //int** slide disposal mode, 0=unspecified, 1=do_not_dispose, 2=clear_to_color, 3=restore_previous_content, it's size is equal to number of slides
     int* sdisposal;

@@ -152,6 +152,51 @@ bool SlideShow::loadSlideFromImage(sf::Image* image)
 }
 
 
+bool SlideShow::loadSlidesFromGifFile(const std::string& filename)
+{
+    if(sdisposal)
+        free(sdisposal);
+
+    if(getSlideCount())
+        deleteSlides();
+
+    int tmp[1000];//sdisposal buffer
+    sf::GifReader gr;
+    int x=0;//return value from GetImageByIndex
+    int counter=0;//current frame index
+
+
+    do
+    {
+        sf::Image* i = new sf::Image;
+        tmp[counter] = gr.GetImageByIndex(*i, x, filename);
+
+        if(counter && !x)//only if x==0 and counter!=0
+        {
+            delete(i);
+            tmp[counter] = -1;
+            break;
+        }
+
+        loadSlideFromImage(i);
+
+        x++;
+        counter++;
+    }while(true);
+
+
+    if ((sdisposal = (int *) malloc((counter-1) * 4)) == NULL)
+        exit(4);
+
+    for(x=0; x<counter-1; x++)
+    {
+        sdisposal[x] = tmp[x];
+    }
+
+    return true;
+}
+
+
 
 
 
