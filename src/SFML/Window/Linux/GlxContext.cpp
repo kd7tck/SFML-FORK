@@ -116,7 +116,7 @@ GlxContext::~GlxContext()
             glXMakeCurrent(m_display, None, NULL);
         glXDestroyContext(m_display, m_context);
     }
-
+    
     // Destroy the window if we own it
     if (m_window)
     {
@@ -193,14 +193,14 @@ void GlxContext::createContext(GlxContext* shared, unsigned int bitsPerPixel, co
         // Get the current visual attributes
         int RGBA, doubleBuffer, red, green, blue, alpha, depth, stencil, multiSampling, samples;
         glXGetConfig(m_display, &visuals[i], GLX_RGBA,               &RGBA);
-        glXGetConfig(m_display, &visuals[i], GLX_DOUBLEBUFFER,       &doubleBuffer);
+        glXGetConfig(m_display, &visuals[i], GLX_DOUBLEBUFFER,       &doubleBuffer); 
         glXGetConfig(m_display, &visuals[i], GLX_RED_SIZE,           &red);
-        glXGetConfig(m_display, &visuals[i], GLX_GREEN_SIZE,         &green);
-        glXGetConfig(m_display, &visuals[i], GLX_BLUE_SIZE,          &blue);
-        glXGetConfig(m_display, &visuals[i], GLX_ALPHA_SIZE,         &alpha);
-        glXGetConfig(m_display, &visuals[i], GLX_DEPTH_SIZE,         &depth);
+        glXGetConfig(m_display, &visuals[i], GLX_GREEN_SIZE,         &green); 
+        glXGetConfig(m_display, &visuals[i], GLX_BLUE_SIZE,          &blue); 
+        glXGetConfig(m_display, &visuals[i], GLX_ALPHA_SIZE,         &alpha); 
+        glXGetConfig(m_display, &visuals[i], GLX_DEPTH_SIZE,         &depth);        
         glXGetConfig(m_display, &visuals[i], GLX_STENCIL_SIZE,       &stencil);
-        glXGetConfig(m_display, &visuals[i], GLX_SAMPLE_BUFFERS_ARB, &multiSampling);
+        glXGetConfig(m_display, &visuals[i], GLX_SAMPLE_BUFFERS_ARB, &multiSampling);        
         glXGetConfig(m_display, &visuals[i], GLX_SAMPLES_ARB,        &samples);
 
         // First check the mandatory parameters
@@ -292,7 +292,7 @@ void GlxContext::createContext(GlxContext* shared, unsigned int bitsPerPixel, co
     int depth, stencil, multiSampling, samples;
     glXGetConfig(m_display, bestVisual, GLX_DEPTH_SIZE,         &depth);
     glXGetConfig(m_display, bestVisual, GLX_STENCIL_SIZE,       &stencil);
-    glXGetConfig(m_display, bestVisual, GLX_SAMPLE_BUFFERS_ARB, &multiSampling);
+    glXGetConfig(m_display, bestVisual, GLX_SAMPLE_BUFFERS_ARB, &multiSampling);        
     glXGetConfig(m_display, bestVisual, GLX_SAMPLES_ARB,        &samples);
     m_settings.depthBits         = static_cast<unsigned int>(depth);
     m_settings.stencilBits       = static_cast<unsigned int>(stencil);
