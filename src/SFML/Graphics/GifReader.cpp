@@ -64,7 +64,7 @@ GifReader::~GifReader()
 
 
 
-unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& numberOfFrames, int** frameDisposal)
+unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height, int& numberOfFrames, int** frameDisposal)const
 {
     unsigned char* output;
     unsigned char* op;
@@ -133,7 +133,7 @@ unsigned char* GifReader::Gif2RGB(std::string filename, int& width, int& height,
 
 
 
-unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int& frameNumber, int** frameDisposal)
+unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth, int& frameheight, int& frameNumber, int** frameDisposal)const
 {
     int width, height;
     int nf;//returns the number of frames in gif
@@ -204,7 +204,7 @@ unsigned char* GifReader::GetImageByIndex(std::string filename, int& framewidth,
 
 
 
-int GifReader::GetImageByIndex(Image& i, int& frameNumber, std::string filename)
+int GifReader::GetImageByIndex(Image& i, int& frameNumber, std::string filename)const
 {
     int width, height;
     int nf;//returns the number of frames in gif
@@ -301,20 +301,20 @@ bool GifReader::loadGifAnimationFromFile(const std::string& filename)
 
 
 
-sf::Vector2<int> GifReader::getFrameSize()
+sf::Vector2<int> GifReader::getFrameSize()const
 {
     return sf::Vector2<int>(fwidth,fheight);
 }
 
 
-int GifReader::getNumberFrames()
+int GifReader::getNumberFrames()const
 {
     return totalFrames;
 }
 
 
 
-int* GifReader::getFrameDisposalModes()
+int* GifReader::getFrameDisposalModes()const
 {
     return fdisposal;
 }

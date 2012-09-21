@@ -66,7 +66,7 @@ void SlideShow::deleteSlides()
 
 
 
-bool SlideShow::setCurrentSlide(unsigned int index)
+bool SlideShow::setCurrentSlide(const unsigned int index)
 {
     int count = 0;
 
@@ -103,7 +103,7 @@ bool SlideShow::setCurrentSlide(unsigned int index)
 
 
 
-int SlideShow::getSlideCount()
+int SlideShow::getSlideCount()const
 {
     return slides.size();
 }

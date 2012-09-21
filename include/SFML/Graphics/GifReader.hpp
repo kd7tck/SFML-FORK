@@ -75,7 +75,7 @@ public :
     /// \return unsigned char* the pointer to the pixel array
     ///
     ////////////////////////////////////////////////////////////
-    unsigned char* Gif2RGB(const std::string filename, int& framewidth, int& frameheight, int& numberOfFrames, int** frameDisposal);
+    unsigned char* Gif2RGB(const std::string filename, int& framewidth, int& frameheight, int& numberOfFrames, int** frameDisposal)const;
 
     ////////////////////////////////////////////////////////////
     /// \brief convert gif frame number into array of pixels, make sure to free array when done
@@ -91,7 +91,7 @@ public :
     /// \return unsigned char* the pointer to the pixel array
     ///
     ////////////////////////////////////////////////////////////
-    unsigned char* GetImageByIndex(const std::string filename, int& framewidth, int& frameheight, int& frameNumber, int** frameDisposal);
+    unsigned char* GetImageByIndex(const std::string filename, int& framewidth, int& frameheight, int& frameNumber, int** frameDisposal)const;
 
     ////////////////////////////////////////////////////////////
     /// \brief load gif frame number into Image passed by reference
@@ -105,7 +105,7 @@ public :
     /// \return int frame disposal mode, 0=unspecified, 1=do_not_dispose, 2=clear_to_color, 3=restore_previous_content
     ///
     ////////////////////////////////////////////////////////////
-    int GetImageByIndex(Image& image, int& frameNumber, const std::string filename);
+    int GetImageByIndex(Image& image, int& frameNumber, const std::string filename)const;
 
     ////////////////////////////////////////////////////////////
     /// \brief Load the animated image from a file on disk into this object, sf::GifReader is a child of sf::Image.
@@ -160,7 +160,7 @@ public :
     /// \return Vector2<int>
     ///
     ////////////////////////////////////////////////////////////
-    sf::Vector2<int> getFrameSize();
+    sf::Vector2<int> getFrameSize()const;
 
     ////////////////////////////////////////////////////////////
     /// \brief get number of frames
@@ -168,7 +168,7 @@ public :
     /// \return int
     ///
     ////////////////////////////////////////////////////////////
-    int getNumberFrames();
+    int getNumberFrames()const;
 
     ////////////////////////////////////////////////////////////
     /// \brief get array of frame disposal modes, these are equal to number of frames
@@ -176,7 +176,7 @@ public :
     /// \return int array of frame disposal modes, 0=unspecified, 1=do_not_dispose, 2=clear_to_color, 3=restore_previous_content, it's size is equal to number of frames
     ///
     ////////////////////////////////////////////////////////////
-    int* getFrameDisposalModes();
+    int* getFrameDisposalModes()const;
 
 
 

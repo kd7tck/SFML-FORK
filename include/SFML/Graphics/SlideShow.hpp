@@ -80,7 +80,7 @@ public :
     /// \return int number of slides
     ///
     ////////////////////////////////////////////////////////////
-    int getSlideCount();
+    int getSlideCount()const;
 
     ////////////////////////////////////////////////////////////
     /// \brief get array of frame disposal modes, these are equal to number of frames
@@ -90,7 +90,7 @@ public :
     /// \return int array of frame disposal modes, 0=unspecified, 1=do_not_dispose, 2=clear_to_color, 3=restore_previous_content, it's size is equal to number of frames
     ///
     ////////////////////////////////////////////////////////////
-    bool setCurrentSlide(unsigned int index);
+    bool setCurrentSlide(const unsigned int index);
 
     ////////////////////////////////////////////////////////////
     /// \brief Load the image from a file on disk
