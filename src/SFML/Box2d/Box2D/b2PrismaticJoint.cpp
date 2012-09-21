@@ -16,9 +16,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2PrismaticJoint.h>
-#include <SFML/Box2d/b2Body.h>
-#include <SFML/Box2d/b2TimeStep.h>
+#include <SFML/Box2d/Box2D/b2PrismaticJoint.h>
+#include <SFML/Box2d/Box2D/b2Body.h>
+#include <SFML/Box2d/Box2D/b2TimeStep.h>
 
 // Linear constraint (point-to-line)
 // d = p2 - p1 = x2 + r2 - x1 - r1

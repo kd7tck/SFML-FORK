@@ -16,8 +16,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2StackAllocator.h>
-#include <SFML/Box2d/b2Math.h>
+#include <SFML/Box2d/Box2D/b2StackAllocator.h>
+#include <SFML/Box2d/Box2D/b2Math.h>
 
 b2StackAllocator::b2StackAllocator()
 {

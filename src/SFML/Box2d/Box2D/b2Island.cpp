@@ -16,16 +16,16 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2Distance.h>
-#include <SFML/Box2d/b2Island.h>
-#include <SFML/Box2d/b2Body.h>
-#include <SFML/Box2d/b2Fixture.h>
-#include <SFML/Box2d/b2World.h>
-#include <SFML/Box2d/b2Contact.h>
-#include <SFML/Box2d/b2ContactSolver.h>
-#include <SFML/Box2d/b2Joint.h>
-#include <SFML/Box2d/b2StackAllocator.h>
-#include <SFML/Box2d/b2Timer.h>
+#include <SFML/Box2d/Box2D/b2Distance.h>
+#include <SFML/Box2d/Box2D/b2Island.h>
+#include <SFML/Box2d/Box2D/b2Body.h>
+#include <SFML/Box2d/Box2D/b2Fixture.h>
+#include <SFML/Box2d/Box2D/b2World.h>
+#include <SFML/Box2d/Box2D/b2Contact.h>
+#include <SFML/Box2d/Box2D/b2ContactSolver.h>
+#include <SFML/Box2d/Box2D/b2Joint.h>
+#include <SFML/Box2d/Box2D/b2StackAllocator.h>
+#include <SFML/Box2d/Box2D/b2Timer.h>
 
 /*
 Position Correction Notes

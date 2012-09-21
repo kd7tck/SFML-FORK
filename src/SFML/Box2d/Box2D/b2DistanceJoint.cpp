@@ -16,9 +16,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2DistanceJoint.h>
-#include <SFML/Box2d/b2Body.h>
-#include <SFML/Box2d/b2TimeStep.h>
+#include <SFML/Box2d/Box2D/b2DistanceJoint.h>
+#include <SFML/Box2d/Box2D/b2Body.h>
+#include <SFML/Box2d/Box2D/b2TimeStep.h>
 
 // 1-D constrained system
 // m (v2 - v1) = lambda

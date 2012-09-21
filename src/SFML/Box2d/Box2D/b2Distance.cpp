@@ -16,11 +16,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2Distance.h>
-#include <SFML/Box2d/b2CircleShape.h>
-#include <SFML/Box2d/b2EdgeShape.h>
-#include <SFML/Box2d/b2ChainShape.h>
-#include <SFML/Box2d/b2PolygonShape.h>
+#include <SFML/Box2d/Box2D/b2Distance.h>
+#include <SFML/Box2d/Box2D/b2CircleShape.h>
+#include <SFML/Box2d/Box2D/b2EdgeShape.h>
+#include <SFML/Box2d/Box2D/b2ChainShape.h>
+#include <SFML/Box2d/Box2D/b2PolygonShape.h>
 
 // GJK using Voronoi regions (Christer Ericson) and Barycentric coordinates.
 int32 b2_gjkCalls, b2_gjkIters, b2_gjkMaxIters;

@@ -16,7 +16,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2BroadPhase.h>
+#include <SFML/Box2d/Box2D/b2BroadPhase.h>
 #include <cstring>
 using namespace std;
 

@@ -16,7 +16,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2Math.h>
+#include <SFML/Box2d/Box2D/b2Math.h>
 
 const b2Vec2 b2Vec2_zero(0.0f, 0.0f);
 

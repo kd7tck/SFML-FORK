@@ -16,11 +16,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2Body.h>
-#include <SFML/Box2d/b2Fixture.h>
-#include <SFML/Box2d/b2World.h>
-#include <SFML/Box2d/b2Contact.h>
-#include <SFML/Box2d/b2Joint.h>
+#include <SFML/Box2d/Box2D/b2Body.h>
+#include <SFML/Box2d/Box2D/b2Fixture.h>
+#include <SFML/Box2d/Box2D/b2World.h>
+#include <SFML/Box2d/Box2D/b2Contact.h>
+#include <SFML/Box2d/Box2D/b2Joint.h>
 
 b2Body::b2Body(const b2BodyDef* bd, b2World* world)
 {

@@ -16,16 +16,16 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2Fixture.h>
-#include <SFML/Box2d/b2Contact.h>
-#include <SFML/Box2d/b2World.h>
-#include <SFML/Box2d/b2CircleShape.h>
-#include <SFML/Box2d/b2EdgeShape.h>
-#include <SFML/Box2d/b2PolygonShape.h>
-#include <SFML/Box2d/b2ChainShape.h>
-#include <SFML/Box2d/b2BroadPhase.h>
-#include <SFML/Box2d/b2Collision.h>
-#include <SFML/Box2d/b2BlockAllocator.h>
+#include <SFML/Box2d/Box2D/b2Fixture.h>
+#include <SFML/Box2d/Box2D/b2Contact.h>
+#include <SFML/Box2d/Box2D/b2World.h>
+#include <SFML/Box2d/Box2D/b2CircleShape.h>
+#include <SFML/Box2d/Box2D/b2EdgeShape.h>
+#include <SFML/Box2d/Box2D/b2PolygonShape.h>
+#include <SFML/Box2d/Box2D/b2ChainShape.h>
+#include <SFML/Box2d/Box2D/b2BroadPhase.h>
+#include <SFML/Box2d/Box2D/b2Collision.h>
+#include <SFML/Box2d/Box2D/b2BlockAllocator.h>
 
 b2Fixture::b2Fixture()
 {

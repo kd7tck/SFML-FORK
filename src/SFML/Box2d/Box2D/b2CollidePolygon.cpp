@@ -16,8 +16,8 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2Collision.h>
-#include <SFML/Box2d/b2PolygonShape.h>
+#include <SFML/Box2d/Box2D/b2Collision.h>
+#include <SFML/Box2d/Box2D/b2PolygonShape.h>
 
 // Find the separation between poly1 and poly2 for a give edge normal on poly1.
 static float32 b2EdgeSeparation(const b2PolygonShape* poly1, const b2Transform& xf1, int32 edge1,

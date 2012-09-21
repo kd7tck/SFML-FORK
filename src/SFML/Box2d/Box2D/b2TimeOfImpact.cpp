@@ -16,11 +16,11 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2Collision.h>
-#include <SFML/Box2d/b2Distance.h>
-#include <SFML/Box2d/b2TimeOfImpact.h>
-#include <SFML/Box2d/b2CircleShape.h>
-#include <SFML/Box2d/b2PolygonShape.h>
+#include <SFML/Box2d/Box2D/b2Collision.h>
+#include <SFML/Box2d/Box2D/b2Distance.h>
+#include <SFML/Box2d/Box2D/b2TimeOfImpact.h>
+#include <SFML/Box2d/Box2D/b2CircleShape.h>
+#include <SFML/Box2d/Box2D/b2PolygonShape.h>
 
 #include <cstdio>
 using namespace std;

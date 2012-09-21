@@ -16,9 +16,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2RevoluteJoint.h>
-#include <SFML/Box2d/b2Body.h>
-#include <SFML/Box2d/b2TimeStep.h>
+#include <SFML/Box2d/Box2D/b2RevoluteJoint.h>
+#include <SFML/Box2d/Box2D/b2Body.h>
+#include <SFML/Box2d/Box2D/b2TimeStep.h>
 
 // Point-to-point constraint
 // C = p2 - p1

@@ -16,20 +16,20 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2Joint.h>
-#include <SFML/Box2d/b2DistanceJoint.h>
-#include <SFML/Box2d/b2WheelJoint.h>
-#include <SFML/Box2d/b2MouseJoint.h>
-#include <SFML/Box2d/b2RevoluteJoint.h>
-#include <SFML/Box2d/b2PrismaticJoint.h>
-#include <SFML/Box2d/b2PulleyJoint.h>
-#include <SFML/Box2d/b2GearJoint.h>
-#include <SFML/Box2d/b2WeldJoint.h>
-#include <SFML/Box2d/b2FrictionJoint.h>
-#include <SFML/Box2d/b2RopeJoint.h>
-#include <SFML/Box2d/b2Body.h>
-#include <SFML/Box2d/b2World.h>
-#include <SFML/Box2d/b2BlockAllocator.h>
+#include <SFML/Box2d/Box2D/b2Joint.h>
+#include <SFML/Box2d/Box2D/b2DistanceJoint.h>
+#include <SFML/Box2d/Box2D/b2WheelJoint.h>
+#include <SFML/Box2d/Box2D/b2MouseJoint.h>
+#include <SFML/Box2d/Box2D/b2RevoluteJoint.h>
+#include <SFML/Box2d/Box2D/b2PrismaticJoint.h>
+#include <SFML/Box2d/Box2D/b2PulleyJoint.h>
+#include <SFML/Box2d/Box2D/b2GearJoint.h>
+#include <SFML/Box2d/Box2D/b2WeldJoint.h>
+#include <SFML/Box2d/Box2D/b2FrictionJoint.h>
+#include <SFML/Box2d/Box2D/b2RopeJoint.h>
+#include <SFML/Box2d/Box2D/b2Body.h>
+#include <SFML/Box2d/Box2D/b2World.h>
+#include <SFML/Box2d/Box2D/b2BlockAllocator.h>
 
 #include <new>
 

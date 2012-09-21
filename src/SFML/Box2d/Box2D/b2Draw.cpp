@@ -16,7 +16,7 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include <SFML/Box2d/b2Draw.h>
+#include <SFML/Box2d/Box2D/b2Draw.h>
 
 b2Draw::b2Draw()
 {
