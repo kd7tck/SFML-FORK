@@ -154,8 +154,10 @@ bool SlideShow::loadSlideFromImage(sf::Image* image)
 
 bool SlideShow::loadSlidesFromGifFile(const std::string& filename)
 {
-    if(sdisposal)
+    if(sdisposal){
         free(sdisposal);
+        sdisposal = 0;
+    }
 
     if(getSlideCount())
         deleteSlides();
