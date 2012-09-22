@@ -45,6 +45,8 @@ namespace sf
 
 b2d::b2d()
 {
+    worldHeight = 600;
+    worldWidth = 800;
     doSleep = true;
     iterations = 10;
     scale = 30.f;
@@ -168,6 +170,64 @@ void b2d::queryAABB(b2QueryCallback* callback, const b2AABB& aabb)
 void b2d::queryAABB()
 {
     world->QueryAABB(&gcallback, worldAABB);
+}
+
+
+
+
+
+void b2d::setWorldSize(const sf::Vector2i size)
+{
+    worldHeight = size.y;
+    worldWidth = size.x;
+}
+
+
+
+
+
+sf::Vector2i b2d::getWorldSize()
+{
+    return sf::Vector2i(worldWidth, worldHeight);
+}
+
+
+
+
+
+int b2d::createBody(const b2dGenericBodyDefinition* def)
+{
+    b2Body* ptr = 0;
+    ptr = world->CreateBody(def);
+    if(!ptr)
+        return -1;
+
+    worldBodies.push_back(ptr);
+    return worldBodies.size()-1;
+}
+
+
+
+
+void b2d::destroyBody(const int index)
+{
+    b2Body* bod = 0;
+    int x;
+
+    if(worldBodies.size() > 0)
+    {
+        for( worldBodiesIT = worldBodies.begin(), x=0; worldBodiesIT != worldBodies.end(); worldBodiesIT++, x++)
+        {
+            if(x==index)
+            {
+                bod = (*worldBodiesIT);
+                world->DestroyBody(bod);
+                worldBodies.erase(worldBodies.begin() + x);
+            }
+        }
+    }
+
+
 }
 
 

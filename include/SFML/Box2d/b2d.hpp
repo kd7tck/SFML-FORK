@@ -37,12 +37,29 @@
 #include <cmath>
 
 
+
+
+
 namespace sf
 {
 
 
-//subclass b2QueryCallback
-class GenericQueryCallback : public b2QueryCallback
+////////////////////////////////////////////////////////////
+/// \brief A Generic body definition.
+///
+////////////////////////////////////////////////////////////
+class b2dGenericBodyDefinition : public b2BodyDef
+{
+    ;
+};
+
+
+
+////////////////////////////////////////////////////////////
+/// \brief A generic AABB Querry callback.
+///
+////////////////////////////////////////////////////////////
+class b2dGenericQueryCallback : public b2QueryCallback
 {
 public:
     std::vector<b2Body*> foundBodies;
@@ -188,23 +205,91 @@ public :
     ////////////////////////////////////////////////////////////
     void queryAABB(b2QueryCallback* callback, const b2AABB& aabb);
 
+    ////////////////////////////////////////////////////////////
+    /// \brief set the x and y size of the box2d world
+    ///
+    /// \param vector2i size
+    ///
+    ////////////////////////////////////////////////////////////
+    void setWorldSize(const sf::Vector2i size);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief get the x and y size of the box2d world
+    ///
+    /// \return vector2i size
+    ///
+    ////////////////////////////////////////////////////////////
+    sf::Vector2i getWorldSize();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief create a new body from a generic body definition
+    ///
+    /// \param b2BodyDef* bodyDefinition
+    ///
+    /// \return index of new body, returns -1 if error
+    ///
+    ////////////////////////////////////////////////////////////
+    int createBody(const b2dGenericBodyDefinition* def);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief destroy body from worldBodies Vector List
+    ///
+    /// \param int body index
+    ///
+    ////////////////////////////////////////////////////////////
+    void destroyBody(const int index);
+
 
 protected :
     bool doSleep;//process sleeping objects
     int iterations;
     float scale;//number of pixels per meter
     float timeStep;
+    int worldHeight;
+    int worldWidth;
     b2AABB worldAABB;//query Box
     b2Vec2 gravity;
     b2World* world;
-    GenericQueryCallback gcallback;
+    b2dGenericQueryCallback gcallback;
 
+    std::vector <b2Body*> worldBodies;
+    std::vector <b2Body*>::iterator worldBodiesIT;
 };
 
 } // namespace sf
 
 
 #endif // SFML_B2D_HPP
+
+////////////////////////////////////////////////////////////
+/// \class sf::b2dGenericBodyDefinition
+/// \ingroup box2d
+///
+/// sf::b2dGenericBodyDefinition is used for creating new world bodies
+///
+/// Example:
+/// \code
+///
+/// \endcode
+///
+/// \see sf::b2dGenericBodyDefinition
+///
+////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////
+/// \class sf::b2dGenericQueryCallback
+/// \ingroup box2d
+///
+/// sf::b2dGenericQueryCallback is used to act as a template for all AABB Query callbacks
+///
+/// Example:
+/// \code
+///
+/// \endcode
+///
+/// \see sf::b2dGenericQueryCallback
+///
+////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////
 /// \class sf::b2d
