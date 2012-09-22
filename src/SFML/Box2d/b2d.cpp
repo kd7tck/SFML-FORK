@@ -198,7 +198,7 @@ sf::Vector2i b2d::getWorldSize()
 int b2d::createBody(const b2dGenericBodyDefinition* def)
 {
     b2Body* ptr = 0;
-    ptr = world->CreateBody(def);
+    ptr = world->CreateBody((b2BodyDef*)def);
     if(!ptr)
         return -1;
 
