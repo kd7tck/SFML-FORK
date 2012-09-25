@@ -231,4 +231,27 @@ void b2d::destroyBody(const int index)
 }
 
 
+void b2d::generateFixtureForBodyIndex(const int index, b2Shape* shape, const float friction, const float density)
+{
+    int x;
+    b2FixtureDef* FixtureDef = new b2FixtureDef();
+    FixtureDef->density = density;
+    FixtureDef->friction = friction;
+    FixtureDef->shape = shape;
+
+
+    if(worldBodies.size() > 0)
+        for( worldBodiesIT = worldBodies.begin(), x=0; worldBodiesIT != worldBodies.end(); worldBodiesIT++, x++)
+            if(x==index)
+                (*worldBodiesIT)->CreateFixture(FixtureDef);
+}
+
+b2PolygonShape* b2d::generatePolygonShape(const float hx, const float hy)
+{
+    b2PolygonShape* temp = new b2PolygonShape();
+    temp->SetAsBox(hx,hx);
+    return temp;
+}
+
+
 } // namespace sf

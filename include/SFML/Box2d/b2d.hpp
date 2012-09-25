@@ -43,7 +43,6 @@
 namespace sf
 {
 
-
 ////////////////////////////////////////////////////////////
 /// \brief A Generic body definition.
 ///
@@ -180,7 +179,7 @@ public :
 
     ////////////////////////////////////////////////////////////
     /// \brief Query for any fixtures intersecting worldAABB
-    /// Uses Generic Query call back class named gcallback
+    /// Uses Generic Query call back class named gcallback, located inside this class
     /// Uses default worldAABB
     ///
     ////////////////////////////////////////////////////////////
@@ -196,7 +195,8 @@ public :
     void queryAABB(b2QueryCallback* callback);
 
     ////////////////////////////////////////////////////////////
-    /// \brief Query for any fixtures intersecting worldAABB
+    /// \brief Query for any fixtures intersecting
+    /// Uses outside worldAABB
     ///
     /// \param b2QueryCallback* callback
     ///
@@ -226,7 +226,7 @@ public :
     ///
     /// \param b2BodyDef* bodyDefinition
     ///
-    /// \return index of new body, returns -1 if error
+    /// \return index of new body, save this for later deletion, returns -1 if error
     ///
     ////////////////////////////////////////////////////////////
     int createBody(const b2dGenericBodyDefinition* def);
@@ -238,6 +238,24 @@ public :
     ///
     ////////////////////////////////////////////////////////////
     void destroyBody(const int index);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief destroy body from worldBodies Vector List
+    ///
+    /// \param int body index
+    /// \param int b2Shape*
+    /// \param float friction
+    /// \param float density
+    ///
+    ////////////////////////////////////////////////////////////
+    void generateFixtureForBodyIndex(const int index, b2Shape* shape, const float friction, const float density);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief generate generic polygon shape
+    /// \return b2PolygonShape*
+    ///
+    ////////////////////////////////////////////////////////////
+    b2PolygonShape* generatePolygonShape(const float hx, const float hy);
 
 
 protected :
