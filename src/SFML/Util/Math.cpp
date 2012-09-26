@@ -42,6 +42,32 @@
 #define STB_DEFINE
 #include <SFML/Util/stb_vec.h>
 
+template <class T>
+bool isPrime(T num)
+{
+    if (num <=1)
+        return false;
+    else if (num == 2)
+        return true;
+    else if (num % 2 == 0)
+        return false;
+    else
+    {
+        bool prime = true;
+        T divisor = 3;
+        double num_d = static_cast<double>(num);
+        T upperLimit = static_cast<T>(sqrt(num_d) +1);
+
+        while (divisor <= upperLimit)
+        {
+            if (num % divisor == 0)
+                prime = false;
+            divisor +=2;
+        }
+        return prime;
+    }
+}
+
 
 namespace sf
 {
@@ -465,5 +491,36 @@ T Math::difference_eq(T (*fx)(T x), T h, T x)
 }
 
 
+template <class T>
+std::vector<T> Math::getFactors(T x)
+{
+    std::vector<T> vFactors;
+    int d = 2;
+
+    if(x <= 2 || isPrime(x))
+    {
+        vFactors.push_back(x);
+        return vFactors;
+    }
+
+    while(d < x)
+    {
+        if(x % d == 0)
+        {
+            vFactors.push_back(d);
+            x /= d;
+        }
+        else
+        {
+            if(d == 2)
+                d = 3;
+            else
+                d += 2;
+        }
+    }
+
+    vFactors.push_back(d);
+    return vFactors;
+}
 
 } // namespace sf

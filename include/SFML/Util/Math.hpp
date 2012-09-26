@@ -34,6 +34,7 @@
 #include <string>
 #include <map>
 #include <cmath>
+#include <vector>
 
 
 
@@ -158,6 +159,17 @@ public :
     ////////////////////////////////////////////////////////////
     template <class T>
     T difference_eq(T (*func_x)(T x), T h, T x);
+
+
+    ////////////////////////////////////////////////////////////
+    /// \brief obtain prime factors of number
+    ///
+    /// \param type x
+    /// \return type vector of factors
+    ///
+    ////////////////////////////////////////////////////////////
+    template <class T>
+    std::vector<T> getFactors(T x);
 
 
 
