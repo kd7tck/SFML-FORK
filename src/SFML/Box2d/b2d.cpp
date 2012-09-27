@@ -195,10 +195,10 @@ sf::Vector2i b2d::getWorldSize()
 
 
 
-int b2d::createBody(const b2dGenericBodyDefinition* def)
+int b2d::createBody(const b2BodyDef* def)
 {
     b2Body* ptr = 0;
-    ptr = world->CreateBody((b2BodyDef*)def);
+    ptr = world->CreateBody(def);
     if(!ptr)
         return -1;
 
@@ -231,25 +231,56 @@ void b2d::destroyBody(const int index)
 }
 
 
-void b2d::generateFixtureForBodyIndex(const int index, b2Shape* shape, const float friction, const float density)
+void b2d::generateFixtureForBodyIndex(const int bodyIndex, b2Shape* shape, const float friction=1, const float density=1, const float restitution=1)
 {
     int x;
     b2FixtureDef* FixtureDef = new b2FixtureDef();
     FixtureDef->density = density;
     FixtureDef->friction = friction;
     FixtureDef->shape = shape;
+    FixtureDef->restitution = restitution;
 
 
     if(worldBodies.size() > 0)
         for( worldBodiesIT = worldBodies.begin(), x=0; worldBodiesIT != worldBodies.end(); worldBodiesIT++, x++)
-            if(x==index)
+            if(x==bodyIndex)
                 (*worldBodiesIT)->CreateFixture(FixtureDef);
 }
+
+
 
 b2PolygonShape* b2d::generatePolygonShape(const float hx, const float hy)
 {
     b2PolygonShape* temp = new b2PolygonShape();
     temp->SetAsBox(hx,hx);
+    return temp;
+}
+
+
+b2PolygonShape* b2d::generatePolygonShape(const b2Vec2 *vertices, int vertexCount)
+{
+    b2PolygonShape* temp = new b2PolygonShape();
+    temp->Set(vertices,vertexCount);
+    return temp;
+}
+
+
+b2BodyDef* b2d::generateDynamicBodyDefinition(const float x, const float y)
+{
+    b2BodyDef* temp = new b2BodyDef();
+    temp->type = b2_dynamicBody;
+    temp->position.x = x;
+    temp->position.y = y;
+    return temp;
+}
+
+
+b2BodyDef* b2d::generateStaticBodyDefinition(const float x, const float y)
+{
+    b2BodyDef* temp = new b2BodyDef();
+    temp->type = b2_staticBody;
+    temp->position.x = x;
+    temp->position.y = y;
     return temp;
 }
 

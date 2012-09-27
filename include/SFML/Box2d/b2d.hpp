@@ -43,15 +43,6 @@
 namespace sf
 {
 
-////////////////////////////////////////////////////////////
-/// \brief A Generic body definition.
-///
-////////////////////////////////////////////////////////////
-class b2dGenericBodyDefinition : public b2BodyDef
-{
-    ;
-};
-
 
 
 ////////////////////////////////////////////////////////////
@@ -229,7 +220,7 @@ public :
     /// \return index of new body, save this for later deletion, returns -1 if error
     ///
     ////////////////////////////////////////////////////////////
-    int createBody(const b2dGenericBodyDefinition* def);
+    int createBody(const b2BodyDef* def);
 
     ////////////////////////////////////////////////////////////
     /// \brief destroy body from worldBodies Vector List
@@ -242,20 +233,54 @@ public :
     ////////////////////////////////////////////////////////////
     /// \brief destroy body from worldBodies Vector List
     ///
-    /// \param int body index
+    /// \param int body bodyIndex
     /// \param int b2Shape*
-    /// \param float friction
-    /// \param float density
+    /// \param float friction 0-1
+    /// \param float density 0-1
+    /// \param float restitution 0-1
     ///
     ////////////////////////////////////////////////////////////
-    void generateFixtureForBodyIndex(const int index, b2Shape* shape, const float friction, const float density);
+    void generateFixtureForBodyIndex(const int bodyIndex, b2Shape* shape, const float friction, const float density, const float restitution);
 
     ////////////////////////////////////////////////////////////
-    /// \brief generate generic polygon shape
+    /// \brief generate generic polygon shape with SetAsBox Setup
+    /// \param float half-x
+    /// \param float half-y
+    ///
     /// \return b2PolygonShape*
     ///
     ////////////////////////////////////////////////////////////
     b2PolygonShape* generatePolygonShape(const float hx, const float hy);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief generate generic polygon shape with Set Setup
+    /// \param b2Vec2* list of vertices
+    /// \param int number of vertices
+    ///
+    /// \return b2PolygonShape*
+    ///
+    ////////////////////////////////////////////////////////////
+    b2PolygonShape* generatePolygonShape(const b2Vec2 *vertices, int vertexCount);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief generate a generic dynamic body definition
+    /// \param float x position
+    /// \param float y position
+    ///
+    /// \return b2BodyDef*
+    ///
+    ////////////////////////////////////////////////////////////
+    b2BodyDef* generateDynamicBodyDefinition(const float x, const float y);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief generate a generic dynamic body definition
+    /// \param float x position
+    /// \param float y position
+    ///
+    /// \return b2BodyDef*
+    ///
+    ////////////////////////////////////////////////////////////
+    b2BodyDef* generateStaticBodyDefinition(const float x, const float y);
 
 
 protected :
@@ -279,20 +304,7 @@ protected :
 
 #endif // SFML_B2D_HPP
 
-////////////////////////////////////////////////////////////
-/// \class sf::b2dGenericBodyDefinition
-/// \ingroup box2d
-///
-/// sf::b2dGenericBodyDefinition is used for creating new world bodies
-///
-/// Example:
-/// \code
-///
-/// \endcode
-///
-/// \see sf::b2dGenericBodyDefinition
-///
-////////////////////////////////////////////////////////////
+
 
 ////////////////////////////////////////////////////////////
 /// \class sf::b2dGenericQueryCallback
