@@ -401,6 +401,7 @@ void Text::updateGeometryBounding()
 
     // Clear the previous geometry
     m_vertices.clear();
+    m_bounds = sf::FloatRect();
 
     // No text: nothing to draw
     if (m_string.isEmpty())
