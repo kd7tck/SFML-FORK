@@ -132,19 +132,35 @@ public :
 
     ////////////////////////////////////////////////////////////
     /// \brief set the number of iterations
-    ///
+    /// how strongly to correct velocity
     /// \param int number of iterations
     ///
     ////////////////////////////////////////////////////////////
-    void setIterations(int it);
+    void setVelocityIterations(int it);
 
     ////////////////////////////////////////////////////////////
     /// \brief get the number of iterations
-    ///
+    /// how strongly to correct velocity
     /// \return int iterations
     ///
     ////////////////////////////////////////////////////////////
-    int getIterations();
+    int getVelocityIterations();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief set the number of iterations
+    /// how strongly to correct position
+    /// \param int number of iterations
+    ///
+    ////////////////////////////////////////////////////////////
+    void setPositionIterations(int it);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief get the number of iterations
+    /// how strongly to correct position
+    /// \return int iterations
+    ///
+    ////////////////////////////////////////////////////////////
+    int getPositionIterations();
 
     ////////////////////////////////////////////////////////////
     /// \brief set the gravity vector
@@ -239,8 +255,10 @@ public :
     /// \param float density 0-1
     /// \param float restitution 0-1
     ///
+    /// \return true if successful
+    ///
     ////////////////////////////////////////////////////////////
-    void generateFixtureForBodyIndex(const int bodyIndex, b2Shape* shape, const float friction, const float density, const float restitution);
+    bool generateFixtureForBodyIndex(const int bodyIndex, b2Shape* shape, const float friction, const float density, const float restitution);
 
     ////////////////////////////////////////////////////////////
     /// \brief generate generic polygon shape with SetAsBox Setup
@@ -282,10 +300,18 @@ public :
     ////////////////////////////////////////////////////////////
     b2BodyDef* generateStaticBodyDefinition(const float x, const float y);
 
+    ////////////////////////////////////////////////////////////
+    /// \brief takes one step in world simulation
+    ///
+    ///
+    ////////////////////////////////////////////////////////////
+    void worldStep();
+
 
 protected :
     bool doSleep;//process sleeping objects
-    int iterations;
+    int velocityIterations;
+    int positionIterations;
     float scale;//number of pixels per meter
     float timeStep;
     int worldHeight;

@@ -48,10 +48,11 @@ b2d::b2d()
     worldHeight = 600;
     worldWidth = 800;
     doSleep = true;
-    iterations = 10;
+    velocityIterations = 8;
+    positionIterations = 3;
     scale = 30.f;
     timeStep = 1/60;
-    gravity.Set(0, 9.8f);
+    gravity.Set(0, -9.8f);
     resizeWorld();
     world = new b2World(gravity);
     world->SetAllowSleeping(doSleep);
@@ -109,16 +110,29 @@ float b2d::getTimeStep()
 
 
 
-void b2d::setIterations(int it)
+void b2d::setVelocityIterations(int it)
 {
-    iterations = it;
+    velocityIterations = it;
 }
 
 
 
-int b2d::getIterations()
+int b2d::getVelocityIterations()
 {
-    return iterations;
+    return velocityIterations;
+}
+
+
+void b2d::setPositionIterations(int it)
+{
+    positionIterations = it;
+}
+
+
+
+int b2d::getPositionIterations()
+{
+    return positionIterations;
 }
 
 
@@ -231,7 +245,7 @@ void b2d::destroyBody(const int index)
 }
 
 
-void b2d::generateFixtureForBodyIndex(const int bodyIndex, b2Shape* shape, const float friction=1, const float density=1, const float restitution=1)
+bool b2d::generateFixtureForBodyIndex(const int bodyIndex, b2Shape* shape, const float friction=1, const float density=1, const float restitution=1)
 {
     int x;
     b2FixtureDef* FixtureDef = new b2FixtureDef();
@@ -241,10 +255,18 @@ void b2d::generateFixtureForBodyIndex(const int bodyIndex, b2Shape* shape, const
     FixtureDef->restitution = restitution;
 
 
-    if(worldBodies.size() > 0)
-        for( worldBodiesIT = worldBodies.begin(), x=0; worldBodiesIT != worldBodies.end(); worldBodiesIT++, x++)
+    if(worldBodies.size() > 0){
+        for( worldBodiesIT = worldBodies.begin(), x=0; worldBodiesIT != worldBodies.end(); worldBodiesIT++, x++){
             if(x==bodyIndex)
+            {
                 (*worldBodiesIT)->CreateFixture(FixtureDef);
+                return true;
+            }
+        }
+    }
+
+    delete (FixtureDef);
+    return false;
 }
 
 
@@ -282,6 +304,12 @@ b2BodyDef* b2d::generateStaticBodyDefinition(const float x, const float y)
     temp->position.x = x;
     temp->position.y = y;
     return temp;
+}
+
+
+void b2d::worldStep()
+{
+    world->Step(timeStep,velocityIterations,positionIterations);
 }
 
 
