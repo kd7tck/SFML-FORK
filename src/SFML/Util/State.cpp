@@ -41,8 +41,6 @@
 namespace sf
 {
 
-std::vector <State_Event*> State::registered_events;
-
 State::State(std::string n)
 {
     next_state_name = "";
@@ -106,8 +104,7 @@ bool State::trigger(int event_id)
 
 void State::registerEvent(State_Event* e)
 {
-    unRegisterEvent(e);
-    State::registered_events.push_back(e);
+    registered_events.push_back(e);
     e->registerState(this);
 }
 
@@ -116,18 +113,18 @@ void State::unRegisterEvent(State_Event* e)
 {
     int count = 0;
 
-    if(State::registered_events.size() > 0)
+    if(registered_events.size() > 0)
     {
-        for ( it = State::registered_events.begin(); it != State::registered_events.end() ; it++ )
+        for ( it = registered_events.begin(); it != registered_events.end() ; it++ )
         {
             if((*it)->getId() == e->getId())
             {
-                State::registered_events.erase(State::registered_events.begin() + count);
-                break;
+                registered_events.erase(registered_events.begin() + count);
             }
             else
                 count++;
         }
+        unRegisterStateChange(e->getId());
     }
 
 }

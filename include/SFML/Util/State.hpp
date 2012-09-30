@@ -66,8 +66,8 @@ public :
         if(manager != 0)
             manager->unRegisterState(this);
 
-        if(State::registered_events.size() > 0){
-            it = State::registered_events.begin();
+        if(registered_events.size() > 0){
+            it = registered_events.begin();
             (*it)->unRegisterState(this);
         }
     }
@@ -199,7 +199,7 @@ public :
 
     ////////////////////////////////////////////////////////////
     /// \brief unregister a state_event from this state
-    ///
+    /// un-registers StateChange and removes event from registered_events
     /// \param State_Event*
     ///
     /// \return void
@@ -265,7 +265,7 @@ protected :
     //state identifier
     std::string state_name;
 
-    static std::vector <State_Event*> registered_events;
+    std::vector <State_Event*> registered_events;
     std::vector <State_Event*>::iterator it;
 
     //state to state mappings based on event_id
