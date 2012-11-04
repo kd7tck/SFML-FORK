@@ -40,7 +40,7 @@ sfml_set_option(SFML_BUILD_DOC FALSE BOOL "TRUE to generate the API documentatio
 if(MACOSX)
     # add an option to build frameworks instead of dylibs (release only)
     sfml_set_option(SFML_BUILD_FRAMEWORKS FALSE BOOL "TRUE to build SFML as frameworks libraries (release only), FALSE to build according to BUILD_SHARED_LIBS")
-    
+
     # add an option to let the user specify a custom directory for frameworks installation (SFML, sndfile, ...)
     sfml_set_option(CMAKE_INSTALL_FRAMEWORK_PREFIX "/Library/Frameworks" STRING "Frameworks installation directory")
 
@@ -93,13 +93,13 @@ if(MACOSX)
             # target 10.5 system
             sfml_set_option(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.5.sdk"
                             STRING "The product will be built against the headers and libraries located inside the indicated SDK. Set to empty string for default value.")
-            sfml_set_option(CMAKE_OSX_DEPLOYMENT_TARGET "10.5" 
+            sfml_set_option(CMAKE_OSX_DEPLOYMENT_TARGET "10.5"
                             STRING "Minimum OS X version to target for deployment (at runtime), newer APIs weak linked.")
         elseif(EXISTS /Developer/SDKs/MacOSX10.6.sdk)
             # target 10.6 system
             sfml_set_option(CMAKE_OSX_SYSROOT "/Developer/SDKs/MacOSX10.6.sdk"
                             STRING "The product will be built against the headers and libraries located inside the indicated SDK. Set to empty string for default value.")
-            sfml_set_option(CMAKE_OSX_DEPLOYMENT_TARGET "10.6" 
+            sfml_set_option(CMAKE_OSX_DEPLOYMENT_TARGET "10.6"
                             STRING "Minimum OS X version to target for deployment (at runtime), newer APIs weak linked.")
         else()
             # use default SDK.
@@ -136,7 +136,7 @@ if(LINUX)
     if(BUILD_SHARED_LIBS)
         sfml_set_option(SFML_INSTALL_PKGCONFIG_FILES TRUE BOOL "TRUE to automatically install pkg-config files so other projects can find SFML")
         if(SFML_INSTALL_PKGCONFIG_FILES)
-            foreach(sfml_module IN ITEMS all system window graphics audio network)
+            foreach(sfml_module IN ITEMS all system window graphics audio network lua sqlite3 util xml)
                 CONFIGURE_FILE(
                     "tools/pkg-config/sfml-${sfml_module}.pc.in"
                     "tools/pkg-config/sfml-${sfml_module}.pc"
@@ -186,7 +186,7 @@ else()
     add_library(SFML ${SFML_SOURCES})
 
     # edit target properties
-    set_target_properties(SFML PROPERTIES 
+    set_target_properties(SFML PROPERTIES
                           FRAMEWORK TRUE
                           FRAMEWORK_VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
                           MACOSX_FRAMEWORK_IDENTIFIER org.sfml-dev.SFML
@@ -195,14 +195,14 @@ else()
                           PUBLIC_HEADER "${SFML_HEADERS}")
 
     # add the remaining headers
-    add_custom_command(TARGET SFML 
+    add_custom_command(TARGET SFML
                        POST_BUILD
                        COMMAND cp -r ${PROJECT_SOURCE_DIR}/include/SFML/* SFML.framework/Versions/2.0.0/Headers)
 
     # adapt install directory to allow distributing dylibs/frameworks in user’s frameworks/application bundle
     # NOTE : it's not required to link agains SFML.framework
-    set_target_properties(SFML PROPERTIES 
-                          BUILD_WITH_INSTALL_RPATH 1 
+    set_target_properties(SFML PROPERTIES
+                          BUILD_WITH_INSTALL_RPATH 1
                           INSTALL_NAME_DIR "@executable_path/../Frameworks")
 
     # install rule
