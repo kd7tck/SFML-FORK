@@ -160,9 +160,9 @@ public :
     bool saveToFile(const std::string& filename) const;
 
     ////////////////////////////////////////////////////////////
-    /// \brief Return the size of the image
+    /// \brief Return the size (width and height) of the image
     ///
-    /// \return Size in pixels
+    /// \return Size of the image, in pixels
     ///
     ////////////////////////////////////////////////////////////
     Vector2u getSize() const;
