@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include "SoundFile.hpp"
+#include <SFML/Audio/SoundFile.hpp>
 #include <SFML/System/InputStream.hpp>
 #include <SFML/System/Err.hpp>
 #include <cstring>
