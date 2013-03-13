@@ -80,7 +80,7 @@ SoundBuffer::~SoundBuffer()
 bool SoundBuffer::loadFromFile(const std::string& filename)
 {
     // Destroy the buffer if there is already one in place
-    if (m_buffer){//fixes error#354
+    if (m_buffer){
         for (SoundList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
             (*it)->resetBuffer();
 
