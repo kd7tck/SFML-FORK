@@ -79,16 +79,6 @@ SoundBuffer::~SoundBuffer()
 ////////////////////////////////////////////////////////////
 bool SoundBuffer::loadFromFile(const std::string& filename)
 {
-    // Destroy the buffer if there is already one in place
-    if (m_buffer){
-        for (SoundList::const_iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
-            (*it)->resetBuffer();
-
-        alCheck(alDeleteBuffers(1, &m_buffer));
-        alCheck(alGenBuffers(1, &m_buffer));
-    }
-
-
     priv::SoundFile file;
     if (file.openRead(filename))
         return initialize(file);
