@@ -33,6 +33,8 @@
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 #include <X11/extensions/Xrandr.h>
+#include <unistd.h>
+#include <cstring>
 #include <sstream>
 #include <vector>
 #include <string>
@@ -49,12 +51,29 @@ namespace
                                                 PointerMotionMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
                                                 EnterWindowMask | LeaveWindowMask;
 
-    /// Filter the events received by windows
-    /// (only allow those matching a specific window)
+    // Filter the events received by windows (only allow those matching a specific window)
     Bool checkEvent(::Display*, XEvent* event, XPointer userData)
     {
         // Just check if the event matches the window
         return event->xany.window == reinterpret_cast< ::Window >(userData);
+    }
+
+    // Find the name of the current executable
+    const char* findExecutableName()
+    {
+        char buffer[512];
+        std::size_t length = readlink("/proc/self/exe", buffer, sizeof(buffer));
+        if ((length > 0) && (length < sizeof(buffer)))
+        {
+            // Remove the path to keep the executable name only
+            buffer[length] = '\0';
+            return basename(buffer);
+        }
+        else
+        {
+            // Fallback name
+            return "sfml";
+        }
     }
 }
 
@@ -72,7 +91,8 @@ m_isExternal  (true),
 m_atomClose   (0),
 m_oldVideoMode(-1),
 m_hiddenCursor(0),
-m_keyRepeat   (true)
+m_keyRepeat   (true),
+m_previousSize(-1, -1)
 {
     // Open a connection with the X server
     m_display = OpenDisplay();
@@ -101,7 +121,8 @@ m_isExternal  (false),
 m_atomClose   (0),
 m_oldVideoMode(-1),
 m_hiddenCursor(0),
-m_keyRepeat   (true)
+m_keyRepeat   (true),
+m_previousSize(-1, -1)
 {
     // Open a connection with the X server
     m_display = OpenDisplay();
@@ -159,7 +180,7 @@ m_keyRepeat   (true)
         {
             static const unsigned long MWM_HINTS_FUNCTIONS   = 1 << 0;
             static const unsigned long MWM_HINTS_DECORATIONS = 1 << 1;
-
+    
             //static const unsigned long MWM_DECOR_ALL         = 1 << 0;
             static const unsigned long MWM_DECOR_BORDER      = 1 << 1;
             static const unsigned long MWM_DECOR_RESIZEH     = 1 << 2;
@@ -174,35 +195,35 @@ m_keyRepeat   (true)
             static const unsigned long MWM_FUNC_MINIMIZE     = 1 << 3;
             static const unsigned long MWM_FUNC_MAXIMIZE     = 1 << 4;
             static const unsigned long MWM_FUNC_CLOSE        = 1 << 5;
-
+    
             struct WMHints
             {
-                unsigned long Flags;
-                unsigned long Functions;
-                unsigned long Decorations;
-                long          InputMode;
-                unsigned long State;
+                unsigned long flags;
+                unsigned long functions;
+                unsigned long decorations;
+                long          inputMode;
+                unsigned long state;
             };
-
+    
             WMHints hints;
-            hints.Flags       = MWM_HINTS_FUNCTIONS | MWM_HINTS_DECORATIONS;
-            hints.Decorations = 0;
-            hints.Functions   = 0;
+            hints.flags       = MWM_HINTS_FUNCTIONS | MWM_HINTS_DECORATIONS;
+            hints.decorations = 0;
+            hints.functions   = 0;
 
             if (style & Style::Titlebar)
             {
-                hints.Decorations |= MWM_DECOR_BORDER | MWM_DECOR_TITLE | MWM_DECOR_MINIMIZE | MWM_DECOR_MENU;
-                hints.Functions   |= MWM_FUNC_MOVE | MWM_FUNC_MINIMIZE;
+                hints.decorations |= MWM_DECOR_BORDER | MWM_DECOR_TITLE | MWM_DECOR_MINIMIZE | MWM_DECOR_MENU;
+                hints.functions   |= MWM_FUNC_MOVE | MWM_FUNC_MINIMIZE;
             }
             if (style & Style::Resize)
             {
-                hints.Decorations |= MWM_DECOR_MAXIMIZE | MWM_DECOR_RESIZEH;
-                hints.Functions   |= MWM_FUNC_MAXIMIZE | MWM_FUNC_RESIZE;
+                hints.decorations |= MWM_DECOR_MAXIMIZE | MWM_DECOR_RESIZEH;
+                hints.functions   |= MWM_FUNC_MAXIMIZE | MWM_FUNC_RESIZE;
             }
             if (style & Style::Close)
             {
-                hints.Decorations |= 0;
-                hints.Functions   |= MWM_FUNC_CLOSE;
+                hints.decorations |= 0;
+                hints.functions   |= MWM_FUNC_CLOSE;
             }
 
             const unsigned char* ptr = reinterpret_cast<const unsigned char*>(&hints);
@@ -212,13 +233,22 @@ m_keyRepeat   (true)
         // This is a hack to force some windows managers to disable resizing
         if (!(style & Style::Resize))
         {
-            XSizeHints sizeHints;
-            sizeHints.flags      = PMinSize | PMaxSize;
-            sizeHints.min_width  = sizeHints.max_width  = width;
-            sizeHints.min_height = sizeHints.max_height = height;
-            XSetWMNormalHints(m_display, m_window, &sizeHints);
+            XSizeHints* sizeHints = XAllocSizeHints();
+            sizeHints->flags = PMinSize | PMaxSize;
+            sizeHints->min_width = sizeHints->max_width  = width;
+            sizeHints->min_height = sizeHints->max_height = height;
+            XSetWMNormalHints(m_display, m_window, sizeHints); 
+            XFree(sizeHints);
         }
     }
+ 
+    // Set the window's WM class (this can be used by window managers)
+    const char* windowClass = findExecutableName();
+    XClassHint* classHint = XAllocClassHint();
+    classHint->res_name = const_cast<char*>(windowClass);
+    classHint->res_class = const_cast<char*>(windowClass);
+    XSetClassHint(m_display, m_window, classHint);
+    XFree(classHint);
 
     // Do some common initializations
     initialize();
@@ -283,9 +313,14 @@ void WindowImplX11::processEvents()
 ////////////////////////////////////////////////////////////
 Vector2i WindowImplX11::getPosition() const
 {
-    XWindowAttributes attributes;
-    XGetWindowAttributes(m_display, m_window, &attributes);
-    return Vector2i(attributes.x, attributes.y);
+    ::Window root, child;
+    int localX, localY, x, y;
+    unsigned int width, height, border, depth;
+
+    XGetGeometry(m_display, m_window, &root, &localX, &localY, &width, &height, &border, &depth);
+    XTranslateCoordinates(m_display, m_window, root, localX, localY, &x, &y, &child);
+
+    return Vector2i(x, y);
 }
 
 
@@ -377,7 +412,7 @@ void WindowImplX11::setIcon(unsigned int width, unsigned int height, const Uint8
                 if (i * 8 + k < width)
                 {
                     Uint8 opacity = (pixels[(i * 8 + k + j * width) * 4 + 3] > 0) ? 1 : 0;
-                    maskPixels[i + j * pitch] |= (opacity << k);
+                    maskPixels[i + j * pitch] |= (opacity << k);                    
                 }
             }
         }
@@ -544,7 +579,7 @@ void WindowImplX11::cleanup()
     {
         // Get current screen info
         XRRScreenConfiguration* config = XRRGetScreenInfo(m_display, RootWindow(m_display, m_screen));
-        if (config)
+        if (config) 
         {
             // Get the current rotation
             Rotation currentRotation;
@@ -555,7 +590,7 @@ void WindowImplX11::cleanup()
 
             // Free the configuration instance
             XRRFreeScreenConfigInfo(config);
-        }
+        } 
 
         // Reset the fullscreen window
         fullscreenWindow = NULL;
@@ -647,18 +682,25 @@ bool WindowImplX11::processEvent(XEvent windowEvent)
         // Resize event
         case ConfigureNotify :
         {
-            Event event;
-            event.type        = Event::Resized;
-            event.size.width  = windowEvent.xconfigure.width;
-            event.size.height = windowEvent.xconfigure.height;
-            pushEvent(event);
+            // ConfigureNotify can be triggered for other reasons, check if the size has acutally changed
+            if ((windowEvent.xconfigure.width != m_previousSize.x) || (windowEvent.xconfigure.height != m_previousSize.y))
+            {
+                Event event;
+                event.type        = Event::Resized;
+                event.size.width  = windowEvent.xconfigure.width;
+                event.size.height = windowEvent.xconfigure.height;
+                pushEvent(event);
+
+                m_previousSize.x = windowEvent.xconfigure.width;
+                m_previousSize.y = windowEvent.xconfigure.height;
+            }
             break;
         }
 
         // Close event
         case ClientMessage :
         {
-            if ((windowEvent.xclient.format == 32) && (windowEvent.xclient.data.l[0]) == static_cast<long>(m_atomClose))
+            if ((windowEvent.xclient.format == 32) && (windowEvent.xclient.data.l[0]) == static_cast<long>(m_atomClose))  
             {
                 Event event;
                 event.type = Event::Closed;
@@ -764,7 +806,7 @@ bool WindowImplX11::processEvent(XEvent windowEvent)
                     case Button2 : event.mouseButton.button = Mouse::Middle;   break;
                     case Button3 : event.mouseButton.button = Mouse::Right;    break;
                     case 8 :       event.mouseButton.button = Mouse::XButton1; break;
-                    case 9 :       event.mouseButton.button = Mouse::XButton2; break;
+                    case 9 :       event.mouseButton.button = Mouse::XButton2; break;            
                 }
                 pushEvent(event);
             }
@@ -787,7 +829,7 @@ bool WindowImplX11::processEvent(XEvent windowEvent)
                     case Button2 : event.mouseButton.button = Mouse::Middle;   break;
                     case Button3 : event.mouseButton.button = Mouse::Right;    break;
                     case 8 :       event.mouseButton.button = Mouse::XButton1; break;
-                    case 9 :       event.mouseButton.button = Mouse::XButton2; break;
+                    case 9 :       event.mouseButton.button = Mouse::XButton2; break;            
                 }
                 pushEvent(event);
             }
