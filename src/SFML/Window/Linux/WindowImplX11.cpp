@@ -27,6 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Window/WindowStyle.hpp> // important to be included first (conflict with None)
 #include <SFML/Window/Linux/WindowImplX11.hpp>
+#include <SFML/Window/Linux/GlxContext.hpp>
 #include <SFML/Window/Linux/Display.hpp>
 #include <SFML/System/Utf.hpp>
 #include <SFML/System/Err.hpp>
@@ -59,21 +60,18 @@ namespace
     }
 
     // Find the name of the current executable
-    const char* findExecutableName()
+    void findExecutableName(char* buffer, std::size_t bufferSize)
     {
-        char buffer[512];
-        std::size_t length = readlink("/proc/self/exe", buffer, sizeof(buffer));
-        if ((length > 0) && (length < sizeof(buffer)))
+        //Default fallback name
+        const char* executableName = "sfml";
+        std::size_t length = readlink("/proc/self/exe", buffer, bufferSize);
+        if ((length > 0) && (length < bufferSize))
         {
             // Remove the path to keep the executable name only
             buffer[length] = '\0';
-            return basename(buffer);
+            executableName = basename(buffer);
         }
-        else
-        {
-            // Fallback name
-            return "sfml";
-        }
+        std::memmove(buffer, executableName, std::strlen(executableName) + 1);
     }
 }
 
@@ -96,7 +94,7 @@ m_previousSize(-1, -1)
 {
     // Open a connection with the X server
     m_display = OpenDisplay();
-    m_screen  = DefaultScreen(m_display);
+    m_screen = DefaultScreen(m_display);
 
     // Save the window handle
     m_window = handle;
@@ -113,7 +111,7 @@ m_previousSize(-1, -1)
 
 
 ////////////////////////////////////////////////////////////
-WindowImplX11::WindowImplX11(VideoMode mode, const String& title, unsigned long style) :
+WindowImplX11::WindowImplX11(VideoMode mode, const String& title, unsigned long style, const ContextSettings& settings) :
 m_window      (0),
 m_inputMethod (NULL),
 m_inputContext(NULL),
@@ -126,7 +124,8 @@ m_previousSize(-1, -1)
 {
     // Open a connection with the X server
     m_display = OpenDisplay();
-    m_screen  = DefaultScreen(m_display);
+    m_screen = DefaultScreen(m_display);
+    ::Window root = RootWindow(m_display, m_screen);
 
     // Compute position and size
     int left, top;
@@ -148,21 +147,25 @@ m_previousSize(-1, -1)
     if (fullscreen)
         switchToFullscreen(mode);
 
+    // Choose the visual according to the context settings
+    XVisualInfo visualInfo = GlxContext::selectBestVisual(m_display, mode.bitsPerPixel, settings);
+
     // Define the window attributes
     XSetWindowAttributes attributes;
-    attributes.event_mask        = eventMask;
     attributes.override_redirect = fullscreen;
+    attributes.event_mask = eventMask;
+    attributes.colormap = XCreateColormap(m_display, root, visualInfo.visual, AllocNone);
 
     // Create the window
     m_window = XCreateWindow(m_display,
-                             RootWindow(m_display, m_screen),
+                             root,
                              left, top,
                              width, height,
                              0,
-                             DefaultDepth(m_display, m_screen),
+                             visualInfo.depth,
                              InputOutput,
-                             DefaultVisual(m_display, m_screen),
-                             CWEventMask | CWOverrideRedirect, &attributes);
+                             visualInfo.visual,
+                             CWEventMask | CWOverrideRedirect | CWColormap, &attributes);
     if (!m_window)
     {
         err() << "Failed to create window" << std::endl;
@@ -243,10 +246,11 @@ m_previousSize(-1, -1)
     }
  
     // Set the window's WM class (this can be used by window managers)
-    const char* windowClass = findExecutableName();
+    char windowClass[512];
+    findExecutableName(windowClass, sizeof(windowClass));
     XClassHint* classHint = XAllocClassHint();
-    classHint->res_name = const_cast<char*>(windowClass);
-    classHint->res_class = const_cast<char*>(windowClass);
+    classHint->res_name = windowClass;
+    classHint->res_class = windowClass;
     XSetClassHint(m_display, m_window, classHint);
     XFree(classHint);
 
@@ -356,8 +360,8 @@ void WindowImplX11::setTitle(const String& title)
     // There is however an option to tell the window manager your unicode title via hints.
     
     // Convert to UTF-8 encoding.
-    std::basic_string<sf::Uint8> utf8Title;
-    sf::Utf32::toUtf8(title.begin(), title.end(), std::back_inserter(utf8Title));
+    std::basic_string<Uint8> utf8Title;
+    Utf32::toUtf8(title.begin(), title.end(), std::back_inserter(utf8Title));
     
     // Set the _NET_WM_NAME atom, which specifies a UTF-8 encoded window title.
     Atom wmName = XInternAtom(m_display, "_NET_WM_NAME", False);
@@ -513,11 +517,6 @@ void WindowImplX11::switchToFullscreen(const VideoMode& mode)
 ////////////////////////////////////////////////////////////
 void WindowImplX11::initialize()
 {
-    // Make sure the "last key release" is initialized with invalid values
-    m_lastKeyReleaseEvent.type = -1;
-    m_lastKeyReleaseEvent.xkey.keycode = 0;
-    m_lastKeyReleaseEvent.xkey.time = 0;
-
     // Get the atom defining the close event
     m_atomClose = XInternAtom(m_display, "WM_DELETE_WINDOW", false);
     XSetWMProtocols(m_display, m_window, &m_atomClose, 1);
@@ -613,33 +612,30 @@ bool WindowImplX11::processEvent(XEvent windowEvent)
     // - Discard both duplicated KeyPress and KeyRelease events when KeyRepeatEnabled is false
 
     // Detect repeated key events
-    if (((windowEvent.type == KeyPress) || (windowEvent.type == KeyRelease)) && (windowEvent.xkey.keycode < 256))
+    // (code shamelessly taken from SDL)
+    if (windowEvent.type == KeyRelease)
     {
-        // To detect if it is a repeated key event, we check the current state of the key:
-        // - If the state is "down", KeyReleased events must obviously be discarded
-        // - KeyPress events are a little bit harder to handle: they depend on the KeyRepeatEnabled state,
-        //   and we need to properly forward the first one
-        
-        // Check if the key is currently down
-        char keys[32];
-        XQueryKeymap(m_display, keys);
-        bool isDown = keys[windowEvent.xkey.keycode / 8] & (1 << (windowEvent.xkey.keycode % 8));
+        // Check if there's a matching KeyPress event in the queue
+        XEvent nextEvent;
+        if (XPending(m_display))
+        {
+            // Grab it but don't remove it from the queue, it still needs to be processed :)
+            XPeekEvent(m_display, &nextEvent);
+            if (nextEvent.type == KeyPress)
+            {
+                // Check if it is a duplicated event (same timestamp as the KeyRelease event)
+                if ((nextEvent.xkey.keycode == windowEvent.xkey.keycode) &&
+                    (nextEvent.xkey.time - windowEvent.xkey.time < 2))
+                {
+                    // If we don't want repeated events, remove the next KeyPress from the queue
+                    if (!m_keyRepeat)
+                        XNextEvent(m_display, &nextEvent);
 
-        // Check if it's a duplicate event
-        bool isDuplicate = (windowEvent.xkey.keycode == m_lastKeyReleaseEvent.xkey.keycode) &&
-                           (windowEvent.xkey.time - m_lastKeyReleaseEvent.xkey.time <= 5);
-
-        // Keep track of the last KeyRelease event
-        if (windowEvent.type == KeyRelease)
-            m_lastKeyReleaseEvent = windowEvent;
-
-        // KeyRelease event + key down or duplicate event = repeated event --> discard
-        if ((windowEvent.type == KeyRelease) && (isDown || isDuplicate))
-            return false;
-
-        // KeyPress event + matching KeyRelease event = repeated event --> discard if key repeat is disabled
-        if ((windowEvent.type == KeyPress) && isDuplicate && !m_keyRepeat)
-            return false;
+                    // This KeyRelease is a repeated event and we don't want it
+                    return false;
+                }
+            }
+        }
     }
 
     // Convert the X11 event to a sf::Event

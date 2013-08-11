@@ -21,7 +21,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake)
 
 # setup version numbers
 set(VERSION_MAJOR 2)
-set(VERSION_MINOR 0)
+set(VERSION_MINOR 1)
 set(VERSION_PATCH 0)
 
 # add the SFML header path
@@ -105,7 +105,7 @@ endif()
 
 if(LINUX)
     if(BUILD_SHARED_LIBS)
-        sfml_set_option(SFML_INSTALL_PKGCONFIG_FILES TRUE BOOL "TRUE to automatically install pkg-config files so other projects can find SFML")
+        sfml_set_option(SFML_INSTALL_PKGCONFIG_FILES FALSE BOOL "TRUE to automatically install pkg-config files so other projects can find SFML")
         if(SFML_INSTALL_PKGCONFIG_FILES)
             foreach(sfml_module IN ITEMS all system window graphics audio network lua sqlite3 util xml)
                 CONFIGURE_FILE(
