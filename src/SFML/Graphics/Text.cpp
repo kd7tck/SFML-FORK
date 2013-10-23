@@ -239,10 +239,10 @@ Vector2f Text::findCharacterPos(std::size_t index) const
         // Handle special characters
         switch (curChar)
         {
-            case L' ' :  position.x += hspace;                 continue;
-            case L'\t' : position.x += hspace * 4;             continue;
-            case L'\n' : position.y += vspace; position.x = 0; continue;
-            case L'\v' : position.y += vspace * 4;             continue;
+            case ' ' :  position.x += hspace;                 continue;
+            case '\t' : position.x += hspace * 4;             continue;
+            case '\n' : position.y += vspace; position.x = 0; continue;
+            case '\v' : position.y += vspace * 4;             continue;
         }
 
         // For regular characters, add the advance offset of the glyph
@@ -318,7 +318,10 @@ void Text::updateGeometry()
     float y      = static_cast<float>(m_characterSize);
 
     // Create one quad for each character
+    float minX = static_cast<float>(m_characterSize);
     float minY = static_cast<float>(m_characterSize);
+    float maxX = 0.f;
+    float maxY = 0.f;
     Uint32 prevChar = 0;
     for (std::size_t i = 0; i < m_string.getSize(); ++i)
     {
@@ -341,26 +344,26 @@ void Text::updateGeometry()
         }
 
         // Handle special characters
-        switch (curChar)
+        if ((curChar == ' ') || (curChar == '\t') || (curChar == '\n') || (curChar == '\v'))
         {
-            case L' ' :
-                x += hspace;
-                continue;
+            // Update the current bounds (min coordinates)
+            minX = std::min(minX, x);
+            minY = std::min(minY, y);
 
-            case L'\t' :
-                x += hspace * 4;
-                continue;
+            switch (curChar)
+            {
+                case ' ' :  x += hspace;        break;
+                case '\t' : x += hspace * 4;    break;
+                case '\n' : y += vspace; x = 0; break;
+                case '\v' : y += vspace * 4;    break;
+            }
 
-            case L'\n' :
-                if (x > m_bounds.width)
-                    m_bounds.width = x;
-                y += vspace;
-                x = 0;
-                continue;
+            // Update the current bounds (max coordinates)
+            maxX = std::max(maxX, x);
+            maxY = std::max(maxY, y);
 
-            case L'\v' :
-                y += vspace * 4;
-                continue;
+            // Next glyph, no need to create a quad for whitespace
+            continue;
         }
 
         // Extract the current glyph's description
@@ -382,12 +385,14 @@ void Text::updateGeometry()
         m_vertices.append(Vertex(Vector2f(x + right - italic * bottom, y + bottom), m_color, Vector2f(u2, v2)));
         m_vertices.append(Vertex(Vector2f(x + left  - italic * bottom, y + bottom), m_color, Vector2f(u1, v2)));
 
+        // Update the current bounds
+        minX = std::min(minX, x + left - italic * bottom);
+        maxX = std::max(maxX, x + right - italic * top);
+        minY = std::min(minY, y + top);
+        maxY = std::max(maxY, y + bottom);
+
         // Advance to the next character
         x += glyph.advance;
-
-        // Update the minimum Y coordinate
-        if (y + top < minY)
-            minY = y + top;
     }
 
     // If we're using the underlined style, add the last line
@@ -403,11 +408,10 @@ void Text::updateGeometry()
     }
 
     // Update the bounding rectangle
-    m_bounds.left = 0;
+    m_bounds.left = minX;
     m_bounds.top = minY;
-    if (x > m_bounds.width)
-        m_bounds.width = x;
-    m_bounds.height = y - minY;
+    m_bounds.width = maxX - minX;
+    m_bounds.height = maxY - minY;
 }
 
 

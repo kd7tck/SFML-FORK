@@ -1,8 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2013 Marco Antognini (antognini.marco@gmail.com),
-//                         Laurent Gomila (laurent.gom@gmail.com),
+// Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -23,27 +22,32 @@
 //
 ////////////////////////////////////////////////////////////
 
-////////////////////////////////////////////////////////////
-// Headers
-////////////////////////////////////////////////////////////
-#import <SFML/Window/OSX/WindowImplDelegateProtocol.h>
 
 ////////////////////////////////////////////////////////////
-/// Predefine some classes
-////////////////////////////////////////////////////////////
-@class SFOpenGLView;
-
-////////////////////////////////////////////////////////////
-/// Implementation of WindowImplDelegateProtocol for view managment.
-///
-////////////////////////////////////////////////////////////
-
-@interface SFViewController : NSObject <WindowImplDelegateProtocol> {
-    NSView*                     m_view;
-    SFOpenGLView*               m_oglView;
-    sf::priv::WindowImplCocoa*  m_requester;
+template <typename T>
+String String::fromUtf8(T begin, T end)
+{
+    String string;
+    Utf8::toUtf32(begin, end, std::back_inserter(string.m_string));
+    return string;
 }
 
--(id)initWithView:(NSView *)view;
 
-@end
+////////////////////////////////////////////////////////////
+template <typename T>
+String String::fromUtf16(T begin, T end)
+{
+    String string;
+    Utf16::toUtf32(begin, end, std::back_inserter(string.m_string));
+    return string;
+}
+
+
+////////////////////////////////////////////////////////////
+template <typename T>
+String String::fromUtf32(T begin, T end)
+{
+    String string;
+    string.m_string.assign(begin, end);
+    return string;
+}
